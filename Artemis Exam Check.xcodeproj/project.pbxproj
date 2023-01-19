@@ -1,0 +1,572 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D55C08352975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08342975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift */; };
+		D55C08372975A0E800DC6B80 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08362975A0E800DC6B80 /* ContentView.swift */; };
+		D55C08392975A0EB00DC6B80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55C08382975A0EB00DC6B80 /* Assets.xcassets */; };
+		D55C083C2975A0EB00DC6B80 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55C083B2975A0EB00DC6B80 /* Preview Assets.xcassets */; };
+		D55C08452975A12F00DC6B80 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08442975A12F00DC6B80 /* Student.swift */; };
+		D55C08472975A25700DC6B80 /* StudentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08462975A25700DC6B80 /* StudentListView.swift */; };
+		D55C08492975A2B400DC6B80 /* StudentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08482975A2B400DC6B80 /* StudentListViewModel.swift */; };
+		D55C084C2975A45100DC6B80 /* StudentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C084B2975A45100DC6B80 /* StudentDetailView.swift */; };
+		D55C084E2975A85C00DC6B80 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C084D2975A85C00DC6B80 /* CanvasView.swift */; };
+		D55C08502975A8D400DC6B80 /* StudentDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C084F2975A8D400DC6B80 /* StudentDetailViewModel.swift */; };
+		D55C08532975B17400DC6B80 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08522975B17400DC6B80 /* ButtonStyle.swift */; };
+		D55C08562975BCF300DC6B80 /* ExamService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08552975BCF300DC6B80 /* ExamService.swift */; };
+		D55C08592975BD0300DC6B80 /* StudentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08582975BD0300DC6B80 /* StudentService.swift */; };
+		D55C08772975BE9600DC6B80 /* StudentServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08762975BE9600DC6B80 /* StudentServiceImpl.swift */; };
+		D55C087A2975BF0B00DC6B80 /* ExamServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08792975BF0B00DC6B80 /* ExamServiceImpl.swift */; };
+		D55C087C2975BF2200DC6B80 /* Exam.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C087B2975BF2200DC6B80 /* Exam.swift */; };
+		D55C087E2975C24C00DC6B80 /* ExamOverviewList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C087D2975C24C00DC6B80 /* ExamOverviewList.swift */; };
+		D55C08802975C28600DC6B80 /* ExamOverviewListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C087F2975C28600DC6B80 /* ExamOverviewListViewModel.swift */; };
+		D55C08852978525E00DC6B80 /* ReSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D55C08842978525E00DC6B80 /* ReSwift */; };
+		D55C08882978536F00DC6B80 /* MainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08872978536F00DC6B80 /* MainStore.swift */; };
+		D55C088A297853E800DC6B80 /* ExamsReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C0889297853E800DC6B80 /* ExamsReducer.swift */; };
+		D5890000297959FE00541D18 /* UserStore in Frameworks */ = {isa = PBXBuildFile; productRef = D589FFFF297959FE00541D18 /* UserStore */; };
+		D589000329795A2300541D18 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = D589000229795A2300541D18 /* Common */; };
+		D589000529795A5C00541D18 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D589000429795A5C00541D18 /* ContentViewModel.swift */; };
+		D589FFFB297959D800541D18 /* APIClient in Frameworks */ = {isa = PBXBuildFile; productRef = D589FFFA297959D800541D18 /* APIClient */; };
+		D589FFFD297959D800541D18 /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = D589FFFC297959D800541D18 /* Login */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Artemis Exam Check.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D55C08342975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artemis_Exam_CheckApp.swift; sourceTree = "<group>"; };
+		D55C08362975A0E800DC6B80 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D55C08382975A0EB00DC6B80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D55C083B2975A0EB00DC6B80 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D55C08442975A12F00DC6B80 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
+		D55C08462975A25700DC6B80 /* StudentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentListView.swift; sourceTree = "<group>"; };
+		D55C08482975A2B400DC6B80 /* StudentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentListViewModel.swift; sourceTree = "<group>"; };
+		D55C084B2975A45100DC6B80 /* StudentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentDetailView.swift; sourceTree = "<group>"; };
+		D55C084D2975A85C00DC6B80 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		D55C084F2975A8D400DC6B80 /* StudentDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentDetailViewModel.swift; sourceTree = "<group>"; };
+		D55C08522975B17400DC6B80 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
+		D55C08552975BCF300DC6B80 /* ExamService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamService.swift; sourceTree = "<group>"; };
+		D55C08582975BD0300DC6B80 /* StudentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentService.swift; sourceTree = "<group>"; };
+		D55C08762975BE9600DC6B80 /* StudentServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentServiceImpl.swift; sourceTree = "<group>"; };
+		D55C08792975BF0B00DC6B80 /* ExamServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamServiceImpl.swift; sourceTree = "<group>"; };
+		D55C087B2975BF2200DC6B80 /* Exam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exam.swift; sourceTree = "<group>"; };
+		D55C087D2975C24C00DC6B80 /* ExamOverviewList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamOverviewList.swift; sourceTree = "<group>"; };
+		D55C087F2975C28600DC6B80 /* ExamOverviewListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamOverviewListViewModel.swift; sourceTree = "<group>"; };
+		D55C08872978536F00DC6B80 /* MainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainStore.swift; sourceTree = "<group>"; };
+		D55C0889297853E800DC6B80 /* ExamsReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamsReducer.swift; sourceTree = "<group>"; };
+		D589000129795A0500541D18 /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Common; path = core/Common; sourceTree = "<group>"; };
+		D589000429795A5C00541D18 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
+		D589FFF22979588E00541D18 /* APIClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = APIClient; path = core/APIClient; sourceTree = "<group>"; };
+		D589FFF52979593300541D18 /* Login */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Login; path = feature/Login; sourceTree = "<group>"; };
+		D589FFFE297959DF00541D18 /* UserStore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = UserStore; path = core/UserStore; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D55C082E2975A0E800DC6B80 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5890000297959FE00541D18 /* UserStore in Frameworks */,
+				D589FFFB297959D800541D18 /* APIClient in Frameworks */,
+				D589FFFD297959D800541D18 /* Login in Frameworks */,
+				D55C08852978525E00DC6B80 /* ReSwift in Frameworks */,
+				D589000329795A2300541D18 /* Common in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D55C08282975A0E800DC6B80 = {
+			isa = PBXGroup;
+			children = (
+				D55C088D297956B200DC6B80 /* Packages */,
+				D55C08332975A0E800DC6B80 /* Artemis Exam Check */,
+				D55C08322975A0E800DC6B80 /* Products */,
+				D589FFF9297959D800541D18 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D55C08322975A0E800DC6B80 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D55C08332975A0E800DC6B80 /* Artemis Exam Check */ = {
+			isa = PBXGroup;
+			children = (
+				D55C08692975BD8200DC6B80 /* Store */,
+				D55C08542975BCDA00DC6B80 /* Services */,
+				D55C08512975B16300DC6B80 /* DesignLibrary */,
+				D55C084A2975A2BE00DC6B80 /* ViewModels */,
+				D55C08432975A11000DC6B80 /* Model */,
+				D55C08422975A0F800DC6B80 /* Views */,
+				D55C08342975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift */,
+				D55C08382975A0EB00DC6B80 /* Assets.xcassets */,
+				D55C083A2975A0EB00DC6B80 /* Preview Content */,
+			);
+			path = "Artemis Exam Check";
+			sourceTree = "<group>";
+		};
+		D55C083A2975A0EB00DC6B80 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				D55C083B2975A0EB00DC6B80 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D55C08422975A0F800DC6B80 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D55C08362975A0E800DC6B80 /* ContentView.swift */,
+				D55C084B2975A45100DC6B80 /* StudentDetailView.swift */,
+				D55C08462975A25700DC6B80 /* StudentListView.swift */,
+				D55C084D2975A85C00DC6B80 /* CanvasView.swift */,
+				D55C087D2975C24C00DC6B80 /* ExamOverviewList.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D55C08432975A11000DC6B80 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D55C08442975A12F00DC6B80 /* Student.swift */,
+				D55C087B2975BF2200DC6B80 /* Exam.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D55C084A2975A2BE00DC6B80 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D55C08482975A2B400DC6B80 /* StudentListViewModel.swift */,
+				D55C084F2975A8D400DC6B80 /* StudentDetailViewModel.swift */,
+				D55C087F2975C28600DC6B80 /* ExamOverviewListViewModel.swift */,
+				D589000429795A5C00541D18 /* ContentViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		D55C08512975B16300DC6B80 /* DesignLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				D55C08522975B17400DC6B80 /* ButtonStyle.swift */,
+			);
+			path = DesignLibrary;
+			sourceTree = "<group>";
+		};
+		D55C08542975BCDA00DC6B80 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D55C08782975BEBF00DC6B80 /* ExamService */,
+				D55C08752975BE4200DC6B80 /* StudentService */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		D55C08692975BD8200DC6B80 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				D55C08872978536F00DC6B80 /* MainStore.swift */,
+				D55C0889297853E800DC6B80 /* ExamsReducer.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		D55C08752975BE4200DC6B80 /* StudentService */ = {
+			isa = PBXGroup;
+			children = (
+				D55C08582975BD0300DC6B80 /* StudentService.swift */,
+				D55C08762975BE9600DC6B80 /* StudentServiceImpl.swift */,
+			);
+			path = StudentService;
+			sourceTree = "<group>";
+		};
+		D55C08782975BEBF00DC6B80 /* ExamService */ = {
+			isa = PBXGroup;
+			children = (
+				D55C08552975BCF300DC6B80 /* ExamService.swift */,
+				D55C08792975BF0B00DC6B80 /* ExamServiceImpl.swift */,
+			);
+			path = ExamService;
+			sourceTree = "<group>";
+		};
+		D55C088D297956B200DC6B80 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				D589000129795A0500541D18 /* Common */,
+				D589FFFE297959DF00541D18 /* UserStore */,
+				D589FFF52979593300541D18 /* Login */,
+				D589FFF22979588E00541D18 /* APIClient */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		D589FFF9297959D800541D18 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D55C08302975A0E800DC6B80 /* Artemis Exam Check */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D55C083F2975A0EB00DC6B80 /* Build configuration list for PBXNativeTarget "Artemis Exam Check" */;
+			buildPhases = (
+				D55C082D2975A0E800DC6B80 /* Sources */,
+				D55C082E2975A0E800DC6B80 /* Frameworks */,
+				D55C082F2975A0E800DC6B80 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Artemis Exam Check";
+			packageProductDependencies = (
+				D55C08842978525E00DC6B80 /* ReSwift */,
+				D589FFFA297959D800541D18 /* APIClient */,
+				D589FFFC297959D800541D18 /* Login */,
+				D589FFFF297959FE00541D18 /* UserStore */,
+				D589000229795A2300541D18 /* Common */,
+			);
+			productName = "Artemis Exam Check";
+			productReference = D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D55C08292975A0E800DC6B80 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					D55C08302975A0E800DC6B80 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = D55C082C2975A0E800DC6B80 /* Build configuration list for PBXProject "Artemis Exam Check" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D55C08282975A0E800DC6B80;
+			packageReferences = (
+				D55C086D2975BDEA00DC6B80 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
+				D55C08832978525E00DC6B80 /* XCRemoteSwiftPackageReference "ReSwift" */,
+			);
+			productRefGroup = D55C08322975A0E800DC6B80 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D55C08302975A0E800DC6B80 /* Artemis Exam Check */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D55C082F2975A0E800DC6B80 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D55C083C2975A0EB00DC6B80 /* Preview Assets.xcassets in Resources */,
+				D55C08392975A0EB00DC6B80 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D55C082D2975A0E800DC6B80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D55C08492975A2B400DC6B80 /* StudentListViewModel.swift in Sources */,
+				D55C08592975BD0300DC6B80 /* StudentService.swift in Sources */,
+				D55C088A297853E800DC6B80 /* ExamsReducer.swift in Sources */,
+				D55C087E2975C24C00DC6B80 /* ExamOverviewList.swift in Sources */,
+				D55C08772975BE9600DC6B80 /* StudentServiceImpl.swift in Sources */,
+				D55C08372975A0E800DC6B80 /* ContentView.swift in Sources */,
+				D55C087C2975BF2200DC6B80 /* Exam.swift in Sources */,
+				D55C084E2975A85C00DC6B80 /* CanvasView.swift in Sources */,
+				D55C08452975A12F00DC6B80 /* Student.swift in Sources */,
+				D55C08802975C28600DC6B80 /* ExamOverviewListViewModel.swift in Sources */,
+				D55C08472975A25700DC6B80 /* StudentListView.swift in Sources */,
+				D55C08502975A8D400DC6B80 /* StudentDetailViewModel.swift in Sources */,
+				D55C08562975BCF300DC6B80 /* ExamService.swift in Sources */,
+				D55C08532975B17400DC6B80 /* ButtonStyle.swift in Sources */,
+				D55C08882978536F00DC6B80 /* MainStore.swift in Sources */,
+				D589000529795A5C00541D18 /* ContentViewModel.swift in Sources */,
+				D55C08352975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift in Sources */,
+				D55C084C2975A45100DC6B80 /* StudentDetailView.swift in Sources */,
+				D55C087A2975BF0B00DC6B80 /* ExamServiceImpl.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D55C083D2975A0EB00DC6B80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D55C083E2975A0EB00DC6B80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D55C08402975A0EB00DC6B80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Artemis Exam Check/Preview Content\"";
+				DEVELOPMENT_TEAM = 2J3C6P6X3N;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Artemis-Exam-Check-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.tum.cit.artemis.exam-attendance-checker";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D55C08412975A0EB00DC6B80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Artemis Exam Check/Preview Content\"";
+				DEVELOPMENT_TEAM = 2J3C6P6X3N;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Artemis-Exam-Check-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.tum.cit.artemis.exam-attendance-checker";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D55C082C2975A0E800DC6B80 /* Build configuration list for PBXProject "Artemis Exam Check" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D55C083D2975A0EB00DC6B80 /* Debug */,
+				D55C083E2975A0EB00DC6B80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D55C083F2975A0EB00DC6B80 /* Build configuration list for PBXNativeTarget "Artemis Exam Check" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D55C08402975A0EB00DC6B80 /* Debug */,
+				D55C08412975A0EB00DC6B80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D55C086D2975BDEA00DC6B80 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyBeaver/SwiftyBeaver.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		D55C08832978525E00DC6B80 /* XCRemoteSwiftPackageReference "ReSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReSwift/ReSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D55C08842978525E00DC6B80 /* ReSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D55C08832978525E00DC6B80 /* XCRemoteSwiftPackageReference "ReSwift" */;
+			productName = ReSwift;
+		};
+		D589000229795A2300541D18 /* Common */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Common;
+		};
+		D589FFFA297959D800541D18 /* APIClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = APIClient;
+		};
+		D589FFFC297959D800541D18 /* Login */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Login;
+		};
+		D589FFFF297959FE00541D18 /* UserStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UserStore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = D55C08292975A0E800DC6B80 /* Project object */;
+}
