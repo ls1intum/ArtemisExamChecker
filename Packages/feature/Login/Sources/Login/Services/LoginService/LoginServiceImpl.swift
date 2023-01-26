@@ -14,7 +14,7 @@ class LoginServiceImpl: LoginService {
     private let client = APIClient()
 
     struct LoginUser: APIRequest {
-        typealias Response = LoginResponse
+        typealias Response = RawResponse
         
         var username: String
         var password: String
@@ -33,11 +33,15 @@ class LoginServiceImpl: LoginService {
         let result = await client.send(LoginUser(username: username, password: password, rememberMe: rememberMe))
         
         switch result {
-        case .success((let response, _)):
-            UserSession.shared.saveBearerToken(token: response.idToken, shouldRemember: rememberMe)
+        case .success:
+            UserSession.shared.setUserLoggedIn(isLoggedIn: true, shouldRemember: rememberMe)
             return .success
         case .failure(let error):
             return .failure(error: error)
         }
     }
+}
+
+public struct EmptyResponse: Decodable {
+    
 }

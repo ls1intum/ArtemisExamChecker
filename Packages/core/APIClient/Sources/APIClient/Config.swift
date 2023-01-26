@@ -9,4 +9,5 @@ import Foundation
 
 enum Config {
     public static let baseEndpointUrl = URL(string: "https://artemis.ase.in.tum.de/")
+//    public static let baseEndpointUrl = URL(string: "http://localhost:9000/")
 }

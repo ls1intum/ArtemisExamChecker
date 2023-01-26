@@ -18,10 +18,10 @@ class ContentViewModel: ObservableObject {
     init() {
         UserSession.shared.objectWillChange.sink {
             DispatchQueue.main.async { [unowned self] in
-                self.isLoggedIn = UserSession.shared.bearerToken != nil
+                self.isLoggedIn = UserSession.shared.isLoggedIn
             }
         }.store(in: &cancellables)
         
-        isLoggedIn = UserSession.shared.bearerToken != nil
+        isLoggedIn = UserSession.shared.isLoggedIn
     }
 }

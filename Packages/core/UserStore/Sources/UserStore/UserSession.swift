@@ -9,29 +9,22 @@ import Foundation
 
 public class UserSession: ObservableObject {
     
-    @Published public private(set) var bearerToken: String? = nil
+    @Published public private(set) var isLoggedIn: Bool = false
     
     public static let shared = UserSession()
     
     private init() {
         guard let rememberData = KeychainHelper.shared.read(service: "shouldRemember", account: "Artemis"),
               String(data: rememberData, encoding: .utf8) == "true",
-              let tokenData = KeychainHelper.shared.read(service: "bearerToken", account: "Artemis") else { return }
-        bearerToken = String(data: tokenData, encoding: .utf8)
+              let tokenData = KeychainHelper.shared.read(service: "isLoggedIn", account: "Artemis") else { return }
+        isLoggedIn = String(data: tokenData, encoding: .utf8) == "true"
     }
     
-    public func saveBearerToken(token: String?, shouldRemember: Bool) {
-        guard let token = token else {
-            bearerToken = nil
-            KeychainHelper.shared.delete(service: "bearerToken", account: "Artemis")
-            KeychainHelper.shared.delete(service: "shouldRemember", account: "Artemis")
-            return
-        }
-        
-        bearerToken = token
-        let tokenData = Data(token.utf8)
+    public func setUserLoggedIn(isLoggedIn: Bool, shouldRemember: Bool) {
+        self.isLoggedIn = isLoggedIn
+        let isLoggedInData = Data(isLoggedIn.description.utf8)
         let rememberData = Data(shouldRemember.description.utf8)
-        KeychainHelper.shared.save(tokenData, service: "bearerToken", account: "Artemis")
+        KeychainHelper.shared.save(isLoggedInData, service: "isLoggedIn", account: "Artemis")
         KeychainHelper.shared.save(rememberData, service: "shouldRemember", account: "Artemis")
     }
 }

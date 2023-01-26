@@ -29,7 +29,7 @@ class ExamOverviewListViewModel: ObservableObject {
     }
     
     func logout() {
-        UserSession.shared.saveBearerToken(token: nil, shouldRemember: false)
+        UserSession.shared.setUserLoggedIn(isLoggedIn: false, shouldRemember: false)
     }
 }
 

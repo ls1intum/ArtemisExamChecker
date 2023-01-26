@@ -4,11 +4,10 @@ import UserStore
 
 final public class APIClient {
     private var baseUrl: URL?
-//    private let authorizationProvider = AuthorizationProvider()
     
     private let session = URLSession.shared
     
-    /// Instantiate WebClient for RideBee server from Configuration.swift
+    /// Instantiate WebClient for Artemis server from Configuration.swift
     public convenience init() {
         self.init(baseUrl: Config.baseEndpointUrl)
     }
@@ -26,16 +25,13 @@ final public class APIClient {
     ///   - request: A APIRequest object that provides HTTPmethod, path, data to send and type of response.
     ///   - jwtToken: An optional String to indicate if request should be performed with JWT Authorization or not
     ///   - completion: Completion handler to call when request is completed.
-    private func sendRequest<T: APIRequest>(_ request: T, bearer: String? = nil) async -> Result<(T.Response, Int), APIClientError> {
+    private func sendRequest<T: APIRequest>(_ request: T) async -> Result<(T.Response, Int), APIClientError> {
         
         let endpoint = self.endpoint(for: request)
         var urlRequest = URLRequest(url: endpoint)
         
         urlRequest.httpMethod = request.method.description
         // urlRequests are not forcing to ignore cached data. That's why it might be possible to see older data. Also the statusCode 304 (send on server-side) will be changed to a 200. For more information see (https://stackoverflow.com/q/46696624)
-        if let bearer =  bearer {
-            urlRequest.setValue("Bearer \(bearer)", forHTTPHeaderField: "Authorization")
-        }
         
         // NOTE: GET requests with body are never sent
         // thus, add body only for non-GET requests
@@ -91,7 +87,7 @@ final public class APIClient {
     ///   - completion: Completion handler to call when request is completed.
     public func send<T: APIRequest>(_ request: T) async -> Result<(T.Response, Int), APIClientError> {
         
-        return await self.sendRequest(request, bearer: UserSession.shared.bearerToken)
+        return await self.sendRequest(request)
         
         // TODO: implement retry mechanics
 //        guard let token = UserSession.shared.bearerToken else {
@@ -151,7 +147,7 @@ final public class APIClient {
     private func perfomLogout() {
         log.debug("Logging user out because token could not be refreshed")
         DispatchQueue.main.async {
-            UserSession.shared.saveBearerToken(token: nil, shouldRemember: false)
+            UserSession.shared.setUserLoggedIn(isLoggedIn: false, shouldRemember: false)
         }
     }
 }
