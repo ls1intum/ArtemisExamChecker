@@ -13,11 +13,11 @@ struct StudentListView: View {
     
     @State private var selectedStudent: Student?
     
-    var examId: String
+    var examId: Int
     
-    init(examId: String) {
+    init(examId: Int, courseId: Int) {
         self.examId = examId
-        self._viewModel = StateObject(wrappedValue: StudentListViewModel(examId: examId))
+        self._viewModel = StateObject(wrappedValue: StudentListViewModel(examId: examId, courseId: courseId))
     }
     
     var body: some View {
@@ -58,7 +58,7 @@ struct StudentListView: View {
                     .searchable(text: $viewModel.searchText)
                     .listStyle(SidebarListStyle())
                     .refreshable {
-                        await viewModel.getExam(by: examId)
+                        await viewModel.getExam()
                     }
             }
         }, detail: {
@@ -70,14 +70,8 @@ struct StudentListView: View {
                     .font(.title)
             }
         })
-        .navigationBarTitle(viewModel.exam?.name ?? "Loading...")
+        .navigationBarTitle(viewModel.exam?.title ?? "Loading...")
         .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-struct StudentListView_Previews: PreviewProvider {
-    static var previews: some View {
-        StudentListView(examId: "")
     }
 }
 

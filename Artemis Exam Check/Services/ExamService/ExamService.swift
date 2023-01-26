@@ -9,7 +9,7 @@ import Foundation
 
 protocol ExamService {
     func getAllExams() async throws
-    func getFullExam(by id: String) async throws
+    func getFullExam(for courseId: Int, and examId: Int) async throws
 }
 
 

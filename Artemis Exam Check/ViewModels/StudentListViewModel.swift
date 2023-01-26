@@ -39,38 +39,40 @@ class StudentListViewModel: ObservableObject {
     @Published var lectureHalls: [String] = []
     @Published var selectedStudents: [Student] = []
     
-    var examId: String
+    var examId: Int
+    var courseId: Int
     
     var exam: Exam? {
         didSet {
             guard let exam = exam else { return }
-            lectureHalls = Array(Set(exam.students.map {
+            lectureHalls = Array(Set((exam.students ?? []).map {
                 $0.lectureHall
             }))
-            selectedStudents = exam.students
+            selectedStudents = exam.students ?? []
             sortStudents()
         }
     }
     
-    init(examId: String) {
+    init(examId: Int, courseId: Int) {
         self.examId = examId
+        self.courseId = courseId
         
         store.subscribe(self) {
             $0.select { $0.exams }
         }
         
         Task {
-            await getExam(by: examId)
+            await getExam()
         }
     }
     
-    func getExam(by id: String) async {
-        try? await ExamServiceFactory.shared.getFullExam(by: examId) // TODO: error handling
+    func getExam() async {
+        try? await ExamServiceFactory.shared.getFullExam(for: courseId, and: examId) // TODO: error handling
     }
     
     private func setSelectedStudents() {
-        guard let exam = exam else { return }
-        var selectedStudents = exam.students
+        guard let exam = exam,
+              var selectedStudents = exam.students else { return }
         
         // filter by selected Lecture Hall
         if !selectedLectureHall.isEmpty {
@@ -111,29 +113,31 @@ class StudentListViewModel: ObservableObject {
 
 extension Student {
     static var mockStudent1 = {
-       Student(firstName: "Sven",
-               lastName: "A",
-               studentIdentifier: "ga48lug",
-               matriculationNumber: "234343534",
-               imagePath: "",
-               lectureHall: "MW0001",
-               seat:"1",
-               didCheckImage: false,
-               didCheckName: false,
-               didCheckArtemis: false)
+        Student(id: "1",
+                firstName: "Sven",
+                lastName: "A",
+                studentIdentifier: "ga48lug",
+                matriculationNumber: "234343534",
+                imagePath: "",
+                lectureHall: "MW0001",
+                seat:"1",
+                didCheckImage: false,
+                didCheckName: false,
+                didCheckArtemis: false)
     }()
     
     static var mockStudent2 = {
-       Student(firstName: "Alex",
-               lastName: "F",
-               studentIdentifier: "ga48lux",
-               matriculationNumber: "23434354",
-               imagePath: "",
-               lectureHall: "MW0003",
-               seat:"3",
-               didCheckImage: true,
-               didCheckName: false,
-               didCheckArtemis: false)
+        Student(id: "2",
+                firstName: "Alex",
+                lastName: "F",
+                studentIdentifier: "ga48lux",
+                matriculationNumber: "23434354",
+                imagePath: "",
+                lectureHall: "MW0003",
+                seat:"3",
+                didCheckImage: true,
+                didCheckName: false,
+                didCheckArtemis: false)
     }()
 }
 

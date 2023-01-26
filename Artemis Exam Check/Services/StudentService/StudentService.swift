@@ -8,7 +8,7 @@
 import Foundation
 
 protocol StudentService {
-    func saveStudent(student: Student, examId: String) async throws
+    func saveStudent(student: Student, examId: Int) async throws
 }
 
 

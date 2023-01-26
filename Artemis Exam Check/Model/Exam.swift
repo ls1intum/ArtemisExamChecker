@@ -7,10 +7,16 @@
 
 import Foundation
 
-struct Exam: Identifiable {
-    
-    var id = UUID().uuidString
-    var name: String
-    var students: [Student]
-    var date: Date
+struct Exam: Identifiable, Codable {
+    var id: Int
+    var title: String
+    var startDate: Date
+    var endDate: Date
+    var course: Course
+    var students: [Student]?
+}
+
+struct Course: Identifiable, Codable {
+    var id: Int
+    var title: String
 }

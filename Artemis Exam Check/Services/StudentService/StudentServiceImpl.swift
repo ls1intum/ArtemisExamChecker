@@ -9,7 +9,7 @@ import Foundation
 
 class StudentServiceImpl: StudentService {
     
-    func saveStudent(student: Student, examId: String) async throws {
+    func saveStudent(student: Student, examId: Int) async throws {
         store.dispatch(ExamsAction.updateStudentForExam(examId, student))
     }
 }

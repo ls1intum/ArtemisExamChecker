@@ -18,9 +18,9 @@ struct ExamOverviewList: View {
                 List(viewModel.exams) { exam in
                     NavigationLink(value: exam.id) {
                         VStack(alignment: .leading) {
-                            Text(exam.name)
+                            Text(exam.title)
                                 .bold()
-                            Text(exam.date, formatter: DateFormatter.dayAndDate)
+                            Text(exam.startDate, formatter: DateFormatter.dayAndDate)
                         }
                     }
                 }
@@ -30,8 +30,8 @@ struct ExamOverviewList: View {
                     viewModel.logout()
                 }.buttonStyle(GrowingButton())
             }
-            .navigationDestination(for: String.self) { exam in
-                StudentListView(examId: exam)
+            .navigationDestination(for: Int.self) { exam in
+                StudentListView(examId: exam, courseId: 10) // TODO: change to real courseId
             }
             .navigationTitle("Exam-Overview")
         }

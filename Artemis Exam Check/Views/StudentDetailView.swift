@@ -16,18 +16,16 @@ struct StudentDetailView: View {
     @State var didCheckName: Bool
     @State var didCheckArtemis: Bool
     
-    var examId: String
+    var examId: Int
     var student: Student
     
-    init(examId: String, student: Student) {
+    init(examId: Int, student: Student) {
         self.examId = examId
         self.student = student
         
         _didCheckImage = State(wrappedValue: student.didCheckImage)
         _didCheckName = State(wrappedValue: student.didCheckName)
         _didCheckArtemis = State(wrappedValue: student.didCheckArtemis)
-        
-        canvasView.drawing = student.signingDrawing ?? PKDrawing()
     }
     
     var body: some View {
@@ -67,10 +65,19 @@ struct StudentDetailView: View {
             }.padding(.vertical, 16)
             
             HStack(alignment: .bottom) {
-                CanvasView(canvasView: $canvasView)
+                Group {
+                    if let imageData = student.signing,
+                       let uiimage = UIImage(data: imageData) {
+                        Image(uiImage: uiimage)
+                            .resizable()
+                            .scaledToFit()
+                    } else {
+                        CanvasView(canvasView: $canvasView)
+                    }
+                }
                     .frame(minHeight: 200)
                     .border(.black)
-                Button(action: { canvasView.drawing = PKDrawing() }) {
+                Button(action: { canvasView.drawing = PKDrawing() }) { // TODO: adapt action to new logic
                     Image(systemName: "trash.fill")
                         .imageScale(.large)
                         .foregroundColor(.red)
@@ -89,11 +96,15 @@ struct StudentDetailView: View {
     func dispatchSaveAction() {
         let signingImage = canvasView.drawing.image(from: canvasView.bounds, scale: UIScreen.main.scale)
         
+        guard let imageData = signingImage.pngData() else {
+            // TODO: alert
+            return
+        }
+        
         let newStudent = student.copy(checkedImage: didCheckImage,
                                       checkedName: didCheckName,
                                       checkedArtemis: didCheckArtemis,
-                                      signingDrawing: canvasView.drawing,
-                                      signing: signingImage)
+                                      signing: imageData)
         Task {
             try? await StudentServiceFactory.shared.saveStudent(student: newStudent, examId: examId) // TODO: handle error
         }

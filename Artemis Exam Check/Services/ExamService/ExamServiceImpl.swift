@@ -6,18 +6,58 @@
 //
 
 import Foundation
+import APIClient
 
 class ExamServiceImpl: ExamService {
     
-    func getAllExams() async throws {
-        store.dispatch(ExamsAction.receiveExams(
-            [Exam(name: "Patterns", students: [], date: Calendar.current.date(byAdding: .month, value: 1, to: Date.now)!),
-            Exam(name: "Patterns2", students: [], date: Calendar.current.date(byAdding: .month, value: 2, to: Date.now)!)]
-        ))
+    private let client = APIClient()
+    
+    struct GetAllExamsRequest: APIRequest {
+        typealias Response = [Exam]
+        
+        var method: HTTPMethod {
+            return .get
+        }
+        
+        var resourceName: String {
+            return "api/exams/all"
+        }
     }
     
-    func getFullExam(by id: String) async throws {
-        let exam = Exam(id: id, name: "Patterns", students: [Student.mockStudent1, Student.mockStudent2], date: Calendar.current.date(byAdding: .month, value: 1, to: Date.now)!)
-        store.dispatch(ExamsAction.receiveFullExam(exam))
+    func getAllExams() async throws {
+        let result = await client.send(GetAllExamsRequest())
+        
+        switch result {
+        case .success((let exams, _)):
+            store.dispatch(ExamsAction.receiveExams(exams))
+        case .failure(let error):
+            throw error
+        }
+    }
+    
+    struct GetFullExamRequest: APIRequest {
+        typealias Response = Exam
+        
+        var courseId: Int
+        var examId: Int
+        
+        var method: HTTPMethod {
+            return .get
+        }
+        
+        var resourceName: String {
+            return "api/courses/\(courseId)/exams/\(examId)?withStudents=true"
+        }
+    }
+    
+    func getFullExam(for courseId: Int, and examId: Int) async throws {
+        let result = await client.send(GetFullExamRequest(courseId: courseId, examId: examId))
+        
+        switch result {
+        case .success((let exam, _)):
+            store.dispatch(ExamsAction.receiveFullExam(exam))
+        case .failure(let error):
+            throw error
+        }
     }
 }

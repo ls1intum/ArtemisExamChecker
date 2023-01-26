@@ -6,12 +6,10 @@
 //
 
 import Foundation
-import UIKit
-import PencilKit
 
-struct Student: Identifiable {
+struct Student: Identifiable, Codable {
     
-    var id = UUID().uuidString
+    var id: String
     var firstName: String
     var lastName: String
     var studentIdentifier: String
@@ -24,8 +22,7 @@ struct Student: Identifiable {
     var didCheckName: Bool
     var didCheckArtemis: Bool
 
-    var signing: UIImage?
-    var signingDrawing: PKDrawing?
+    var signing: Data?
     
     var imageURL: URL? {
         return URL(string: "https://img.freepik.com/fotos-kostenlos/glueckliche-junge-studentin-die-notizbuecher-aus-kursen-haelt-und-in-die-kamera-laechelt-und-in-fruehlingskleidung-vor-blauem-hintergrund-steht_1258-70161.jpg?w=2000")
@@ -39,7 +36,7 @@ struct Student: Identifiable {
         didCheckImage && didCheckName && didCheckArtemis && signing != nil
     }
 
-    func copy(checkedImage: Bool, checkedName: Bool, checkedArtemis: Bool, signingDrawing: PKDrawing, signing: UIImage) -> Student {
+    func copy(checkedImage: Bool, checkedName: Bool, checkedArtemis: Bool, signing: Data) -> Student {
         return Student(id: id,
                        firstName: firstName,
                        lastName: lastName,
@@ -51,8 +48,7 @@ struct Student: Identifiable {
                        didCheckImage: checkedImage,
                        didCheckName: checkedName,
                        didCheckArtemis: checkedArtemis,
-                       signing: signing,
-                       signingDrawing: signingDrawing)
+                       signing: signing)
     }
     
 }
