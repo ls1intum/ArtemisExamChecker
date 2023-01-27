@@ -14,17 +14,6 @@ public protocol APIRequest: Codable {
     var method: HTTPMethod { get }
 }
 
-public protocol APIRequestWithExplicitBody: Codable {
-    associatedtype Response: Decodable
-    associatedtype Body: Encodable
-    
-    var resourceName: String { get }
-    var method: HTTPMethod { get }
-    
-    // can be used to define the exact body
-    var body: Body { get }
-}
-
 public struct MultipartFormDataRequest {
     private let boundary: String = UUID().uuidString
     private var httpBody = NSMutableData()
@@ -32,7 +21,6 @@ public struct MultipartFormDataRequest {
 
     public init(path: String) {
         guard let baseUrl = URL(string: path, relativeTo: Config.baseEndpointUrl) else {
-//        guard let baseUrl = URL(string: path, relativeTo: URL(string: "http://localhost:8000/")) else {
             fatalError("Bad resourceName: \(path)")
         }
         url = baseUrl
