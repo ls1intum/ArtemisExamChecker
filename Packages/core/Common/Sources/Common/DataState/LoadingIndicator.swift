@@ -24,7 +24,7 @@ struct LoadingIndicator: ViewModifier {
 }
 
 extension View {
-    func loadingIndicator(isLoading: Binding<Bool>) -> some View {
+    public func loadingIndicator(isLoading: Binding<Bool>) -> some View {
         modifier(LoadingIndicator(isLoading: isLoading))
     }
 }

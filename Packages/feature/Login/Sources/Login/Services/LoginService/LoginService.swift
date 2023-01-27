@@ -16,14 +16,6 @@ public protocol LoginService {
     func login(username: String, password: String, rememberMe: Bool) async -> NetworkResponse
 }
 
-public struct LoginResponse: Decodable {
-    public let idToken: String
-
-    enum CodingKeys: String, CodingKey {
-        case idToken = "id_token"
-    }
-}
-
 enum LoginServiceFactory {
     
     static let shared: LoginService = LoginServiceImpl()

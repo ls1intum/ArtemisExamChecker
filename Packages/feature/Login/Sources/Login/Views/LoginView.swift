@@ -10,13 +10,6 @@ public struct LoginView: View {
     @State private var password: String = ""
     @State private var rememberMe: Bool = false
 
-    @State private var displayLoginFailureDialog = false
-    @State private var loginError: UserFacingError? {
-        didSet {
-            displayLoginFailureDialog = loginError != nil
-        }
-    }
-    
     public init() { }
 
     public var body: some View {
@@ -48,16 +41,8 @@ public struct LoginView: View {
                     .padding(.horizontal, 40)
 
             Button("Login", action: {
-                // TODO: add loading bar or something
                 Task {
-                    let response = await viewModel.login(username: username, password: password, rememberMe: rememberMe)
-
-                    switch response {
-                    case .failure(let error):
-                        loginError = error
-                    default:
-                        return
-                    }
+                    await viewModel.login(username: username, password: password, rememberMe: rememberMe)
                 }
             })
                     .frame(maxWidth: .infinity)
@@ -66,11 +51,12 @@ public struct LoginView: View {
 
             Spacer()
         }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .alert(loginError?.description ?? "Login failed", isPresented: $displayLoginFailureDialog) {
-                    Button("OK", role: .cancel) {
-                        loginError = nil
-                    }
+            .loadingIndicator(isLoading: $viewModel.isLoading)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .alert(viewModel.error?.description ?? "Login failed", isPresented: $viewModel.showError) {
+                Button("OK", role: .cancel) {
+                    viewModel.error = nil
                 }
+            }
     }
 }
