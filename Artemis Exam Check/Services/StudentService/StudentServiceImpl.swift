@@ -34,8 +34,8 @@ class StudentServiceImpl: StudentService {
                                       didCheckLogin: student.didCheckLogin,
                                       didCheckName: student.didCheckName,
                                       didCheckRegistrationNumber: student.didCheckRegistrationNumber,
-                                      room: student.actualRoom.isEmpty ? student.plannedRoom : student.actualRoom,
-                                      seat: student.actualSeat.isEmpty ? student.plannedSeat : student.actualSeat)
+                                      room: student.actualRoom ?? student.plannedRoom,
+                                      seat: student.actualSeat ?? student.plannedSeat)
         if let studentData = try? encoder.encode(examUserDTO) {
             request.addDataField(named: "examUserDTO", filename: nil, data: studentData, mimeType: "application/json")
         }

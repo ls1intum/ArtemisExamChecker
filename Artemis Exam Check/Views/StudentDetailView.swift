@@ -52,8 +52,8 @@ struct StudentDetailView: View {
         _didCheckLogin = State(wrappedValue: student.wrappedValue.didCheckLogin)
         _didCheckRegistrationNumber = State(wrappedValue: student.wrappedValue.didCheckRegistrationNumber)
         _showSigningImage = State(wrappedValue: student.wrappedValue.signingImageURL != nil)
-        _actualRoom = State(wrappedValue: student.wrappedValue.actualRoom)
-        _actualSeat = State(wrappedValue: student.wrappedValue.actualSeat)
+        _actualRoom = State(wrappedValue: student.wrappedValue.actualRoom ?? "")
+        _actualSeat = State(wrappedValue: student.wrappedValue.actualSeat ?? "")
     }
     
     var body: some View {
@@ -170,8 +170,8 @@ struct StudentDetailView: View {
                                       checkedName: didCheckName,
                                       checkedLogin: didCheckLogin,
                                       checkedRegistrationNumber: didCheckRegistrationNumber,
-                                      actualRoom: actualRoom,
-                                      actualSeat: actualSeat,
+                                      actualRoom: actualRoom.isEmpty ? nil : actualRoom,
+                                      actualSeat: actualSeat.isEmpty ? nil : actualSeat,
                                       signing: imageData)
         
         student.didCheckRegistrationNumber = true

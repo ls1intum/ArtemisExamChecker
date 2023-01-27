@@ -19,8 +19,8 @@ struct ExamUser: Identifiable, Codable {
     var didCheckLogin: Bool
     var didCheckRegistrationNumber: Bool
     
-    var actualRoom: String
-    var actualSeat: String
+    var actualRoom: String?
+    var actualSeat: String?
     let plannedRoom: String
     let plannedSeat: String
 
@@ -44,8 +44,8 @@ struct ExamUser: Identifiable, Codable {
               checkedName: Bool,
               checkedLogin: Bool,
               checkedRegistrationNumber: Bool,
-              actualRoom: String,
-              actualSeat: String,
+              actualRoom: String?,
+              actualSeat: String?,
               signing: Data?) -> ExamUser {
         return ExamUser(id: id,
                         user: self.user,
@@ -53,8 +53,8 @@ struct ExamUser: Identifiable, Codable {
                         didCheckName: checkedName,
                         didCheckLogin: checkedLogin,
                         didCheckRegistrationNumber: checkedRegistrationNumber,
-                        actualRoom: actualRoom.isEmpty ? plannedRoom : actualRoom,
-                        actualSeat: actualSeat.isEmpty ? plannedSeat : actualSeat,
+                        actualRoom: actualRoom ?? plannedRoom,
+                        actualSeat: actualSeat ?? plannedSeat,
                         plannedRoom: plannedRoom,
                         plannedSeat: plannedSeat,
                         signing: signing)
