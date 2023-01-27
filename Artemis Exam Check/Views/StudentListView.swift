@@ -36,8 +36,7 @@ struct StudentListView: View {
                             Text("Top to Bottom").tag(Sorting.topToBottom)
                         }
                     }.padding(.horizontal, 8)
-//                    ForEach(v)
-                    List($viewModel.selectedStudents, selection: $selectedStudent) { $student in
+                    List(viewModel.selectedStudents, selection: $selectedStudent) { student in
                         NavigationLink(value: student) {
                             HStack {
                                 VStack(alignment: .leading) {
@@ -62,14 +61,14 @@ struct StudentListView: View {
                 }
             }
         }, detail: {
-            if selectedStudent != nil {
-                
-            }
             if let studentBinding = Binding($selectedStudent),
                let examId = viewModel.exam.value?.id,
                let courseId = viewModel.exam.value?.course.id {
-                StudentDetailView(examId: examId, courseId: courseId, student: studentBinding)
+                StudentDetailView(examId: examId, courseId: courseId, student: studentBinding, successfullySavedCompletion: viewModel.updateStudent)
                     .id(studentBinding.wrappedValue.id)
+                    .onChange(of: selectedStudent) { studentBinding in
+                        print("sven")
+                    }
             } else {
                 Text("Select a student")
                     .font(.title)
@@ -77,15 +76,5 @@ struct StudentListView: View {
         })
         .navigationBarTitle(viewModel.exam.value?.title ?? "Loading...")
         .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-extension ExamUser: Hashable {
-    static func == (lhs: ExamUser, rhs: ExamUser) -> Bool {
-        lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
     }
 }

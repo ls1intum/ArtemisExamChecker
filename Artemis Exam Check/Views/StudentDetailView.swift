@@ -11,14 +11,13 @@ import PencilKit
 
 struct StudentDetailView: View {
     
-//    @ObservedObject var viewModel: StudentListViewModel
-    
     @State var canvasView = PKCanvasView()
     
     @State var didCheckImage: Bool
     @State var didCheckName: Bool
     @State var didCheckLogin: Bool
     @State var didCheckRegistrationNumber: Bool
+    @State var showSigningImage: Bool
     
     @State var isSaving = false
     @State var showErrorAlert = false
@@ -30,18 +29,26 @@ struct StudentDetailView: View {
     
     @Binding var student: ExamUser
     
+    var successfullySavedCompletion: (ExamUser) -> Void
+    
     let examId: Int
     let courseId: Int
     
-    init(examId: Int, courseId: Int, student: Binding<ExamUser>) {
+    init(examId: Int,
+         courseId: Int,
+         student: Binding<ExamUser>,
+         successfullySavedCompletion: @escaping (ExamUser) -> Void) {
         self.examId = examId
         self.courseId = courseId
+        self.successfullySavedCompletion = successfullySavedCompletion
         self._student = student
+        
         
         _didCheckImage = State(wrappedValue: student.wrappedValue.didCheckImage)
         _didCheckName = State(wrappedValue: student.wrappedValue.didCheckName)
         _didCheckLogin = State(wrappedValue: student.wrappedValue.didCheckLogin)
         _didCheckRegistrationNumber = State(wrappedValue: student.wrappedValue.didCheckRegistrationNumber)
+        _showSigningImage = State(wrappedValue: student.wrappedValue.signingImageURL != nil)
     }
     
     var body: some View {
@@ -83,18 +90,28 @@ struct StudentDetailView: View {
             
             HStack(alignment: .bottom) {
                 Group {
-                    if let imageData = student.signing,
-                       let uiimage = UIImage(data: imageData) {
-                        Image(uiImage: uiimage)
-                            .resizable()
-                            .scaledToFit()
+                    if showSigningImage {
+                        AsyncImage(url: student.signingImageURL,
+                                   content: { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                        }, placeholder: {
+                            ProgressView()
+                        })
                     } else {
                         CanvasView(canvasView: $canvasView)
                     }
                 }
                     .frame(minHeight: 200)
                     .border(.black)
-                Button(action: { canvasView.drawing = PKDrawing() }) { // TODO: adapt action to new logic
+                Button(action: {
+                    if student.signingImageURL != nil {
+                        student.signingImagePath = nil
+                        showSigningImage = false
+                    }
+                    canvasView.drawing = PKDrawing()
+                }) {
                     Image(systemName: "trash.fill")
                         .imageScale(.large)
                         .foregroundColor(.red)
@@ -107,15 +124,17 @@ struct StudentDetailView: View {
             .buttonStyle(GrowingButton())
             .padding(16)
         }
+        .loadingIndicator(isLoading: $isSaving)
         .padding(32)
     }
     
     private func saveStudent() {
-        let signingImage = canvasView.drawing.image(from: canvasView.bounds, scale: UIScreen.main.scale)
+        // TODO: alert if some data not set
         
-        guard let imageData = signingImage.pngData() else {
-            // TODO: alert
-            return
+        var imageData: Data? = nil
+        if !canvasView.drawing.bounds.isEmpty {
+            let signingImage = canvasView.drawing.image(from: canvasView.bounds, scale: UIScreen.main.scale)
+            imageData = signingImage.pngData()
         }
         
         let newStudent = student.copy(checkedImage: didCheckImage,
@@ -126,7 +145,10 @@ struct StudentDetailView: View {
                                       actualSeat: "", // TODO: change
                                       signing: imageData)
         
+        student.didCheckRegistrationNumber = true
+        
         Task {
+            isSaving = true
             let result = await StudentServiceFactory.shared.saveStudent(student: newStudent, examId: examId, courseId: courseId)
             switch result {
             case .loading:
@@ -136,7 +158,7 @@ struct StudentDetailView: View {
                 self.error = error
             case .done(let newStudent):
                 isSaving = false
-                student = newStudent
+                successfullySavedCompletion(newStudent)
             }
         }
     }

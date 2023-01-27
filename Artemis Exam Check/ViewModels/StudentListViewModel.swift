@@ -72,6 +72,14 @@ class StudentListViewModel: ObservableObject {
         exam = await ExamServiceFactory.shared.getFullExam(for: courseId, and: examId) // TODO: error handling
     }
     
+    func updateStudent(newStudent: ExamUser) {
+        guard var exam = exam.value,
+              let examUserIndex = exam.examUsers?.firstIndex(where: { newStudent.id == $0.id }) else { return }
+        
+        exam.examUsers?[examUserIndex] = newStudent
+        self.exam = .done(response: exam)
+    }
+    
     private func setSelectedStudents() {
         guard var selectedStudents = exam.value?.examUsers else { return }
         

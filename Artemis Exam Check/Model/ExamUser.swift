@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import APIClient
 
 struct ExamUser: Identifiable, Codable {
     
@@ -26,12 +27,17 @@ struct ExamUser: Identifiable, Codable {
     var signing: Data?
     var signingImagePath: String?
     
+    var signingImageURL: URL? {
+        guard let signingImagePath = signingImagePath else { return nil }
+        return URL(string: signingImagePath, relativeTo: Config.baseEndpointUrl)
+    }
+    
     var imageURL: URL? { // TODO: change to let
         return URL(string: "https://img.freepik.com/fotos-kostenlos/glueckliche-junge-studentin-die-notizbuecher-aus-kursen-haelt-und-in-die-kamera-laechelt-und-in-fruehlingskleidung-vor-blauem-hintergrund-steht_1258-70161.jpg?w=2000")
     }
 
     var isStudentDone: Bool {
-        didCheckImage && didCheckName && didCheckLogin && didCheckRegistrationNumber && signing != nil
+        didCheckImage && didCheckName && didCheckLogin && didCheckRegistrationNumber && signingImagePath != nil
     }
 
     func copy(checkedImage: Bool,
@@ -40,7 +46,7 @@ struct ExamUser: Identifiable, Codable {
               checkedRegistrationNumber: Bool,
               actualRoom: String,
               actualSeat: String,
-              signing: Data) -> ExamUser {
+              signing: Data?) -> ExamUser {
         return ExamUser(id: id,
                         user: self.user,
                         didCheckImage: checkedImage,
@@ -66,3 +72,27 @@ struct User: Codable, Identifiable {
         ""
     }
 }
+
+extension ExamUser: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+extension ExamUser: Equatable {
+    static func == (lhs: ExamUser, rhs: ExamUser) -> Bool {
+        return lhs.id == rhs.id &&
+        lhs.user == rhs.user &&
+        lhs.didCheckImage == rhs.didCheckImage &&
+        lhs.didCheckName == rhs.didCheckName &&
+        lhs.didCheckLogin == rhs.didCheckLogin &&
+        lhs.didCheckRegistrationNumber == rhs.didCheckRegistrationNumber &&
+        lhs.actualRoom == rhs.actualRoom &&
+        lhs.actualSeat == rhs.actualSeat &&
+        lhs.plannedRoom == rhs.plannedRoom &&
+        lhs.plannedSeat == rhs.plannedSeat &&
+        lhs.signingImagePath == rhs.signingImagePath
+    }
+}
+
+extension User: Equatable { }
