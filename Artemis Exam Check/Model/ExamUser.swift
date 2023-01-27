@@ -68,6 +68,7 @@ struct User: Codable, Identifiable {
     let lastName: String
     let email: String
     let name: String
+//    let registrationNumber: String
     var registrationNumber: String { // TODO: change to let
         ""
     }

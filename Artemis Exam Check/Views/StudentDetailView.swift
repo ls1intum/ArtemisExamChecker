@@ -18,7 +18,10 @@ struct StudentDetailView: View {
     @State var didCheckLogin: Bool
     @State var didCheckRegistrationNumber: Bool
     @State var showSigningImage: Bool
+    @State var actualSeat: String
+    @State var actualRoom: String
     
+    @State var showDidNotCompleteDialog = false
     @State var isSaving = false
     @State var showErrorAlert = false
     @State var error: UserFacingError? = nil {
@@ -29,7 +32,7 @@ struct StudentDetailView: View {
     
     @Binding var student: ExamUser
     
-    var successfullySavedCompletion: (ExamUser) -> Void
+    var successfullySavedCompletion: @MainActor (ExamUser) -> Void
     
     let examId: Int
     let courseId: Int
@@ -37,7 +40,7 @@ struct StudentDetailView: View {
     init(examId: Int,
          courseId: Int,
          student: Binding<ExamUser>,
-         successfullySavedCompletion: @escaping (ExamUser) -> Void) {
+         successfullySavedCompletion: @MainActor @escaping (ExamUser) -> Void) {
         self.examId = examId
         self.courseId = courseId
         self.successfullySavedCompletion = successfullySavedCompletion
@@ -49,6 +52,8 @@ struct StudentDetailView: View {
         _didCheckLogin = State(wrappedValue: student.wrappedValue.didCheckLogin)
         _didCheckRegistrationNumber = State(wrappedValue: student.wrappedValue.didCheckRegistrationNumber)
         _showSigningImage = State(wrappedValue: student.wrappedValue.signingImageURL != nil)
+        _actualRoom = State(wrappedValue: student.wrappedValue.actualRoom)
+        _actualSeat = State(wrappedValue: student.wrappedValue.actualSeat)
     }
     
     var body: some View {
@@ -74,10 +79,23 @@ struct StudentDetailView: View {
                 
                 VStack {
                     StudentDetailCell(description: "Name", value: student.user.name)
-                    StudentDetailCell(description: "Lecture Hall", value: student.plannedRoom)
-                    StudentDetailCell(description: "Seat", value: student.plannedSeat)
+                    StudentDetailCell(description: "Planned Room", value: student.plannedRoom)
+                    StudentDetailCell(description: "Planned Seat", value: student.plannedSeat)
                     StudentDetailCell(description: "Matriculation Nr.", value: student.user.registrationNumber)
-                    // TODO: add textfields to change seat
+                    HStack(spacing: 16) {
+                        HStack {
+                            Text("Actual Room")
+                                .padding(.trailing, 8)
+                            TextField("Actual Room", text: $actualRoom)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                        }
+                        HStack {
+                            Text("Actual Seat")
+                                .padding(.trailing, 8)
+                            TextField("Actual Seat", text: $actualSeat)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                        }
+                    }
                 }.padding(.leading, 32)
             }
             
@@ -98,13 +116,14 @@ struct StudentDetailView: View {
                                 .scaledToFit()
                         }, placeholder: {
                             ProgressView()
-                        })
+                        }).frame(minHeight: 200)
                     } else {
                         CanvasView(canvasView: $canvasView)
+                            .frame(minHeight: 200)
+                            .border(.black)
                     }
                 }
-                    .frame(minHeight: 200)
-                    .border(.black)
+                
                 Button(action: {
                     if student.signingImageURL != nil {
                         student.signingImagePath = nil
@@ -123,13 +142,23 @@ struct StudentDetailView: View {
             }
             .buttonStyle(GrowingButton())
             .padding(16)
+            .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
+                Button("Yes I want to continue with partially filled out details.", role: .destructive) {
+                    saveStudent(force: true)
+                }
+            } message: {
+                Text("You did not fill out all requiered fields. Do you still want to proceed?")
+            }
         }
         .loadingIndicator(isLoading: $isSaving)
         .padding(32)
     }
     
-    private func saveStudent() {
-        // TODO: alert if some data not set
+    private func saveStudent(force: Bool = false) {
+        if !force && (!didCheckName || !didCheckLogin || !didCheckImage || !didCheckRegistrationNumber || (canvasView.drawing.bounds.isEmpty && student.signingImageURL == nil)) {
+            showDidNotCompleteDialog = true
+            return
+        }
         
         var imageData: Data? = nil
         if !canvasView.drawing.bounds.isEmpty {
@@ -141,8 +170,8 @@ struct StudentDetailView: View {
                                       checkedName: didCheckName,
                                       checkedLogin: didCheckLogin,
                                       checkedRegistrationNumber: didCheckRegistrationNumber,
-                                      actualRoom: "", // TODO: change
-                                      actualSeat: "", // TODO: change
+                                      actualRoom: actualRoom,
+                                      actualSeat: actualSeat,
                                       signing: imageData)
         
         student.didCheckRegistrationNumber = true
@@ -158,7 +187,9 @@ struct StudentDetailView: View {
                 self.error = error
             case .done(let newStudent):
                 isSaving = false
-                successfullySavedCompletion(newStudent)
+                student = newStudent
+                showSigningImage = true
+                await successfullySavedCompletion(newStudent)
             }
         }
     }

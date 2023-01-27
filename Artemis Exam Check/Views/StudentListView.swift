@@ -66,9 +66,6 @@ struct StudentListView: View {
                let courseId = viewModel.exam.value?.course.id {
                 StudentDetailView(examId: examId, courseId: courseId, student: studentBinding, successfullySavedCompletion: viewModel.updateStudent)
                     .id(studentBinding.wrappedValue.id)
-                    .onChange(of: selectedStudent) { studentBinding in
-                        print("sven")
-                    }
             } else {
                 Text("Select a student")
                     .font(.title)

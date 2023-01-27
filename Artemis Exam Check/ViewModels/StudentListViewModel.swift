@@ -77,7 +77,9 @@ class StudentListViewModel: ObservableObject {
               let examUserIndex = exam.examUsers?.firstIndex(where: { newStudent.id == $0.id }) else { return }
         
         exam.examUsers?[examUserIndex] = newStudent
-        self.exam = .done(response: exam)
+//        DispatchQueue.main.async {
+            self.exam = .done(response: exam)
+//        }
     }
     
     private func setSelectedStudents() {
