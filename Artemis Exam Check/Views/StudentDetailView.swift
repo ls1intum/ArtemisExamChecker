@@ -6,26 +6,42 @@
 //
 
 import SwiftUI
+import Common
 import PencilKit
 
 struct StudentDetailView: View {
+    
+//    @ObservedObject var viewModel: StudentListViewModel
     
     @State var canvasView = PKCanvasView()
     
     @State var didCheckImage: Bool
     @State var didCheckName: Bool
-    @State var didCheckArtemis: Bool
+    @State var didCheckLogin: Bool
+    @State var didCheckRegistrationNumber: Bool
     
-    var examId: Int
-    var student: Student
+    @State var isSaving = false
+    @State var showErrorAlert = false
+    @State var error: UserFacingError? = nil {
+        didSet {
+            showErrorAlert = error != nil
+        }
+    }
     
-    init(examId: Int, student: Student) {
+    @Binding var student: ExamUser
+    
+    let examId: Int
+    let courseId: Int
+    
+    init(examId: Int, courseId: Int, student: Binding<ExamUser>) {
         self.examId = examId
-        self.student = student
+        self.courseId = courseId
+        self._student = student
         
-        _didCheckImage = State(wrappedValue: student.didCheckImage)
-        _didCheckName = State(wrappedValue: student.didCheckName)
-        _didCheckArtemis = State(wrappedValue: student.didCheckArtemis)
+        _didCheckImage = State(wrappedValue: student.wrappedValue.didCheckImage)
+        _didCheckName = State(wrappedValue: student.wrappedValue.didCheckName)
+        _didCheckLogin = State(wrappedValue: student.wrappedValue.didCheckLogin)
+        _didCheckRegistrationNumber = State(wrappedValue: student.wrappedValue.didCheckRegistrationNumber)
     }
     
     var body: some View {
@@ -50,18 +66,19 @@ struct StudentDetailView: View {
                 )
                 
                 VStack {
-                    StudentDetailCell(description: "Name", value: student.fullName)
-                    StudentDetailCell(description: "Lecture Hall", value: student.lectureHall)
-                    StudentDetailCell(description: "Seat", value: student.seat)
-                    StudentDetailCell(description: "Matriculation Nr.", value: student.matriculationNumber)
-                    StudentDetailCell(description: "Student Identifier", value: student.studentIdentifier)
+                    StudentDetailCell(description: "Name", value: student.user.name)
+                    StudentDetailCell(description: "Lecture Hall", value: student.plannedRoom)
+                    StudentDetailCell(description: "Seat", value: student.plannedSeat)
+                    StudentDetailCell(description: "Matriculation Nr.", value: student.user.registrationNumber)
+                    // TODO: add textfields to change seat
                 }.padding(.leading, 32)
             }
             
             VStack {
                 Toggle("Image is correct:", isOn: $didCheckImage)
                 Toggle("Name is correct:", isOn: $didCheckName)
-                Toggle("Artemis User is correct:", isOn: $didCheckArtemis)
+                Toggle("Artemis User is correct:", isOn: $didCheckLogin)
+                Toggle("Matriculation Number is correct:", isOn: $didCheckRegistrationNumber)
             }.padding(.vertical, 16)
             
             HStack(alignment: .bottom) {
@@ -85,7 +102,7 @@ struct StudentDetailView: View {
             }
             
             Button("Save") {
-                dispatchSaveAction()
+                saveStudent()
             }
             .buttonStyle(GrowingButton())
             .padding(16)
@@ -93,7 +110,7 @@ struct StudentDetailView: View {
         .padding(32)
     }
     
-    func dispatchSaveAction() {
+    private func saveStudent() {
         let signingImage = canvasView.drawing.image(from: canvasView.bounds, scale: UIScreen.main.scale)
         
         guard let imageData = signingImage.pngData() else {
@@ -103,10 +120,24 @@ struct StudentDetailView: View {
         
         let newStudent = student.copy(checkedImage: didCheckImage,
                                       checkedName: didCheckName,
-                                      checkedArtemis: didCheckArtemis,
+                                      checkedLogin: didCheckLogin,
+                                      checkedRegistrationNumber: didCheckRegistrationNumber,
+                                      actualRoom: "", // TODO: change
+                                      actualSeat: "", // TODO: change
                                       signing: imageData)
+        
         Task {
-            try? await StudentServiceFactory.shared.saveStudent(student: newStudent, examId: examId) // TODO: handle error
+            let result = await StudentServiceFactory.shared.saveStudent(student: newStudent, examId: examId, courseId: courseId)
+            switch result {
+            case .loading:
+                isSaving = true
+            case .failure(let error):
+                isSaving = false
+                self.error = error
+            case .done(let newStudent):
+                isSaving = false
+                student = newStudent
+            }
         }
     }
 }

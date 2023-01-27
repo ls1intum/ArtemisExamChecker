@@ -6,16 +6,11 @@ import Foundation
 public enum DataState<T> {
     
     /**
-     * Waiting until a valid internet connection is available again.
-     */
-    case suspended(error: Error?)
-    
-    /**
      * Currently loading.
      */
     case loading
     
-    case failure(error: Error)
+    case failure(error: UserFacingError)
     
     case done(response: T)
     

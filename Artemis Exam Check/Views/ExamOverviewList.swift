@@ -15,13 +15,17 @@ struct ExamOverviewList: View {
     var body: some View {
         NavigationStack {
             VStack {
-                List(viewModel.exams) { exam in
-                    NavigationLink(value: exam.id) {
-                        VStack(alignment: .leading) {
-                            Text(exam.title)
-                                .bold()
-                            Text(exam.startDate, formatter: DateFormatter.dayAndDate)
+                DataStateView(data: $viewModel.exams) { exams in
+                    List(exams) { exam in
+                        NavigationLink(value: exam) {
+                            VStack(alignment: .leading) {
+                                Text(exam.title)
+                                    .bold()
+                                Text(exam.startDate, formatter: DateFormatter.dayAndDate)
+                            }
                         }
+                    }.refreshable {
+                        await viewModel.getExams()
                     }
                 }
                 Spacer()
@@ -30,8 +34,8 @@ struct ExamOverviewList: View {
                     viewModel.logout()
                 }.buttonStyle(GrowingButton())
             }
-            .navigationDestination(for: Int.self) { exam in
-                StudentListView(examId: exam, courseId: 10) // TODO: change to real courseId
+            .navigationDestination(for: Exam.self) { exam in
+                StudentListView(exam: exam)
             }
             .navigationTitle("Exam-Overview")
         }

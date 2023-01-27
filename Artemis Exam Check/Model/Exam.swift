@@ -13,10 +13,20 @@ struct Exam: Identifiable, Codable {
     var startDate: Date
     var endDate: Date
     var course: Course
-    var students: [Student]?
+    var examUsers: [ExamUser]?
 }
 
 struct Course: Identifiable, Codable {
     var id: Int
     var title: String
+}
+
+extension Exam: Hashable {
+    static func == (lhs: Exam, rhs: Exam) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }

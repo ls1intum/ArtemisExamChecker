@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import Common
 
 public enum APIClientError: Error {
+    case jhipsterError(error: UserFacingError)
     case httpURLResponseError(statusCode: HTTPStatusCode?)
     case networkError(error: Error)
     case decodingError(error: Error, statusCode: Int)
@@ -34,6 +36,28 @@ extension APIClientError: Equatable {
             return statusCode?.rawValue == statusCode2?.rawValue
         default:
             return false
+        }
+    }
+}
+
+extension DataState {
+    public init(error: APIClientError) {
+        switch error {
+        case .jhipsterError(let userFacingError):
+            self = .failure(error: userFacingError)
+        default:
+            self = .failure(error: UserFacingError(error: error))
+        }
+    }
+}
+
+extension NetworkResponse {
+    public init(error: APIClientError) {
+        switch error {
+        case .jhipsterError(let userFacingError):
+            self = .failure(error: userFacingError)
+        default:
+            self = .failure(error: UserFacingError(error: error))
         }
     }
 }

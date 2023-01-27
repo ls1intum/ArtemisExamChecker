@@ -7,6 +7,7 @@
 
 import Foundation
 import APIClient
+import Common
 
 class ExamServiceImpl: ExamService {
     
@@ -24,14 +25,14 @@ class ExamServiceImpl: ExamService {
         }
     }
     
-    func getAllExams() async throws {
+    func getAllExams() async -> DataState<[Exam]> {
         let result = await client.send(GetAllExamsRequest())
         
         switch result {
         case .success((let exams, _)):
-            store.dispatch(ExamsAction.receiveExams(exams))
+            return .done(response: exams)
         case .failure(let error):
-            throw error
+            return DataState(error: error)
         }
     }
     
@@ -50,14 +51,14 @@ class ExamServiceImpl: ExamService {
         }
     }
     
-    func getFullExam(for courseId: Int, and examId: Int) async throws {
+    func getFullExam(for courseId: Int, and examId: Int) async -> DataState<Exam> {
         let result = await client.send(GetFullExamRequest(courseId: courseId, examId: examId))
         
         switch result {
         case .success((let exam, _)):
-            store.dispatch(ExamsAction.receiveFullExam(exam))
+            return .done(response: exam)
         case .failure(let error):
-            throw error
+            return .failure(error: UserFacingError(error: error))
         }
     }
 }

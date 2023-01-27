@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import APIClient
+import Common
 
 public protocol LoginService {
 

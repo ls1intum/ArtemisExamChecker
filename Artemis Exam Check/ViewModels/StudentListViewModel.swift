@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import ReSwift
+import Common
 
 enum Sorting {
     case bottomToTop, topToBottom
@@ -35,31 +35,33 @@ class StudentListViewModel: ObservableObject {
             sortStudents()
         }
     }
+    @Published var saveStudentNetworkResponse: NetworkResponse = .notStarted
     
     @Published var lectureHalls: [String] = []
-    @Published var selectedStudents: [Student] = []
+    @Published var selectedStudents: [ExamUser] = []
     
-    var examId: Int
-    var courseId: Int
-    
-    var exam: Exam? {
+    @Published var exam: DataState<Exam> = .loading {
         didSet {
-            guard let exam = exam else { return }
-            lectureHalls = Array(Set((exam.students ?? []).map {
-                $0.lectureHall
-            }))
-            selectedStudents = exam.students ?? []
-            sortStudents()
+            switch exam {
+            case .done(let exam):
+                lectureHalls = Array(Set((exam.examUsers ?? []).map {
+                    $0.plannedRoom
+                }))
+                selectedStudents = exam.examUsers ?? []
+                sortStudents()
+            default:
+                lectureHalls = []
+                selectedStudents = []
+            }
         }
     }
     
-    init(examId: Int, courseId: Int) {
-        self.examId = examId
+    let courseId: Int
+    let examId: Int
+    
+    init(courseId: Int, examId:  Int) {
         self.courseId = courseId
-        
-        store.subscribe(self) {
-            $0.select { $0.exams }
-        }
+        self.examId = examId
         
         Task {
             await getExam()
@@ -67,24 +69,26 @@ class StudentListViewModel: ObservableObject {
     }
     
     func getExam() async {
-        try? await ExamServiceFactory.shared.getFullExam(for: courseId, and: examId) // TODO: error handling
+        exam = await ExamServiceFactory.shared.getFullExam(for: courseId, and: examId) // TODO: error handling
     }
     
     private func setSelectedStudents() {
-        guard let exam = exam,
-              var selectedStudents = exam.students else { return }
+        guard var selectedStudents = exam.value?.examUsers else { return }
         
         // filter by selected Lecture Hall
         if !selectedLectureHall.isEmpty {
             selectedStudents = selectedStudents.filter {
-                $0.lectureHall == selectedLectureHall
+                $0.plannedRoom == selectedLectureHall
             }
         }
         
         // filter by selected Lecture Hall
         if !searchText.isEmpty {
+            let searchText = searchText.lowercased()
             selectedStudents = selectedStudents.filter {
-                $0.fullName.contains(searchText) || $0.studentIdentifier.contains(searchText) || $0.matriculationNumber.contains(searchText)
+                $0.user.name.lowercased().contains(searchText) ||
+                $0.user.login.lowercased().contains(searchText) ||
+                $0.user.registrationNumber.lowercased().contains(searchText)
             }
         }
         
@@ -103,51 +107,10 @@ class StudentListViewModel: ObservableObject {
         selectedStudents = selectedStudents.sorted {
             switch sortingDirection {
             case .bottomToTop:
-                return $0.seat < $1.seat
+                return $0.plannedSeat < $1.plannedSeat
             case .topToBottom:
-                return $0.seat > $1.seat
+                return $0.plannedSeat > $1.plannedSeat
             }
-        }
-    }
-}
-
-extension Student {
-    static var mockStudent1 = {
-        Student(id: "1",
-                firstName: "Sven",
-                lastName: "A",
-                studentIdentifier: "ga48lug",
-                matriculationNumber: "234343534",
-                imagePath: "",
-                lectureHall: "MW0001",
-                seat:"1",
-                didCheckImage: false,
-                didCheckName: false,
-                didCheckArtemis: false)
-    }()
-    
-    static var mockStudent2 = {
-        Student(id: "2",
-                firstName: "Alex",
-                lastName: "F",
-                studentIdentifier: "ga48lux",
-                matriculationNumber: "23434354",
-                imagePath: "",
-                lectureHall: "MW0003",
-                seat:"3",
-                didCheckImage: true,
-                didCheckName: false,
-                didCheckArtemis: false)
-    }()
-}
-
-extension StudentListViewModel: StoreSubscriber {
-    
-    // Executes when state is updated
-    @MainActor
-    func newState(state: [Exam]) {
-        Task {
-            exam = state.first(where: { $0.id == examId })
         }
     }
 }

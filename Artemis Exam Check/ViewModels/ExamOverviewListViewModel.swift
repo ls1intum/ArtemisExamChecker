@@ -6,39 +6,25 @@
 //
 
 import Foundation
-import ReSwift
 import UserStore
+import Common
 
 @MainActor
 class ExamOverviewListViewModel: ObservableObject {
     
-    @Published var exams: [Exam] = []
+    @Published var exams: DataState<[Exam]> = .loading
     
     init() {
-        store.subscribe(self) {
-            $0.select { $0.exams }
-        }
-        
         Task {
             await getExams()
         }
     }
     
     func getExams() async {
-        try? await ExamServiceFactory.shared.getAllExams()
+        exams = await ExamServiceFactory.shared.getAllExams()
     }
     
     func logout() {
         UserSession.shared.setUserLoggedIn(isLoggedIn: false, shouldRemember: false)
-    }
-}
-
-extension ExamOverviewListViewModel: StoreSubscriber {
-    
-    @MainActor
-    func newState(state: [Exam]) {
-        Task {
-            exams = state
-        }
     }
 }

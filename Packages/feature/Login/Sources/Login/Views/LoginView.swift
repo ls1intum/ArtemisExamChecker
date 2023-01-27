@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import Common
 
 public struct LoginView: View {
 
@@ -10,7 +11,7 @@ public struct LoginView: View {
     @State private var rememberMe: Bool = false
 
     @State private var displayLoginFailureDialog = false
-    @State private var loginError: Error? {
+    @State private var loginError: UserFacingError? {
         didSet {
             displayLoginFailureDialog = loginError != nil
         }
@@ -66,7 +67,7 @@ public struct LoginView: View {
             Spacer()
         }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .alert(loginError?.localizedDescription ?? "Login failed", isPresented: $displayLoginFailureDialog) {
+                .alert(loginError?.description ?? "Login failed", isPresented: $displayLoginFailureDialog) {
                     Button("OK", role: .cancel) {
                         loginError = nil
                     }

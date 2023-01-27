@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import Common
 
 protocol StudentService {
-    func saveStudent(student: Student, examId: Int) async throws
+    func saveStudent(student: ExamUser, examId: Int, courseId: Int) async -> DataState<ExamUser>
 }
 
 

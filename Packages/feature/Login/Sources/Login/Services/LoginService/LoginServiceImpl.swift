@@ -8,6 +8,7 @@
 import Foundation
 import APIClient
 import UserStore
+import Common
 
 class LoginServiceImpl: LoginService {
     
@@ -37,7 +38,7 @@ class LoginServiceImpl: LoginService {
             UserSession.shared.setUserLoggedIn(isLoggedIn: true, shouldRemember: rememberMe)
             return .success
         case .failure(let error):
-            return .failure(error: error)
+            return NetworkResponse(error: error)
         }
     }
 }
