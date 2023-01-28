@@ -4,15 +4,14 @@ import Common
 
 @MainActor
 class LoginViewModel: ObservableObject {
-    
-    @Published var error: UserFacingError? = nil {
+    @Published var error: UserFacingError? {
         didSet {
             showError = error != nil
         }
     }
     @Published var showError = false
     @Published var isLoading = false
-    
+
     func login(username: String, password: String, rememberMe: Bool) async {
         isLoading = true
         let response = await LoginServiceFactory.shared.login(username: username, password: password, rememberMe: rememberMe)

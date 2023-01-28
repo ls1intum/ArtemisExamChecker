@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Sven Andabaka on 09.01.23.
 //
@@ -9,7 +9,7 @@ import Foundation
 
 public protocol APIRequest: Codable {
     associatedtype Response: Decodable
-    
+
     var resourceName: String { get }
     var method: HTTPMethod { get }
 }
@@ -60,7 +60,7 @@ public struct MultipartFormDataRequest {
 
         return fieldData as Data
     }
-    
+
     func asURLRequest() -> URLRequest {
         var request = URLRequest(url: url)
 
@@ -78,9 +78,9 @@ public struct RawResponse: Decodable {
 }
 
 extension NSMutableData {
-  func append(_ string: String) {
-    if let data = string.data(using: .utf8) {
-      self.append(data)
+    func append(_ string: String) {
+        if let data = string.data(using: .utf8) {
+            self.append(data)
+        }
     }
-  }
 }

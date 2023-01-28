@@ -2,23 +2,24 @@ import Foundation
 import Common
 import UserStore
 
-final public class APIClient {
+// swiftlint:disable force_cast
+public final class APIClient {
     private var baseUrl: URL?
-    
+
     private let session = URLSession.shared
-    
+
     /// Instantiate WebClient for Artemis server from Configuration.swift
     public convenience init() {
         self.init(baseUrl: Config.baseEndpointUrl)
     }
-    
+
     /// Instantiate WebClient with given baseURL
     ///
     /// - Parameter baseUrl: A base URL of remote API
     init(baseUrl: URL?) {
         self.baseUrl = baseUrl
     }
-    
+
     /// Send an Multipath/Form-Data request to remote server
     ///
     /// - Parameters:
@@ -26,15 +27,15 @@ final public class APIClient {
     public func sendRequest<T: Decodable>(_ request: MultipartFormDataRequest) async -> Result<(T, Int), APIClientError> {
         let urlRequest = request.asURLRequest()
         printRequest(urlRequest: urlRequest)
-        
+
         do {
             let (data, response) = try await session.data(for: urlRequest)
             self.printResponse(for: urlRequest, data: data, response: response, error: nil)
-            
+
             guard let response = response as? HTTPURLResponse else {
                 return .failure(.notHTTPResponse)
             }
-            
+
             if case 400..<600 = response.statusCode {
                 do {
                     let decoder = JSONDecoder()
@@ -46,13 +47,13 @@ final public class APIClient {
                     return .failure(.httpURLResponseError(statusCode: httpStatusCode))
                 }
             }
-            
+
             /*
              If the response from the endpoint is not decodable and this is the expected behaviour
              (by specifying RawResponse as ResponseType in Request) return the raw response
-            */
+             */
             if T.self is RawResponse.Type {
-                let rawData = String.init(data: data, encoding: String.Encoding.utf8)
+                let rawData = String(data: data, encoding: .utf8)
                 return .success((RawResponse(rawData: rawData ?? "") as! T, response.statusCode))
             }
             do {
@@ -64,26 +65,24 @@ final public class APIClient {
                 log.error(error)
                 return .failure(.decodingError(error: error, statusCode: response.statusCode))
             }
-            
         } catch {
             self.printResponse(for: urlRequest, data: nil, response: nil, error: error)
             log.error("datatask error: \(error)")
             return .failure(.networkError(error: error))
         }
     }
-    
+
     /// Send normal http request to remote server
     ///
     /// - Parameters:
     ///   - request: A APIRequest object that provides HTTPmethod, path, data to send and type of response.
     private func sendRequest<T: APIRequest>(_ request: T) async -> Result<(T.Response, Int), APIClientError> {
-        
         let endpoint = self.endpoint(for: request)
         var urlRequest = URLRequest(url: endpoint)
-        
+
         urlRequest.httpMethod = request.method.description
         // urlRequests are not forcing to ignore cached data. That's why it might be possible to see older data. Also the statusCode 304 (send on server-side) will be changed to a 200. For more information see (https://stackoverflow.com/q/46696624)
-        
+
         // NOTE: GET requests with body are never sent
         // thus, add body only for non-GET requests
         if request.method != .get {
@@ -91,15 +90,15 @@ final public class APIClient {
             urlRequest.httpBody = body(for: request)
         }
         printRequest(urlRequest: urlRequest)
-        
+
         do {
             let (data, response) = try await session.data(for: urlRequest)
             self.printResponse(for: urlRequest, data: data, response: response, error: nil)
-            
+
             guard let response = response as? HTTPURLResponse else {
                 return .failure(.notHTTPResponse)
             }
-            
+
             if case 400..<600 = response.statusCode {
                 do {
                     let decoder = JSONDecoder()
@@ -111,13 +110,13 @@ final public class APIClient {
                     return .failure(.httpURLResponseError(statusCode: httpStatusCode))
                 }
             }
-            
+
             /*
              If the response from the endpoint is not decodable and this is the expected behaviour
              (by specifying RawResponse as ResponseType in Request) return the raw response
-            */
+             */
             if T.Response.self is RawResponse.Type {
-                let rawData = String.init(data: data, encoding: String.Encoding.utf8)
+                let rawData = String(data: data, encoding: .utf8)
                 return .success((RawResponse(rawData: rawData ?? "") as! T.Response, response.statusCode))
             }
             do {
@@ -129,57 +128,55 @@ final public class APIClient {
                 log.error(error)
                 return .failure(.decodingError(error: error, statusCode: response.statusCode))
             }
-            
         } catch {
             self.printResponse(for: urlRequest, data: nil, response: nil, error: error)
             log.error("datatask error: \(error)")
             return .failure(.networkError(error: error))
         }
     }
-    
+
     /// Wrapper for send request to remote server, if token is expired it will be refreshed before performing request
     ///
     /// - Parameters:
     ///   - request: A APIRequest object that provides HTTPmethod, path, data to send and type of response.
     ///   - completion: Completion handler to call when request is completed.
     public func send<T: APIRequest>(_ request: T) async -> Result<(T.Response, Int), APIClientError> {
-        
         return await self.sendRequest(request)
-        
+
         // TODO: implement retry mechanics
-//        guard let token = UserSession.shared.bearerToken else {
-//            // We have no jwt token, perform request without refresh logic
-//            self.sendRequest(request, completion: completion)
-//            return
-//        }
-        
+        //        guard let token = UserSession.shared.bearerToken else {
+        //            // We have no jwt token, perform request without refresh logic
+        //            self.sendRequest(request, completion: completion)
+        //            return
+        //        }
+
         // When performing the refresh token request, we do not want to apply the token refresh logic
-//        if request is AuthorizationProvider.LoginUser {
-//            self.sendRequest(request, completion: completion)
-//            return
-//        }
-//
-//        authorizationProvider.getJWTToken { result in
-//            switch result {
-//            case .success(let token):
-//                self.storeToken(token: token)
-//                self.sendRequest(request, jwtToken: token) { result in
-//                    switch result {
-//                    case .success(let response):
-//                        completion(.success(response))
-//                    case .failure(let error):
-//                        completion(.failure(error))
-//                    }
-//                }
-//            case .failure(let error):
-//                self.perfomLogout()
-//                completion(.failure(error))
-//            }
-//        }
+        //        if request is AuthorizationProvider.LoginUser {
+        //            self.sendRequest(request, completion: completion)
+        //            return
+        //        }
+        //
+        //        authorizationProvider.getJWTToken { result in
+        //            switch result {
+        //            case .success(let token):
+        //                self.storeToken(token: token)
+        //                self.sendRequest(request, jwtToken: token) { result in
+        //                    switch result {
+        //                    case .success(let response):
+        //                        completion(.success(response))
+        //                    case .failure(let error):
+        //                        completion(.failure(error))
+        //                    }
+        //                }
+        //            case .failure(let error):
+        //                self.perfomLogout()
+        //                completion(.failure(error))
+        //            }
+        //        }
     }
-    
+
     // MARK: - Helpers
-    
+
     /// Create finalURL
     private func endpoint<T: APIRequest>(for request: T) -> URL {
         guard let baseUrl = URL(string: request.resourceName, relativeTo: baseUrl) else {
@@ -187,7 +184,7 @@ final public class APIClient {
         }
         return baseUrl
     }
-    
+
     /// Create urlencoded body
     private func body<T: APIRequest>(for request: T) -> Data? {
         var bodyData: Data
@@ -200,7 +197,7 @@ final public class APIClient {
         }
         return bodyData
     }
-        
+
     private func perfomLogout() {
         log.debug("Logging user out because token could not be refreshed")
         DispatchQueue.main.async {
@@ -211,7 +208,6 @@ final public class APIClient {
 
 // MARK: - Logging
 extension APIClient {
-    
     private func printRequest(urlRequest: URLRequest) {
         log.verbose(
             """
@@ -223,7 +219,7 @@ extension APIClient {
             –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––\n
             """)
     }
-    
+
     private func printResponse(for urlRequest: URLRequest, data: Data?, response: URLResponse?, error: Error?) {
         let urlString = urlRequest.url?.absoluteString ?? "empty"
         if let error = error {

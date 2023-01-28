@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Sven Andabaka on 12.01.23.
 //
@@ -23,11 +23,11 @@ public extension Date {
     var iso8601: String {
         return Formatter.iso8601.string(from: self)
     }
-    
+
     var mediumDateShortTime: String {
         return DateFormatter.dateAndTime.string(from: self)
     }
-    
+
     var shortDateAndTime: String {
         return DateFormatter.shortDateAndTime.string(from: self)
     }
@@ -35,11 +35,11 @@ public extension Date {
     var superShortDateAndTime: String {
         return DateFormatter.superShortDateAndTime.string(from: self)
     }
-    
+
     var dayAndDate: String {
         return DateFormatter.dayAndDate.string(from: self)
     }
-    
+
     var timeOnly: String {
         return DateFormatter.timeOnly.string(from: self)
     }
@@ -57,7 +57,7 @@ public extension DateFormatter {
         self.dateFormat = dateFormat
         locale = .current
     }
-    
+
     // DE: "DD/MM/YYYY, HH:MM"
     // US: "Mon DD, YYYY at HH:MM AM"
 

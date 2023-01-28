@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Sven Andabaka on 09.01.23.
 //
@@ -40,8 +40,8 @@ extension APIClientError: Equatable {
     }
 }
 
-extension DataState {
-    public init(error: APIClientError) {
+public extension DataState {
+    init(error: APIClientError) {
         switch error {
         case .jhipsterError(let userFacingError):
             self = .failure(error: userFacingError)
@@ -51,8 +51,8 @@ extension DataState {
     }
 }
 
-extension NetworkResponse {
-    public init(error: APIClientError) {
+public extension NetworkResponse {
+    init(error: APIClientError) {
         switch error {
         case .jhipsterError(let userFacingError):
             self = .failure(error: userFacingError)

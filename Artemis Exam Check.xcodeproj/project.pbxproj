@@ -214,6 +214,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D55C083F2975A0EB00DC6B80 /* Build configuration list for PBXNativeTarget "Artemis Exam Check" */;
 			buildPhases = (
+				D5E3D3C7298541970036239F /* ShellScript */,
 				D55C082D2975A0E800DC6B80 /* Sources */,
 				D55C082E2975A0E800DC6B80 /* Frameworks */,
 				D55C082F2975A0E800DC6B80 /* Resources */,
@@ -281,6 +282,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D5E3D3C7298541970036239F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			dependencyFile = "$(DERIVED_FILES_DIR)/$(INPUT_FILE_PATH).d";
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nexport PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D55C082D2975A0E800DC6B80 /* Sources */ = {

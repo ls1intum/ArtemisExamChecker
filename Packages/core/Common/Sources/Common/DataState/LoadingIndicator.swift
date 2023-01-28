@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct LoadingIndicator: ViewModifier {
-    
     @Binding var isLoading: Bool
-    
+
     func body(content: Content) -> some View {
         ZStack {
             content
@@ -23,8 +22,8 @@ struct LoadingIndicator: ViewModifier {
     }
 }
 
-extension View {
-    public func loadingIndicator(isLoading: Binding<Bool>) -> some View {
+public extension View {
+    func loadingIndicator(isLoading: Binding<Bool>) -> some View {
         modifier(LoadingIndicator(isLoading: isLoading))
     }
 }

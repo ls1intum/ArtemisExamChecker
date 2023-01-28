@@ -17,6 +17,16 @@ default_platform(:ios)
 
 platform :ios do
 
+  desc "[CI] Check static code quality"
+  lane :swift_lint do
+    swiftlint(
+      config_file: "swiftlint.yml",
+      strict: false,
+      raise_if_swiftlint_error: true,
+      ignore_exit_status: true
+    )
+  end
+
   desc "[CI] Run Unit and UI Tests"
   lane :test do
     # Run Unit Tests
