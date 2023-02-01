@@ -30,11 +30,20 @@ class LoginServiceImpl: LoginService {
     }
 
     func login(username: String, password: String, rememberMe: Bool) async -> NetworkResponse {
-        let result = await client.send(LoginUser(username: username, password: password, rememberMe: rememberMe))
+        if !rememberMe {
+            UserSession.shared.saveUsername(username: nil)
+            UserSession.shared.savePassword(password: nil)
+        }
+
+        let result = await client.sendRequest(LoginUser(username: username, password: password, rememberMe: rememberMe))
 
         switch result {
         case .success:
             UserSession.shared.setUserLoggedIn(isLoggedIn: true, shouldRemember: rememberMe)
+            if rememberMe {
+                UserSession.shared.saveUsername(username: username)
+                UserSession.shared.savePassword(password: password)
+            }
             return .success
         case .failure(let error):
             return NetworkResponse(error: error)

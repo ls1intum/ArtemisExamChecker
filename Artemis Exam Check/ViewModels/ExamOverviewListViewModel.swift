@@ -8,6 +8,7 @@
 import Foundation
 import UserStore
 import Common
+import APIClient
 
 @MainActor
 class ExamOverviewListViewModel: ObservableObject {
@@ -25,6 +26,6 @@ class ExamOverviewListViewModel: ObservableObject {
     }
     
     func logout() {
-        UserSession.shared.setUserLoggedIn(isLoggedIn: false, shouldRemember: false)
+        APIClient().perfomLogout()
     }
 }

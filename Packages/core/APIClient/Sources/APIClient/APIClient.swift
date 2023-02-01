@@ -24,7 +24,8 @@ public final class APIClient {
     ///
     /// - Parameters:
     ///   - request: A MultipartFormDataRequest object that provides HTTPmethod, path, data to send and type of response.
-    public func sendRequest<T: Decodable>(_ request: MultipartFormDataRequest) async -> Result<(T, Int), APIClientError> {
+    ///   - currentTry: A counter which try the current is, used for retry mechanism
+    public func sendRequest<T: Decodable>(_ request: MultipartFormDataRequest, currentTry: Int = 1) async -> Result<(T, Int), APIClientError> {
         let urlRequest = request.asURLRequest()
         printRequest(urlRequest: urlRequest)
 
@@ -34,6 +35,17 @@ public final class APIClient {
 
             guard let response = response as? HTTPURLResponse else {
                 return .failure(.notHTTPResponse)
+            }
+
+            // retry if not authorized
+            if currentTry <= 3 && response.statusCode == 401 {
+                return await sendRequest(request, currentTry: currentTry + 1)
+            }
+
+            // logout
+            if response.statusCode == 401 {
+                perfomLogout()
+                UserSession.shared.setTokenExpired(expired: true)
             }
 
             if case 400..<600 = response.statusCode {
@@ -76,7 +88,8 @@ public final class APIClient {
     ///
     /// - Parameters:
     ///   - request: A APIRequest object that provides HTTPmethod, path, data to send and type of response.
-    private func sendRequest<T: APIRequest>(_ request: T) async -> Result<(T.Response, Int), APIClientError> {
+    ///   - currentTry: A counter which try the current is, used for retry mechanism
+    public func sendRequest<T: APIRequest>(_ request: T, currentTry: Int = 1) async -> Result<(T.Response, Int), APIClientError> {
         let endpoint = self.endpoint(for: request)
         var urlRequest = URLRequest(url: endpoint)
 
@@ -97,6 +110,17 @@ public final class APIClient {
 
             guard let response = response as? HTTPURLResponse else {
                 return .failure(.notHTTPResponse)
+            }
+
+            // retry if not authorized
+            if currentTry < 3 && response.statusCode == 401 {
+                return await sendRequest(request, currentTry: currentTry + 1)
+            }
+
+            // logout
+            if response.statusCode == 401 {
+                perfomLogout()
+                UserSession.shared.setTokenExpired(expired: true)
             }
 
             if case 400..<600 = response.statusCode {
@@ -135,46 +159,6 @@ public final class APIClient {
         }
     }
 
-    /// Wrapper for send request to remote server, if token is expired it will be refreshed before performing request
-    ///
-    /// - Parameters:
-    ///   - request: A APIRequest object that provides HTTPmethod, path, data to send and type of response.
-    ///   - completion: Completion handler to call when request is completed.
-    public func send<T: APIRequest>(_ request: T) async -> Result<(T.Response, Int), APIClientError> {
-        return await self.sendRequest(request)
-
-        // TODO: implement retry mechanics
-        //        guard let token = UserSession.shared.bearerToken else {
-        //            // We have no jwt token, perform request without refresh logic
-        //            self.sendRequest(request, completion: completion)
-        //            return
-        //        }
-
-        // When performing the refresh token request, we do not want to apply the token refresh logic
-        //        if request is AuthorizationProvider.LoginUser {
-        //            self.sendRequest(request, completion: completion)
-        //            return
-        //        }
-        //
-        //        authorizationProvider.getJWTToken { result in
-        //            switch result {
-        //            case .success(let token):
-        //                self.storeToken(token: token)
-        //                self.sendRequest(request, jwtToken: token) { result in
-        //                    switch result {
-        //                    case .success(let response):
-        //                        completion(.success(response))
-        //                    case .failure(let error):
-        //                        completion(.failure(error))
-        //                    }
-        //                }
-        //            case .failure(let error):
-        //                self.perfomLogout()
-        //                completion(.failure(error))
-        //            }
-        //        }
-    }
-
     // MARK: - Helpers
 
     /// Create finalURL
@@ -198,10 +182,14 @@ public final class APIClient {
         return bodyData
     }
 
-    private func perfomLogout() {
+    public func perfomLogout() {
         log.debug("Logging user out because token could not be refreshed")
         DispatchQueue.main.async {
+            Task {
+                await URLSession.shared.reset()
+            }
             UserSession.shared.setUserLoggedIn(isLoggedIn: false, shouldRemember: false)
+            UserSession.shared.savePassword(password: nil)
         }
     }
 }

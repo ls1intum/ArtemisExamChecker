@@ -46,7 +46,6 @@ struct StudentDetailView: View {
         self.successfullySavedCompletion = successfullySavedCompletion
         self._student = student
         
-        
         _didCheckImage = State(wrappedValue: student.wrappedValue.didCheckImage)
         _didCheckName = State(wrappedValue: student.wrappedValue.didCheckName)
         _didCheckLogin = State(wrappedValue: student.wrappedValue.didCheckLogin)
@@ -120,7 +119,7 @@ struct StudentDetailView: View {
                     } else {
                         CanvasView(canvasView: $canvasView)
                             .frame(minHeight: 200)
-                            .border(.black)
+                            .border(Color(UIColor.label))
                     }
                 }
                 
@@ -174,8 +173,6 @@ struct StudentDetailView: View {
                                       actualSeat: actualSeat.isEmpty ? nil : actualSeat,
                                       signing: imageData)
         
-        student.didCheckRegistrationNumber = true
-        
         Task {
             isSaving = true
             let result = await StudentServiceFactory.shared.saveStudent(student: newStudent, examId: examId, courseId: courseId)
@@ -188,10 +185,20 @@ struct StudentDetailView: View {
             case .done(let newStudent):
                 isSaving = false
                 student = newStudent
-                showSigningImage = true
+                updateDetailViewStates()
                 await successfullySavedCompletion(newStudent)
             }
         }
+    }
+    
+    private func updateDetailViewStates() {
+        didCheckImage = student.didCheckImage
+        didCheckName = student.didCheckName
+        didCheckLogin = student.didCheckLogin
+        didCheckRegistrationNumber = student.didCheckRegistrationNumber
+        showSigningImage = student.signingImageURL != nil
+        actualRoom = student.actualRoom ?? ""
+        actualSeat = student.actualSeat ?? ""
     }
 }
 

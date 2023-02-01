@@ -69,7 +69,7 @@ class StudentListViewModel: ObservableObject {
     }
     
     func getExam() async {
-        exam = await ExamServiceFactory.shared.getFullExam(for: courseId, and: examId) // TODO: error handling
+        exam = await ExamServiceFactory.shared.getFullExam(for: courseId, and: examId)
     }
     
     func updateStudent(newStudent: ExamUser) {

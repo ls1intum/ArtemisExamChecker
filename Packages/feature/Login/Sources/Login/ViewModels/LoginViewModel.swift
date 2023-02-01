@@ -1,9 +1,15 @@
 import Foundation
 import APIClient
 import Common
+import UserStore
+import Combine
 
 @MainActor
 class LoginViewModel: ObservableObject {
+    @Published var username: String = ""
+    @Published var password: String = ""
+    @Published var rememberMe = true
+
     @Published var error: UserFacingError? {
         didSet {
             showError = error != nil
@@ -12,7 +18,27 @@ class LoginViewModel: ObservableObject {
     @Published var showError = false
     @Published var isLoading = false
 
-    func login(username: String, password: String, rememberMe: Bool) async {
+    @Published var loginExpired = false
+
+    private var cancellables: Set<AnyCancellable> = Set()
+
+    init() {
+        UserSession.shared.objectWillChange.sink {
+            DispatchQueue.main.async { [unowned self] in
+                self.username = UserSession.shared.username ?? ""
+                self.password = UserSession.shared.password ?? ""
+                self.rememberMe = UserSession.shared.rememberMe
+                self.loginExpired = UserSession.shared.tokenExpired
+            }
+        }.store(in: &cancellables)
+
+        username = UserSession.shared.username ?? ""
+        password = UserSession.shared.password ?? ""
+        rememberMe = UserSession.shared.rememberMe
+        loginExpired = UserSession.shared.tokenExpired
+    }
+
+    func login() async {
         isLoading = true
         let response = await LoginServiceFactory.shared.login(username: username, password: password, rememberMe: rememberMe)
 
@@ -24,5 +50,9 @@ class LoginViewModel: ObservableObject {
             isLoading = false
             return
         }
+    }
+
+    func resetLoginExpired() {
+        UserSession.shared.setTokenExpired(expired: false)
     }
 }
