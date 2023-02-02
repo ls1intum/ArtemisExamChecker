@@ -47,8 +47,7 @@ class StudentListViewModel: ObservableObject {
                 lectureHalls = Array(Set((exam.examUsers ?? []).map {
                     $0.plannedRoom
                 }))
-                selectedStudents = exam.examUsers ?? []
-                sortStudents()
+                setSelectedStudents()
             default:
                 lectureHalls = []
                 selectedStudents = []
