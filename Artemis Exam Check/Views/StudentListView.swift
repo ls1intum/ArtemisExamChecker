@@ -26,18 +26,20 @@ struct StudentListView: View {
             DataStateView(data: $viewModel.exam) { _ in
                 VStack {
                     Group {
-                        Picker("Lecture Hall", selection: $viewModel.selectedLectureHall) {
-                            Text("All Lecture Halls").tag("")
-                            ForEach(viewModel.lectureHalls, id: \.self) { lectureHall in
-                                Text(lectureHall).tag(lectureHall)
+                        HStack {
+                            Picker("Lecture Hall", selection: $viewModel.selectedLectureHall) {
+                                Text("All Lecture Halls").tag("")
+                                ForEach(viewModel.lectureHalls, id: \.self) { lectureHall in
+                                    Text(lectureHall).tag(lectureHall)
+                                }
+                            }
+                            Picker("Sorting", selection: $viewModel.sortingDirection) {
+                                Text("Bottom to Top").tag(Sorting.bottomToTop)
+                                Text("Top to Bottom").tag(Sorting.topToBottom)
                             }
                         }
                         Toggle("Hide Checked-In Students: ", isOn: $viewModel.hideDoneStudents)
                             .padding(.horizontal, 8)
-                        Picker("Sorting", selection: $viewModel.sortingDirection) {
-                            Text("Bottom to Top").tag(Sorting.bottomToTop)
-                            Text("Top to Bottom").tag(Sorting.topToBottom)
-                        }
                     }.padding(.horizontal, 8)
                     List(viewModel.selectedStudents, selection: $selectedStudent) { student in
                         Button(action: {
@@ -87,11 +89,11 @@ struct StudentListView: View {
         })
         .navigationBarTitle(viewModel.exam.value?.title ?? "Loading...")
         .navigationBarTitleDisplayMode(.inline)
-        .alert("Potentially Unsaved Changes", isPresented: $unsavedUserAlert, actions: {
+        .alert("Unsaved Changes", isPresented: $unsavedUserAlert, actions: {
             Button(role: .destructive, action: {
                 selectedStudent = nextSelectedStudent
                 viewModel.hasUnsavedChanges = false
-            }, label: { Text("Ok") })
-        }, message: { Text("You may have unsaved changes. Changes are lost if you switch the student. Are you sure you want to continue?") })
+            }, label: { Text("Delete Changes") })
+        }, message: { Text("You have unsaved changes. Changes are lost if you switch the student. Are you sure you want to continue?") })
     }
 }

@@ -20,8 +20,8 @@ struct StudentDetailView: View {
     @State var showSigningImage: Bool
     @State var actualSeat: String
     @State var actualRoom: String
-    @State var showSeatingEdit = false
 
+    @State var showSeatingEdit = false
     @State var showDidNotCompleteDialog = false
     @State var isSaving = false
     @State var showErrorAlert = false
@@ -57,7 +57,6 @@ struct StudentDetailView: View {
         _showSigningImage = State(wrappedValue: student.wrappedValue.signingImageURL != nil)
         _actualRoom = State(wrappedValue: student.wrappedValue.actualRoom ?? "")
         _actualSeat = State(wrappedValue: student.wrappedValue.actualSeat ?? "")
-        _showSeatingEdit = State(wrappedValue: student.wrappedValue.actualSeat != nil || student.wrappedValue.actualRoom != nil)
     }
     
     var body: some View {
@@ -90,12 +89,14 @@ struct StudentDetailView: View {
                             StudentSeatingDetailCell(description: "Room", value: student.plannedRoom, actualValue: $actualRoom, showActualValue: $showSeatingEdit)
                             StudentSeatingDetailCell(description: "Seat", value: student.plannedSeat, actualValue: $actualSeat, showActualValue: $showSeatingEdit)
                         }
-                        Button(action: { showSeatingEdit = true }) {
+                        Button(action: { showSeatingEdit.toggle() }) {
                             Image(systemName: "pencil")
                                 .imageScale(.large)
                         }.padding(.leading, 8)
                     }
-                }.padding(.leading, 32)
+                }
+                    .padding(.leading, 32)
+                    .animation(.easeInOut, value: showSeatingEdit)
             }
             
             VStack {
@@ -142,7 +143,7 @@ struct StudentDetailView: View {
             .buttonStyle(GrowingButton())
             .padding(16)
             .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
-                Button("Yes I want to continue with partially filled out details.", role: .destructive) {
+                Button("Yes, I want to continue.", role: .destructive) {
                     saveStudent(force: true)
                 }
             } message: {
@@ -253,12 +254,15 @@ struct StudentSeatingDetailCell: View {
                 .bold()
             Spacer()
             Text(value)
-                .strikethrough(showActualValue)
+                .strikethrough(showActualValue || !actualValue.isEmpty)
             if showActualValue {
                 TextField("Actual \(description)", text: $actualValue)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(width: 150)
                     .padding(.leading, 8)
+            } else if !actualValue.isEmpty {
+                Text(actualValue)
+                    .frame(width: 150)
             }
         }
     }
