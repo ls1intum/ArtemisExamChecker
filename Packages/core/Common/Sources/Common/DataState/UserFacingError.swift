@@ -24,3 +24,9 @@ public struct UserFacingError: Codable {
         title = error.localizedDescription
     }
 }
+
+extension UserFacingError: LocalizedError {
+    public var errorDescription: String? {
+        description
+    }
+}

@@ -13,6 +13,9 @@ struct StudentListView: View {
     @StateObject var viewModel: StudentListViewModel
     
     @State private var selectedStudent: ExamUser?
+
+    @State private var unsavedUserAlert = false
+    @State private var nextSelectedStudent: ExamUser?
     
     init(exam: Exam) {
         self._viewModel = StateObject(wrappedValue: StudentListViewModel(courseId: exam.course.id, examId: exam.id))
@@ -37,7 +40,14 @@ struct StudentListView: View {
                         }
                     }.padding(.horizontal, 8)
                     List(viewModel.selectedStudents, selection: $selectedStudent) { student in
-                        NavigationLink(value: student) {
+                        Button(action: {
+                            if viewModel.hasUnsavedChanges {
+                                unsavedUserAlert = true
+                                nextSelectedStudent = student
+                            } else {
+                                selectedStudent = student
+                            }
+                        }) {
                             HStack {
                                 VStack(alignment: .leading) {
                                     Text(student.user.name)
@@ -51,7 +61,7 @@ struct StudentListView: View {
                                         .imageScale(.large)
                                 }
                             }
-                        }
+                        }.listRowBackground(self.selectedStudent == student ? Color.gray.opacity(0.4) : Color.clear)
                     }
                     .searchable(text: $viewModel.searchText)
                     .listStyle(SidebarListStyle())
@@ -64,7 +74,11 @@ struct StudentListView: View {
             if let studentBinding = Binding($selectedStudent),
                let examId = viewModel.exam.value?.id,
                let courseId = viewModel.exam.value?.course.id {
-                StudentDetailView(examId: examId, courseId: courseId, student: studentBinding, successfullySavedCompletion: viewModel.updateStudent)
+                StudentDetailView(examId: examId,
+                                  courseId: courseId,
+                                  student: studentBinding,
+                                  hasUnsavedChanges: $viewModel.hasUnsavedChanges,
+                                  successfullySavedCompletion: viewModel.updateStudent)
                     .id(studentBinding.wrappedValue.id)
             } else {
                 Text("Select a student")
@@ -73,5 +87,11 @@ struct StudentListView: View {
         })
         .navigationBarTitle(viewModel.exam.value?.title ?? "Loading...")
         .navigationBarTitleDisplayMode(.inline)
+        .alert("Potentially Unsaved Changes", isPresented: $unsavedUserAlert, actions: {
+            Button(role: .destructive, action: {
+                selectedStudent = nextSelectedStudent
+                viewModel.hasUnsavedChanges = false
+            }, label: { Text("Ok") })
+        }, message: { Text("You may have unsaved changes. Changes are lost if you switch the student. Are you sure you want to continue?") })
     }
 }

@@ -20,7 +20,8 @@ struct StudentDetailView: View {
     @State var showSigningImage: Bool
     @State var actualSeat: String
     @State var actualRoom: String
-    
+    @State var showSeatingEdit = false
+
     @State var showDidNotCompleteDialog = false
     @State var isSaving = false
     @State var showErrorAlert = false
@@ -31,6 +32,7 @@ struct StudentDetailView: View {
     }
     
     @Binding var student: ExamUser
+    @Binding var hasUnsavedChanges: Bool
     
     var successfullySavedCompletion: @MainActor (ExamUser) -> Void
     
@@ -40,11 +42,13 @@ struct StudentDetailView: View {
     init(examId: Int,
          courseId: Int,
          student: Binding<ExamUser>,
+         hasUnsavedChanges: Binding<Bool>,
          successfullySavedCompletion: @MainActor @escaping (ExamUser) -> Void) {
         self.examId = examId
         self.courseId = courseId
         self.successfullySavedCompletion = successfullySavedCompletion
         self._student = student
+        self._hasUnsavedChanges = hasUnsavedChanges
         
         _didCheckImage = State(wrappedValue: student.wrappedValue.didCheckImage)
         _didCheckName = State(wrappedValue: student.wrappedValue.didCheckName)
@@ -53,6 +57,7 @@ struct StudentDetailView: View {
         _showSigningImage = State(wrappedValue: student.wrappedValue.signingImageURL != nil)
         _actualRoom = State(wrappedValue: student.wrappedValue.actualRoom ?? "")
         _actualSeat = State(wrappedValue: student.wrappedValue.actualSeat ?? "")
+        _showSeatingEdit = State(wrappedValue: student.wrappedValue.actualSeat != nil || student.wrappedValue.actualRoom != nil)
     }
     
     var body: some View {
@@ -78,22 +83,17 @@ struct StudentDetailView: View {
                 
                 VStack {
                     StudentDetailCell(description: "Name", value: student.user.name)
-                    StudentDetailCell(description: "Planned Room", value: student.plannedRoom)
-                    StudentDetailCell(description: "Planned Seat", value: student.plannedSeat)
-                    StudentDetailCell(description: "Matriculation Nr.", value: student.user.registrationNumber)
-                    HStack(spacing: 16) {
-                        HStack {
-                            Text("Actual Room")
-                                .padding(.trailing, 8)
-                            TextField("Actual Room", text: $actualRoom)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                    StudentDetailCell(description: "Matriculation Nr.", value: student.user.visibleRegistrationNumber2)
+                    StudentDetailCell(description: "Artemis Username", value: student.user.login)
+                    HStack {
+                        VStack {
+                            StudentSeatingDetailCell(description: "Room", value: student.plannedRoom, actualValue: $actualRoom, showActualValue: $showSeatingEdit)
+                            StudentSeatingDetailCell(description: "Seat", value: student.plannedSeat, actualValue: $actualSeat, showActualValue: $showSeatingEdit)
                         }
-                        HStack {
-                            Text("Actual Seat")
-                                .padding(.trailing, 8)
-                            TextField("Actual Seat", text: $actualSeat)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                        }
+                        Button(action: { showSeatingEdit = true }) {
+                            Image(systemName: "pencil")
+                                .imageScale(.large)
+                        }.padding(.leading, 8)
                     }
                 }.padding(.leading, 32)
             }
@@ -101,7 +101,7 @@ struct StudentDetailView: View {
             VStack {
                 Toggle("Image is correct:", isOn: $didCheckImage)
                 Toggle("Name is correct:", isOn: $didCheckName)
-                Toggle("Artemis User is correct:", isOn: $didCheckLogin)
+                Toggle("Artemis Username is correct:", isOn: $didCheckLogin)
                 Toggle("Matriculation Number is correct:", isOn: $didCheckRegistrationNumber)
             }.padding(.vertical, 16)
             
@@ -148,9 +148,31 @@ struct StudentDetailView: View {
             } message: {
                 Text("You did not fill out all requiered fields. Do you still want to proceed?")
             }
+            .alert(isPresented: $showErrorAlert, error: error, actions: {})
         }
-        .loadingIndicator(isLoading: $isSaving)
-        .padding(32)
+            .loadingIndicator(isLoading: $isSaving)
+            .padding(32)
+            .onChange(of: canvasView) { _ in
+                hasUnsavedChanges = true
+            }
+            .onChange(of: didCheckImage) { _ in
+                hasUnsavedChanges = true
+            }
+            .onChange(of: didCheckName) { _ in
+                hasUnsavedChanges = true
+            }
+            .onChange(of: didCheckLogin) { _ in
+                hasUnsavedChanges = true
+            }
+            .onChange(of: didCheckRegistrationNumber) { _ in
+                hasUnsavedChanges = true
+            }
+            .onChange(of: actualRoom) { _ in
+                hasUnsavedChanges = true
+            }
+            .onChange(of: actualSeat) { _ in
+                hasUnsavedChanges = true
+            }
     }
     
     private func saveStudent(force: Bool = false) {
@@ -213,6 +235,31 @@ struct StudentDetailCell: View {
                 .bold()
             Spacer()
             Text(value)
+        }
+    }
+}
+
+struct StudentSeatingDetailCell: View {
+
+    var description: String
+    var value: String
+
+    @Binding var actualValue: String
+    @Binding var showActualValue: Bool
+
+    var body: some View {
+        HStack {
+            Text("\(description): ")
+                .bold()
+            Spacer()
+            Text(value)
+                .strikethrough(showActualValue)
+            if showActualValue {
+                TextField("Actual \(description)", text: $actualValue)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(width: 150)
+                    .padding(.leading, 8)
+            }
         }
     }
 }

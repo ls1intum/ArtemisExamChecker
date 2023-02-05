@@ -26,14 +26,16 @@ struct ExamUser: Identifiable, Codable {
 
     var signing: Data?
     var signingImagePath: String?
+    var studentImagePath: String?
     
     var signingImageURL: URL? {
         guard let signingImagePath = signingImagePath else { return nil }
         return URL(string: signingImagePath, relativeTo: Config.baseEndpointUrl)
     }
-    
-    var imageURL: URL? { // TODO: change to let
-        return URL(string: "https://img.freepik.com/fotos-kostenlos/glueckliche-junge-studentin-die-notizbuecher-aus-kursen-haelt-und-in-die-kamera-laechelt-und-in-fruehlingskleidung-vor-blauem-hintergrund-steht_1258-70161.jpg?w=2000")
+
+    var imageURL: URL? {
+        guard let studentImagePath = studentImagePath else { return nil }
+        return URL(string: studentImagePath, relativeTo: Config.baseEndpointUrl)
     }
 
     var isStudentDone: Bool {
@@ -53,8 +55,8 @@ struct ExamUser: Identifiable, Codable {
                         didCheckName: checkedName,
                         didCheckLogin: checkedLogin,
                         didCheckRegistrationNumber: checkedRegistrationNumber,
-                        actualRoom: actualRoom ?? plannedRoom,
-                        actualSeat: actualSeat ?? plannedSeat,
+                        actualRoom: actualRoom,
+                        actualSeat: actualSeat,
                         plannedRoom: plannedRoom,
                         plannedSeat: plannedSeat,
                         signing: signing)
@@ -68,9 +70,9 @@ struct User: Codable, Identifiable {
     let lastName: String
     let email: String
     let name: String
-//    let registrationNumber: String
-    var registrationNumber: String { // TODO: change to let
-        ""
+    let visibleRegistrationNumber: String? // TODO: change to not optional
+    var visibleRegistrationNumber2: String {
+        visibleRegistrationNumber ?? "test"
     }
 }
 

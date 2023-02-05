@@ -54,6 +54,8 @@ class StudentListViewModel: ObservableObject {
             }
         }
     }
+
+    @Published var hasUnsavedChanges = false
     
     let courseId: Int
     let examId: Int
@@ -77,6 +79,7 @@ class StudentListViewModel: ObservableObject {
         
         exam.examUsers?[examUserIndex] = newStudent
         self.exam = .done(response: exam)
+        hasUnsavedChanges = false
     }
     
     private func setSelectedStudents() {
@@ -85,7 +88,7 @@ class StudentListViewModel: ObservableObject {
         // filter by selected Lecture Hall
         if !selectedLectureHall.isEmpty {
             selectedStudents = selectedStudents.filter {
-                $0.plannedRoom == selectedLectureHall
+                $0.plannedRoom == selectedLectureHall || $0.actualRoom == selectedLectureHall
             }
         }
         
@@ -95,7 +98,7 @@ class StudentListViewModel: ObservableObject {
             selectedStudents = selectedStudents.filter {
                 $0.user.name.lowercased().contains(searchText) ||
                 $0.user.login.lowercased().contains(searchText) ||
-                $0.user.registrationNumber.lowercased().contains(searchText)
+                $0.user.visibleRegistrationNumber2.lowercased().contains(searchText)
             }
         }
         

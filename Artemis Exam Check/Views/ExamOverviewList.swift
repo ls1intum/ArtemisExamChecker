@@ -19,9 +19,22 @@ struct ExamOverviewList: View {
                     List(exams) { exam in
                         NavigationLink(value: exam) {
                             VStack(alignment: .leading) {
-                                Text(exam.title)
-                                    .bold()
-                                Text(exam.startDate, formatter: DateFormatter.dayAndDate)
+                                HStack(spacing: 16) {
+                                    Text("\(exam.course.title): ")
+                                        .font(.subheadline)
+                                        .bold()
+                                    Text(exam.title)
+                                        .font(.headline)
+                                        .bold()
+                                }
+                                HStack(spacing: 16) {
+                                    Text(exam.startDate, formatter: DateFormatter.dayAndDate)
+                                    HStack(spacing: 0) {
+                                        Text(exam.startDate, formatter: DateFormatter.timeOnly)
+                                        Text(" - ")
+                                        Text(exam.endDate, formatter: DateFormatter.timeOnly)
+                                    }
+                                }
                             }
                         }
                     }.refreshable {

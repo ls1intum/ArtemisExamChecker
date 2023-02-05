@@ -19,8 +19,8 @@ class StudentServiceImpl: StudentService {
         let didCheckLogin: Bool
         let didCheckName: Bool
         let didCheckRegistrationNumber: Bool
-        let room: String
-        let seat: String
+        let room: String?
+        let seat: String?
     }
     
     func saveStudent(student: ExamUser, examId: Int, courseId: Int) async -> DataState<ExamUser> {
@@ -34,8 +34,8 @@ class StudentServiceImpl: StudentService {
                                       didCheckLogin: student.didCheckLogin,
                                       didCheckName: student.didCheckName,
                                       didCheckRegistrationNumber: student.didCheckRegistrationNumber,
-                                      room: student.actualRoom ?? student.plannedRoom,
-                                      seat: student.actualSeat ?? student.plannedSeat)
+                                      room: student.actualRoom,
+                                      seat: student.actualSeat)
         if let studentData = try? encoder.encode(examUserDTO) {
             request.addDataField(named: "examUserDTO", filename: nil, data: studentData, mimeType: "application/json")
         }
