@@ -24,11 +24,11 @@ class LoginViewModel: ObservableObject {
 
     init() {
         UserSession.shared.objectWillChange.sink {
-            DispatchQueue.main.async { [unowned self] in
-                self.username = UserSession.shared.username ?? ""
-                self.password = UserSession.shared.password ?? ""
-                self.rememberMe = UserSession.shared.rememberMe
-                self.loginExpired = UserSession.shared.tokenExpired
+            DispatchQueue.main.async { [weak self] in
+                self?.username = UserSession.shared.username ?? ""
+                self?.password = UserSession.shared.password ?? ""
+                self?.rememberMe = UserSession.shared.rememberMe
+                self?.loginExpired = UserSession.shared.tokenExpired
             }
         }.store(in: &cancellables)
 

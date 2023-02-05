@@ -72,7 +72,7 @@ struct User: Codable, Identifiable {
     let name: String
     let visibleRegistrationNumber: String? // TODO: change to not optional
     var visibleRegistrationNumber2: String {
-        visibleRegistrationNumber ?? "test"
+        visibleRegistrationNumber ?? "TODO"
     }
 }
 
