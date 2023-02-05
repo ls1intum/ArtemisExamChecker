@@ -26,7 +26,7 @@ class ExamServiceImpl: ExamService {
     }
     
     func getAllExams() async -> DataState<[Exam]> {
-        let result = await client.send(GetAllExamsRequest())
+        let result = await client.sendRequest(GetAllExamsRequest())
         
         switch result {
         case .success((let exams, _)):
@@ -52,7 +52,7 @@ class ExamServiceImpl: ExamService {
     }
     
     func getFullExam(for courseId: Int, and examId: Int) async -> DataState<Exam> {
-        let result = await client.send(GetFullExamRequest(courseId: courseId, examId: examId))
+        let result = await client.sendRequest(GetFullExamRequest(courseId: courseId, examId: examId))
         
         switch result {
         case .success((let exam, _)):

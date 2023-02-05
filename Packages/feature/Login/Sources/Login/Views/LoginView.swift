@@ -5,10 +5,6 @@ import Common
 public struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
 
-    @State private var username: String = ""
-    @State private var password: String = ""
-    @State private var rememberMe = false
-
     public init() { }
 
     public var body: some View {
@@ -28,12 +24,12 @@ public struct LoginView: View {
                 .multilineTextAlignment(.center)
 
             VStack(spacing: 10) {
-                TextField("Username", text: $username)
+                TextField("Username", text: $viewModel.username)
                     .textFieldStyle(.roundedBorder)
-                SecureField("Password", text: $password)
+                SecureField("Password", text: $viewModel.password)
                     .textFieldStyle(.roundedBorder)
 
-                Toggle("Automatic login", isOn: $rememberMe)
+                Toggle("Automatic login", isOn: $viewModel.rememberMe)
                     .toggleStyle(.switch)
             }
             .frame(maxWidth: .infinity)
@@ -41,11 +37,11 @@ public struct LoginView: View {
 
             Button("Login", action: {
                 Task {
-                    await viewModel.login(username: username, password: password, rememberMe: rememberMe)
+                    await viewModel.login()
                 }
             })
             .frame(maxWidth: .infinity)
-            .disabled(username.isEmpty || password.isEmpty)
+            .disabled(viewModel.username.isEmpty || viewModel.password.isEmpty)
             .buttonStyle(.borderedProminent)
 
             Spacer()
@@ -56,6 +52,11 @@ public struct LoginView: View {
             Button("OK", role: .cancel) {
                 viewModel.error = nil
             }
+        }
+        .alert(isPresented: $viewModel.loginExpired) {
+            Alert(title: Text("Your session expired. Please login again!"),
+                  dismissButton: .default(Text("OK"),
+                                          action: { viewModel.resetLoginExpired() }))
         }
     }
 }
