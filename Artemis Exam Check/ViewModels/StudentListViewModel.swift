@@ -98,7 +98,7 @@ class StudentListViewModel: ObservableObject {
             selectedStudents = selectedStudents.filter {
                 $0.user.name.lowercased().contains(searchText) ||
                 $0.user.login.lowercased().contains(searchText) ||
-                $0.user.visibleRegistrationNumber2.lowercased().contains(searchText)
+                $0.user.visibleRegistrationNumber.lowercased().contains(searchText)
             }
         }
         

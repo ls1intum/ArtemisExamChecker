@@ -82,7 +82,7 @@ struct StudentDetailView: View {
                 
                 VStack {
                     StudentDetailCell(description: "Name", value: student.user.name)
-                    StudentDetailCell(description: "Matriculation Nr.", value: student.user.visibleRegistrationNumber2)
+                    StudentDetailCell(description: "Matriculation Nr.", value: student.user.visibleRegistrationNumber)
                     StudentDetailCell(description: "Artemis Username", value: student.user.login)
                     HStack {
                         VStack {

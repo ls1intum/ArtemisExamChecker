@@ -70,10 +70,7 @@ struct User: Codable, Identifiable {
     let lastName: String
     let email: String
     let name: String
-    let visibleRegistrationNumber: String? // TODO: change to not optional
-    var visibleRegistrationNumber2: String {
-        visibleRegistrationNumber ?? "TODO"
-    }
+    let visibleRegistrationNumber: String
 }
 
 extension ExamUser: Hashable {
