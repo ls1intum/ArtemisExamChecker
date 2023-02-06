@@ -46,10 +46,19 @@ class LoginServiceImpl: LoginService {
             }
             return .success
         case .failure(let error):
+            switch error {
+            case let .httpURLResponseError(statusCode, artemisError):
+                if statusCode == .forbidden && artemisError == "CAPTCHA required" {
+                    return .failure(error: LoginError.captchaRequired)
+                }
+            default:
+                return NetworkResponse(error: error)
+            }
             return NetworkResponse(error: error)
         }
     }
 }
 
-public struct EmptyResponse: Decodable {
+enum LoginError: Error {
+    case captchaRequired
 }

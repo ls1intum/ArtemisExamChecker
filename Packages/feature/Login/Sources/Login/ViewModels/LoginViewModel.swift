@@ -3,6 +3,7 @@ import APIClient
 import Common
 import UserStore
 import Combine
+import ProfileInfo
 
 @MainActor
 class LoginViewModel: ObservableObject {
@@ -19,6 +20,12 @@ class LoginViewModel: ObservableObject {
     @Published var isLoading = false
 
     @Published var loginExpired = false
+    @Published var captchaRequired = false
+
+    @Published var externalUserManagementUrl: DataState<URL> = .loading
+    @Published var externalUserManagementName: DataState<String> = .loading
+
+//    "externalUserManagementWarning": "<span class='bold'>You have entered your password incorrectly too many times :-(</span><br />Please go to <a href='{{ url }}' target='_blank'>{{ name }}</a>, sign in with your account and solve the <a href='{{ url }}' target='_blank'>CAPTCHA</a>. After you have solved it, try to log in again here.",
 
     private var cancellables: Set<AnyCancellable> = Set()
 
@@ -44,8 +51,17 @@ class LoginViewModel: ObservableObject {
 
         switch response {
         case .failure(let error):
-            isLoading = false
-            self.error = error
+            if let loginError = error as? LoginError {
+                switch loginError {
+                case .captchaRequired:
+                    await getProfileInfo()
+                    isLoading = false
+                    captchaRequired = true
+                }
+            } else {
+                isLoading = false
+                self.error = UserFacingError(error: error)
+            }
         default:
             isLoading = false
             return
@@ -54,5 +70,21 @@ class LoginViewModel: ObservableObject {
 
     func resetLoginExpired() {
         UserSession.shared.setTokenExpired(expired: false)
+    }
+
+    private func getProfileInfo() async {
+        isLoading = true
+        let response = await ProfileInfoServiceFactory.shared.getProfileInfo()
+        isLoading = false
+
+        switch response {
+        case .loading:
+            return
+        case .failure(let error):
+            self.error = error
+        case .done(let response):
+            externalUserManagementUrl = .done(response: response.externalUserManagementURL)
+            externalUserManagementName = .done(response: response.externalUserManagementName)
+        }
     }
 }
