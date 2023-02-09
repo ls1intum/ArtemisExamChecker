@@ -16,36 +16,42 @@ struct ExamOverviewList: View {
         NavigationStack {
             VStack {
                 HStack {
-                    HStack(spacing: 80) {
-                        DatePicker("From Date:", selection: $viewModel.fromDate, displayedComponents: [.date])
-                        DatePicker("To Date:", selection: $viewModel.toDate, displayedComponents: [.date])
-                    }.frame(maxWidth: 500)
+                    HStack(spacing: 64) {
+                        DatePicker("From:", selection: $viewModel.fromDate, in: ...viewModel.toDate, displayedComponents: [.date])
+                        DatePicker("To:", selection: $viewModel.toDate, in: viewModel.fromDate..., displayedComponents: [.date])
+                    }.frame(maxWidth: 400)
                     Spacer()
                 }.padding(.horizontal, 16)
+                Spacer()
                 DataStateView(data: $viewModel.exams) { exams in
-                    List(exams) { exam in
-                        NavigationLink(value: exam) {
-                            VStack(alignment: .leading) {
-                                HStack(spacing: 16) {
-                                    Text("\(exam.course.title): ")
-                                        .font(.subheadline)
-                                        .bold()
-                                    Text(exam.title)
-                                        .font(.headline)
-                                        .bold()
-                                }
-                                HStack(spacing: 16) {
-                                    Text(exam.startDate, formatter: DateFormatter.dayAndDate)
-                                    HStack(spacing: 0) {
-                                        Text(exam.startDate, formatter: DateFormatter.timeOnly)
-                                        Text(" - ")
-                                        Text(exam.endDate, formatter: DateFormatter.timeOnly)
+                    if exams.isEmpty {
+                        Text("There are no exams available to you in the selected time period!")
+                        Spacer()
+                    } else {
+                        List(exams) { exam in
+                            NavigationLink(value: exam) {
+                                VStack(alignment: .leading) {
+                                    HStack(spacing: 16) {
+                                        Text("\(exam.course.title): ")
+                                            .font(.subheadline)
+                                            .bold()
+                                        Text(exam.title)
+                                            .font(.headline)
+                                            .bold()
+                                    }
+                                    HStack(spacing: 16) {
+                                        Text(exam.startDate, formatter: DateFormatter.dayAndDate)
+                                        HStack(spacing: 0) {
+                                            Text(exam.startDate, formatter: DateFormatter.timeOnly)
+                                            Text(" - ")
+                                            Text(exam.endDate, formatter: DateFormatter.timeOnly)
+                                        }
                                     }
                                 }
                             }
+                        }.refreshable {
+                            await viewModel.getExams()
                         }
-                    }.refreshable {
-                        await viewModel.getExams()
                     }
                 }
             }
