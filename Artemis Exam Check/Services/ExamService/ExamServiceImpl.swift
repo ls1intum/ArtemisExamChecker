@@ -28,11 +28,9 @@ class ExamServiceImpl: ExamService {
         }
     }
 
-    // TODO: implement params
-    func getAllExams() async -> DataState<[Exam]> {
-        let from = Calendar.current.date(byAdding: .day, value: -17, to: .now)! // TODO: change to adaptabel 
-        let to = Calendar.current.date(byAdding: .day, value: 17, to: .now)!
-        let result = await client.sendRequest(GetAllExamsRequest(from: from, to: to))
+    func getAllExams(from: Date, to: Date) async -> DataState<[Exam]> {
+        let result = await client.sendRequest(GetAllExamsRequest(from: from.startOfDay,
+                                                                 to: to.endOfDay))
         
         switch result {
         case .success((let exams, _)):

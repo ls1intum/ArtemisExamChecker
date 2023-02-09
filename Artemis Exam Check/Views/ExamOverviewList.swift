@@ -15,6 +15,13 @@ struct ExamOverviewList: View {
     var body: some View {
         NavigationStack {
             VStack {
+                HStack {
+                    HStack(spacing: 80) {
+                        DatePicker("From Date:", selection: $viewModel.fromDate, displayedComponents: [.date])
+                        DatePicker("To Date:", selection: $viewModel.toDate, displayedComponents: [.date])
+                    }.frame(maxWidth: 500)
+                    Spacer()
+                }.padding(.horizontal, 16)
                 DataStateView(data: $viewModel.exams) { exams in
                     List(exams) { exam in
                         NavigationLink(value: exam) {

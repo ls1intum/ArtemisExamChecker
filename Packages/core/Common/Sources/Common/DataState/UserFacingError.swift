@@ -21,6 +21,7 @@ public struct UserFacingError: Codable {
     }
 
     public init(error: Error) {
+        // TODO: add better error messages
         title = error.localizedDescription
     }
 }

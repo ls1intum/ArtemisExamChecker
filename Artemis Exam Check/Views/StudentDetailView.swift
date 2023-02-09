@@ -56,7 +56,7 @@ struct StudentDetailView: View {
         _didCheckName = State(wrappedValue: student.wrappedValue.didCheckName)
         _didCheckLogin = State(wrappedValue: student.wrappedValue.didCheckLogin)
         _didCheckRegistrationNumber = State(wrappedValue: student.wrappedValue.didCheckRegistrationNumber)
-        _showSigningImage = State(wrappedValue: student.wrappedValue.signingImageURL != nil)
+        _showSigningImage = State(wrappedValue: student.wrappedValue.signingImagePath != nil)
         _actualRoom = State(wrappedValue: student.wrappedValue.actualRoom ?? "")
         _actualSeat = State(wrappedValue: student.wrappedValue.actualSeat ?? "")
     }
@@ -137,9 +137,9 @@ struct StudentDetailView: View {
                                         Button(action: {
                                             isScrollingEnabled.toggle()
                                         }) {
-                                            Image(systemName: "arrow.up.and.down.square")
+                                            Image(systemName: "hand.draw.fill")
                                                 .imageScale(.large)
-                                                .foregroundColor(isScrollingEnabled ? Color.blue : Color.gray)
+                                                .foregroundColor(isScrollingEnabled ? Color.gray : Color.blue)
                                         }
                                         Button(action: {
                                             if student.signingImageURL != nil {
@@ -171,9 +171,9 @@ struct StudentDetailView: View {
                                         Button(action: {
                                             isScrollingEnabled.toggle()
                                         }) {
-                                            Image(systemName: "arrow.up.and.down.square")
+                                            Image(systemName: "hand.draw.fill")
                                                 .imageScale(.large)
-                                                .foregroundColor(isScrollingEnabled ? Color.blue : Color.gray)
+                                                .foregroundColor(isScrollingEnabled ? Color.gray : Color.blue)
                                         }
                                         Button(action: {
                                             if student.signingImageURL != nil {
@@ -202,9 +202,9 @@ struct StudentDetailView: View {
                                 Button(action: {
                                     isScrollingEnabled.toggle()
                                 }) {
-                                    Image(systemName: "arrow.up.and.down.square")
+                                    Image(systemName: "hand.draw.fill")
                                         .imageScale(.large)
-                                        .foregroundColor(isScrollingEnabled ? Color.blue : Color.gray)
+                                        .foregroundColor(isScrollingEnabled ? Color.gray : Color.blue)
                                 }
                                 Button(action: {
                                     canvasView.drawing = PKDrawing()

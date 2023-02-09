@@ -15,6 +15,21 @@ class ExamOverviewListViewModel: ObservableObject {
     
     @Published var exams: DataState<[Exam]> = .loading
     @Published var username: DataState<String> = .loading
+
+    @Published var fromDate = Calendar.current.date(byAdding: .day, value: -7, to: .now)! {
+        didSet {
+            Task {
+                await getExams()
+            }
+        }
+    }
+    @Published var toDate = Calendar.current.date(byAdding: .day, value: 7, to: .now)! {
+        didSet {
+            Task {
+                await getExams()
+            }
+        }
+    }
     
     init() {
         Task {
@@ -26,7 +41,7 @@ class ExamOverviewListViewModel: ObservableObject {
     }
     
     func getExams() async {
-        exams = await ExamServiceFactory.shared.getAllExams()
+        exams = await ExamServiceFactory.shared.getAllExams(from: fromDate, to: toDate)
     }
 
     func getAccount() async {
