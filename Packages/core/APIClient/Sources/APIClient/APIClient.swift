@@ -56,7 +56,8 @@ public final class APIClient {
                 } catch {
                     let httpStatusCode = HTTPStatusCode(rawValue: response.statusCode)
                     log.error("request \(urlRequest) failed: \(httpStatusCode ?? .unknown)")
-                    return .failure(.httpURLResponseError(statusCode: httpStatusCode))
+                    return .failure(.httpURLResponseError(statusCode: httpStatusCode,
+                                                          artemisError: response.value(forHTTPHeaderField: "X-artemisApp-error")))
                 }
             }
 
@@ -131,7 +132,7 @@ public final class APIClient {
                 } catch {
                     let httpStatusCode = HTTPStatusCode(rawValue: response.statusCode)
                     log.error("request \(urlRequest) failed: \(httpStatusCode ?? .unknown)")
-                    return .failure(.httpURLResponseError(statusCode: httpStatusCode))
+                    return .failure(.httpURLResponseError(statusCode: httpStatusCode, artemisError: response.value(forHTTPHeaderField: "X-artemisApp-error")))
                 }
             }
 

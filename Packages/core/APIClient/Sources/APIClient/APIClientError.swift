@@ -10,7 +10,7 @@ import Common
 
 public enum APIClientError: Error {
     case jhipsterError(error: UserFacingError)
-    case httpURLResponseError(statusCode: HTTPStatusCode?)
+    case httpURLResponseError(statusCode: HTTPStatusCode?, artemisError: String?)
     case networkError(error: Error)
     case decodingError(error: Error, statusCode: Int)
     case encodingError(error: Error)
@@ -32,8 +32,8 @@ public enum APIClientError: Error {
 extension APIClientError: Equatable {
     public static func == (lhs: APIClientError, rhs: APIClientError) -> Bool {
         switch (lhs, rhs) {
-        case let (.httpURLResponseError(statusCode), .httpURLResponseError(statusCode2)):
-            return statusCode?.rawValue == statusCode2?.rawValue
+        case let (.httpURLResponseError(statusCode, artemisError), .httpURLResponseError(statusCode2, artemisError2)):
+            return statusCode?.rawValue == statusCode2?.rawValue && artemisError == artemisError2
         default:
             return false
         }
@@ -55,9 +55,9 @@ public extension NetworkResponse {
     init(error: APIClientError) {
         switch error {
         case .jhipsterError(let userFacingError):
-            self = .failure(error: userFacingError)
+            self = .failure(userFacingError: userFacingError)
         default:
-            self = .failure(error: UserFacingError(error: error))
+            self = .failure(error: error)
         }
     }
 }

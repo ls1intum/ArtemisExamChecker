@@ -56,6 +56,7 @@
 		D589FFF52979593300541D18 /* Login */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Login; path = feature/Login; sourceTree = "<group>"; };
 		D589FFFE297959DF00541D18 /* UserStore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = UserStore; path = core/UserStore; sourceTree = "<group>"; };
 		D5CC96DC29800A62006D8653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5F7AE1D299160D400C75A81 /* ProfileInfo */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ProfileInfo; path = feature/ProfileInfo; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +185,7 @@
 		D55C088D297956B200DC6B80 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				D5F7AE1D299160D400C75A81 /* ProfileInfo */,
 				D589000129795A0500541D18 /* Common */,
 				D589FFFE297959DF00541D18 /* UserStore */,
 				D589FFF52979593300541D18 /* Login */,
