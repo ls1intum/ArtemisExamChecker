@@ -14,15 +14,23 @@ import APIClient
 class ExamOverviewListViewModel: ObservableObject {
     
     @Published var exams: DataState<[Exam]> = .loading
+    @Published var username: DataState<String> = .loading
     
     init() {
         Task {
             await getExams()
         }
+        Task {
+            await getAccount()
+        }
     }
     
     func getExams() async {
         exams = await ExamServiceFactory.shared.getAllExams()
+    }
+
+    func getAccount() async {
+//        username = .done(response: "ga48lug")
     }
     
     func logout() {

@@ -53,14 +53,18 @@ struct ExamOverviewList: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu(content: {
-                        Text("ga48lug")
+                        DataStateView(data: $viewModel.username) { username in
+                            Text(username)
+                        }
                         Button("Logout") {
                             viewModel.logout()
                         }
                     }, label: {
                         HStack(spacing: 4) {
                             Image(systemName: "person.fill")
-                            Text("ga48lug")
+                            DataStateView(data: $viewModel.username) { username in
+                                Text(username)
+                            }
                             Image(systemName: "arrowtriangle.down.fill")
                                 .scaleEffect(0.3)
                         }
