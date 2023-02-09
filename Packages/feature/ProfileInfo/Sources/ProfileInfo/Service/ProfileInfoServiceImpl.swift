@@ -10,7 +10,6 @@ import APIClient
 import Common
 
 class ProfileInfoServiceImpl: ProfileInfoService {
-
     private let client = APIClient()
 
     struct GetProfileInfoRequest: APIRequest {

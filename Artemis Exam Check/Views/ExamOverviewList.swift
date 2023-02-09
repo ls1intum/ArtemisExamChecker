@@ -41,16 +41,32 @@ struct ExamOverviewList: View {
                         await viewModel.getExams()
                     }
                 }
-                Spacer()
-                
-                Button("Logout") {
-                    viewModel.logout()
-                }.buttonStyle(GrowingButton())
             }
+            .padding(.top, 12)
             .navigationDestination(for: Exam.self) { exam in
                 StudentListView(exam: exam)
             }
             .navigationTitle("Exam-Overview")
+            .toolbarBackground(Color.blue, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Menu(content: {
+                        Text("ga48lug")
+                        Button("Logout") {
+                            viewModel.logout()
+                        }
+                    }, label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "person.fill")
+                            Text("ga48lug")
+                            Image(systemName: "arrowtriangle.down.fill")
+                                .scaleEffect(0.3)
+                        }
+                    })
+                }
+            }
         }
     }
 }

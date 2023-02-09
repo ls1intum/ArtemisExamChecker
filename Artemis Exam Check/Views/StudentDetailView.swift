@@ -23,6 +23,7 @@ struct StudentDetailView: View {
 
     @State var showSeatingEdit = false
     @State var showDidNotCompleteDialog = false
+    @State var showDidNotCompleteDialogNavigationBar = false
     @State var isSaving = false
     @State var showErrorAlert = false
     @State var error: UserFacingError? = nil {
@@ -30,6 +31,7 @@ struct StudentDetailView: View {
             showErrorAlert = error != nil
         }
     }
+    @State var isScrollingEnabled = true
     
     @Binding var student: ExamUser
     @Binding var hasUnsavedChanges: Bool
@@ -60,100 +62,180 @@ struct StudentDetailView: View {
     }
     
     var body: some View {
-        VStack(spacing: 8) {
-            HStack {
-                AsyncImage(
-                    url: student.imageURL,
-                    content: { image in
-                        image.resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 300, height: 200)
-                            .cornerRadius(16)
-                    },
-                    placeholder: {
-                        ProgressView()
-                            .frame(width: 300, height: 200)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .stroke(.gray)
-                            )
-                    }
-                )
-                
-                VStack {
-                    StudentDetailCell(description: "Name", value: student.user.name)
-                    StudentDetailCell(description: "Matriculation Nr.", value: student.user.visibleRegistrationNumber)
-                    StudentDetailCell(description: "Artemis Username", value: student.user.login)
-                    HStack {
-                        VStack {
-                            StudentSeatingDetailCell(description: "Room", value: student.plannedRoom, actualValue: $actualRoom, showActualValue: $showSeatingEdit)
-                            StudentSeatingDetailCell(description: "Seat", value: student.plannedSeat, actualValue: $actualSeat, showActualValue: $showSeatingEdit)
-                        }
-                        Button(action: { showSeatingEdit.toggle() }) {
-                            Image(systemName: "pencil")
-                                .imageScale(.large)
-                        }.padding(.leading, 8)
-                    }
-                }
-                    .padding(.leading, 32)
-                    .animation(.easeInOut, value: showSeatingEdit)
-            }
-            
-            VStack {
-                Toggle("Image is correct:", isOn: $didCheckImage)
-                Toggle("Name is correct:", isOn: $didCheckName)
-                Toggle("Artemis Username is correct:", isOn: $didCheckLogin)
-                Toggle("Matriculation Number is correct:", isOn: $didCheckRegistrationNumber)
-            }.padding(.vertical, 16)
-            
-            HStack(alignment: .bottom) {
-                Group {
-                    if showSigningImage {
-                        AsyncImage(url: student.signingImageURL,
-                                   content: { image in
+        ScrollView {
+            VStack(spacing: 8) {
+                HStack {
+                    AsyncImage(url: student.imageURL) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .frame(width: 200, height: 200)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(.gray)
+                                )
+                        case .success(let image):
                             image
                                 .resizable()
-                                .scaledToFit()
-                        }, placeholder: {
-                            ProgressView()
-                        }).frame(minHeight: 200)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 200, height: 200)
+                                .cornerRadius(16)
+                        case .failure:
+                            VStack {
+                                Image(systemName: "person.fill")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .cornerRadius(16)
+                                Text("The image could not be loaded :(")
+                                    .font(.caption)
+                                    .foregroundColor(.red)
+                            }.frame(width: 200, height: 200)
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
+
+                    VStack(spacing: 12) {
+                        StudentDetailCell(description: "Name", value: student.user.name)
+                        StudentDetailCell(description: "Matriculation Nr.", value: student.user.visibleRegistrationNumber)
+                        StudentDetailCell(description: "Artemis Username", value: student.user.login)
+                        HStack {
+                            VStack(spacing: 12) {
+                                StudentSeatingDetailCell(description: "Room", value: student.plannedRoom, actualValue: $actualRoom, showActualValue: $showSeatingEdit)
+                                StudentSeatingDetailCell(description: "Seat", value: student.plannedSeat, actualValue: $actualSeat, showActualValue: $showSeatingEdit)
+                            }
+                            Button(action: { showSeatingEdit.toggle() }) {
+                                Image(systemName: "pencil")
+                                    .imageScale(.large)
+                            }.padding(.leading, 8)
+                        }
+                    }
+                    .padding(.leading, 32)
+                    .animation(.easeInOut, value: showSeatingEdit)
+                }
+
+                VStack {
+                    Toggle("Image is correct:", isOn: $didCheckImage)
+                    Toggle("Name is correct:", isOn: $didCheckName)
+                    Toggle("Artemis Username is correct:", isOn: $didCheckLogin)
+                    Toggle("Matriculation Number is correct:", isOn: $didCheckRegistrationNumber)
+                }.padding(.vertical, 16)
+
+
+                Group {
+                    if showSigningImage {
+                        AsyncImage(url: student.signingImageURL) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                            case .success(let image):
+                                HStack(alignment: .bottom) {
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                    VStack(spacing: 32) {
+                                        Button(action: {
+                                            isScrollingEnabled.toggle()
+                                        }) {
+                                            Image(systemName: "arrow.up.and.down.square")
+                                                .imageScale(.large)
+                                                .foregroundColor(isScrollingEnabled ? Color.blue : Color.gray)
+                                        }
+                                        Button(action: {
+                                            if student.signingImageURL != nil {
+                                                student.signingImagePath = nil
+                                                showSigningImage = false
+                                            }
+                                            canvasView.drawing = PKDrawing()
+                                        }) {
+                                            Image(systemName: "trash.fill")
+                                                .imageScale(.large)
+                                                .foregroundColor(.red)
+                                        }
+                                    }
+                                }
+                            case .failure:
+                                HStack(alignment: .bottom) {
+                                    VStack {
+                                        Image(systemName: "signature")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .foregroundColor(.red)
+                                        Text("The signature could not be loaded :(")
+                                            .font(.caption)
+                                            .foregroundColor(.red)
+                                    }
+                                    VStack(spacing: 32) {
+                                        Button(action: {
+                                            isScrollingEnabled.toggle()
+                                        }) {
+                                            Image(systemName: "arrow.up.and.down.square")
+                                                .imageScale(.large)
+                                                .foregroundColor(isScrollingEnabled ? Color.blue : Color.gray)
+                                        }
+                                        Button(action: {
+                                            if student.signingImageURL != nil {
+                                                student.signingImagePath = nil
+                                                showSigningImage = false
+                                            }
+                                            canvasView.drawing = PKDrawing()
+                                        }) {
+                                            Image(systemName: "trash.fill")
+                                                .imageScale(.large)
+                                                .foregroundColor(.red)
+                                        }
+                                    }
+                                }
+                            @unknown default:
+                                EmptyView()
+                            }
+                        }.frame(height: 200)
+//                            .frame(height: 200, minWidth: 300)
                     } else {
-                        CanvasView(canvasView: $canvasView)
-                            .frame(minHeight: 200)
-                            .border(Color(UIColor.label))
+                        HStack(alignment: .bottom) {
+                            CanvasView(canvasView: $canvasView)
+                                .frame(minHeight: 200)
+                                .border(Color(UIColor.label))
+                            VStack(spacing: 32) {
+                                Button(action: {
+                                    isScrollingEnabled.toggle()
+                                }) {
+                                    Image(systemName: "arrow.up.and.down.square")
+                                        .imageScale(.large)
+                                        .foregroundColor(isScrollingEnabled ? Color.blue : Color.gray)
+                                }
+                                Button(action: {
+                                    canvasView.drawing = PKDrawing()
+                                }) {
+                                    Image(systemName: "trash.fill")
+                                        .imageScale(.large)
+                                        .foregroundColor(.red)
+                                }
+                            }
+                        }
                     }
                 }
-                
-                Button(action: {
-                    if student.signingImageURL != nil {
-                        student.signingImagePath = nil
-                        showSigningImage = false
+
+                Button("Save") {
+                    saveStudent()
+                }
+                .disabled(!hasUnsavedChanges)
+                .buttonStyle(GrowingButton())
+                .padding(16)
+                .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
+                    Button("Yes, I want to continue.", role: .destructive) {
+                        saveStudent(force: true)
                     }
-                    canvasView.drawing = PKDrawing()
-                }) {
-                    Image(systemName: "trash.fill")
-                        .imageScale(.large)
-                        .foregroundColor(.red)
+                } message: {
+                    Text("You did not fill out all requiered fields. Do you still want to proceed?")
                 }
+                .alert(isPresented: $showErrorAlert, error: error, actions: {})
             }
-            
-            Button("Save") {
-                saveStudent()
-            }
-            .buttonStyle(GrowingButton())
-            .padding(16)
-            .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
-                Button("Yes, I want to continue.", role: .destructive) {
-                    saveStudent(force: true)
-                }
-            } message: {
-                Text("You did not fill out all requiered fields. Do you still want to proceed?")
-            }
-            .alert(isPresented: $showErrorAlert, error: error, actions: {})
+                .padding(32)
         }
+            .scrollDisabled(!isScrollingEnabled)
             .loadingIndicator(isLoading: $isSaving)
-            .padding(32)
-            .onChange(of: canvasView) { _ in
+            .onChange(of: canvasView.drawing) { _ in
                 hasUnsavedChanges = true
             }
             .onChange(of: didCheckImage) { _ in
@@ -174,11 +256,31 @@ struct StudentDetailView: View {
             .onChange(of: actualSeat) { _ in
                 hasUnsavedChanges = true
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") {
+                        saveStudent(isNavigationBarButton: true)
+                    }
+                    .disabled(!hasUnsavedChanges)
+                    .confirmationDialog("", isPresented: $showDidNotCompleteDialogNavigationBar) {
+                        Button("Yes, I want to continue.", role: .destructive) {
+                            saveStudent(force: true)
+                        }
+                    } message: {
+                        Text("You did not fill out all requiered fields. Do you still want to proceed?")
+                    }
+                }
+            }
+
     }
     
-    private func saveStudent(force: Bool = false) {
+    private func saveStudent(force: Bool = false, isNavigationBarButton: Bool = false) {
         if !force && (!didCheckName || !didCheckLogin || !didCheckImage || !didCheckRegistrationNumber || (canvasView.drawing.bounds.isEmpty && student.signingImageURL == nil)) {
-            showDidNotCompleteDialog = true
+            if isNavigationBarButton {
+                showDidNotCompleteDialogNavigationBar = true
+            } else {
+                showDidNotCompleteDialog = true
+            }
             return
         }
         

@@ -54,7 +54,7 @@ struct StudentListView: View {
                                 VStack(alignment: .leading) {
                                     Text(student.user.name)
                                         .bold()
-                                    Text("Seat: \(student.plannedSeat)")
+                                    Text("Seat: \(student.actualSeat ?? student.plannedSeat)")
                                 }
                                 Spacer()
                                 if student.isStudentDone {
@@ -89,6 +89,9 @@ struct StudentListView: View {
         })
         .navigationBarTitle(viewModel.exam.value?.title ?? "Loading...")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.blue, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .alert("Unsaved Changes", isPresented: $unsavedUserAlert, actions: {
             Button(role: .destructive, action: {
                 selectedStudent = nextSelectedStudent
