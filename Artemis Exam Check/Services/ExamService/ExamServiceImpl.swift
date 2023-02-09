@@ -15,18 +15,24 @@ class ExamServiceImpl: ExamService {
     
     struct GetAllExamsRequest: APIRequest {
         typealias Response = [Exam]
-        
+
+        var from: Date
+        var to: Date
+
         var method: HTTPMethod {
             return .get
         }
         
         var resourceName: String {
-            return "api/exams/all"
+            return "api/exams/all?from=\(from.iso8601)&to=\(to.iso8601)"
         }
     }
-    
+
+    // TODO: implement params
     func getAllExams() async -> DataState<[Exam]> {
-        let result = await client.sendRequest(GetAllExamsRequest())
+        let from = Calendar.current.date(byAdding: .day, value: -17, to: .now)! // TODO: change to adaptabel 
+        let to = Calendar.current.date(byAdding: .day, value: 17, to: .now)!
+        let result = await client.sendRequest(GetAllExamsRequest(from: from, to: to))
         
         switch result {
         case .success((let exams, _)):

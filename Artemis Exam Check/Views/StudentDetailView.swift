@@ -108,7 +108,7 @@ struct StudentDetailView: View {
                                 Image(systemName: "pencil")
                                     .imageScale(.large)
                             }.padding(.leading, 8)
-                        }
+                        }.padding(.top, 12)
                     }
                     .padding(.leading, 32)
                     .animation(.easeInOut, value: showSeatingEdit)
@@ -156,6 +156,7 @@ struct StudentDetailView: View {
                                 }
                             case .failure:
                                 HStack(alignment: .bottom) {
+                                    Spacer()
                                     VStack {
                                         Image(systemName: "signature")
                                             .resizable()
@@ -165,6 +166,7 @@ struct StudentDetailView: View {
                                             .font(.caption)
                                             .foregroundColor(.red)
                                     }
+                                    Spacer()
                                     VStack(spacing: 32) {
                                         Button(action: {
                                             isScrollingEnabled.toggle()
