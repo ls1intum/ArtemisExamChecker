@@ -55,18 +55,14 @@ public struct LoginView: View {
                 }
             })
             .frame(maxWidth: .infinity)
-            .disabled(viewModel.username.isEmpty || viewModel.password.isEmpty)
+            .disabled(viewModel.username.isEmpty || viewModel.password.count < 8)
             .buttonStyle(.borderedProminent)
 
             Spacer()
         }
         .loadingIndicator(isLoading: $viewModel.isLoading)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .alert(viewModel.error?.description ?? "Login failed", isPresented: $viewModel.showError) {
-            Button("OK", role: .cancel) {
-                viewModel.error = nil
-            }
-        }
+        .alert(isPresented: $viewModel.showError, error: viewModel.error, actions: {})
         .alert(isPresented: $viewModel.loginExpired) {
             Alert(title: Text("Your session expired. Please login again!"),
                   dismissButton: .default(Text("OK"),

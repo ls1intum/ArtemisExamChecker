@@ -35,7 +35,6 @@ class StudentListViewModel: ObservableObject {
             sortStudents()
         }
     }
-    @Published var saveStudentNetworkResponse: NetworkResponse = .notStarted
     
     @Published var lectureHalls: [String] = []
     @Published var selectedStudents: [ExamUser] = []

@@ -173,7 +173,7 @@ struct StudentDetailView: View {
                             switch signingImageLoadingStatus {
                             case .notStarted, .loading:
                                 EmptyView()
-                            case .success, .failure, .userFacingFailure:
+                            case .success, .failure:
                                 PencilSideButtons(isScrollingEnabled: $isScrollingEnabled,
                                                   student: $student,
                                                   showSigningImage: $showSigningImage,

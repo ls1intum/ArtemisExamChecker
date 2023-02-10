@@ -7,6 +7,5 @@ public enum NetworkResponse {
     case notStarted
     case loading
     case success
-    case userFacingFailure(error: UserFacingError)
     case failure(error: Error)
 }

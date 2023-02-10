@@ -94,18 +94,18 @@ public extension DataState {
 
 public extension NetworkResponse {
     init(error: APIClientError) {
-        switch error {
-        case .jhipsterError(let userFacingError):
-            self = .userFacingFailure(error: userFacingError)
-        default:
-            self = .failure(error: error)
-        }
+        self = .failure(error: error)
     }
 }
 
 public extension UserFacingError {
     init(error: APIClientError) {
-        self.init(title: error.title)
-        self.message = error.message
+        switch error {
+        case .jhipsterError(let error):
+            self = error
+        default:
+            self.init(title: error.title)
+            self.message = error.message
+        }
     }
 }
