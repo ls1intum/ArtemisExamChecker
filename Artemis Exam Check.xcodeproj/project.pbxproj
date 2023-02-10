@@ -29,6 +29,7 @@
 		D589000529795A5C00541D18 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D589000429795A5C00541D18 /* ContentViewModel.swift */; };
 		D589FFFB297959D800541D18 /* APIClient in Frameworks */ = {isa = PBXBuildFile; productRef = D589FFFA297959D800541D18 /* APIClient */; };
 		D589FFFD297959D800541D18 /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = D589FFFC297959D800541D18 /* Login */; };
+		D5EED1122996651300B2C047 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D5EED1112996651300B2C047 /* Kingfisher */; };
 		D5F7AE202996498000C75A81 /* Account in Frameworks */ = {isa = PBXBuildFile; productRef = D5F7AE1F2996498000C75A81 /* Account */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5EED1122996651300B2C047 /* Kingfisher in Frameworks */,
 				D5890000297959FE00541D18 /* UserStore in Frameworks */,
 				D5F7AE202996498000C75A81 /* Account in Frameworks */,
 				D589FFFB297959D800541D18 /* APIClient in Frameworks */,
@@ -236,6 +238,7 @@
 				D589FFFF297959FE00541D18 /* UserStore */,
 				D589000229795A2300541D18 /* Common */,
 				D5F7AE1F2996498000C75A81 /* Account */,
+				D5EED1112996651300B2C047 /* Kingfisher */,
 			);
 			productName = "Artemis Exam Check";
 			productReference = D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */;
@@ -268,6 +271,7 @@
 			packageReferences = (
 				D55C086D2975BDEA00DC6B80 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
 				D55C08832978525E00DC6B80 /* XCRemoteSwiftPackageReference "ReSwift" */,
+				D5EED1102996651300B2C047 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = D55C08322975A0E800DC6B80 /* Products */;
 			projectDirPath = "";
@@ -559,6 +563,14 @@
 				minimumVersion = 6.0.0;
 			};
 		};
+		D5EED1102996651300B2C047 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -577,6 +589,11 @@
 		D589FFFF297959FE00541D18 /* UserStore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = UserStore;
+		};
+		D5EED1112996651300B2C047 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5EED1102996651300B2C047 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		D5F7AE1F2996498000C75A81 /* Account */ = {
 			isa = XCSwiftPackageProductDependency;

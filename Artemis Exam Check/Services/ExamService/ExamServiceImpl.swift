@@ -16,21 +16,17 @@ class ExamServiceImpl: ExamService {
     struct GetAllExamsRequest: APIRequest {
         typealias Response = [Exam]
 
-        var from: Date
-        var to: Date
-
         var method: HTTPMethod {
             return .get
         }
         
         var resourceName: String {
-            return "api/exams/all?from=\(from.iso8601)&to=\(to.iso8601)"
+            return "api/exams/active"
         }
     }
 
-    func getAllExams(from: Date, to: Date) async -> DataState<[Exam]> {
-        let result = await client.sendRequest(GetAllExamsRequest(from: from.startOfDay,
-                                                                 to: to.endOfDay))
+    func getActiveExams() async -> DataState<[Exam]> {
+        let result = await client.sendRequest(GetAllExamsRequest())
         
         switch result {
         case .success((let exams, _)):

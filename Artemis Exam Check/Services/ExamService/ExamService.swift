@@ -9,7 +9,7 @@ import Foundation
 import Common
 
 protocol ExamService {
-    func getAllExams(from: Date, to: Date) async -> DataState<[Exam]>
+    func getActiveExams() async -> DataState<[Exam]>
     func getFullExam(for courseId: Int, and examId: Int) async -> DataState<Exam>
 }
 

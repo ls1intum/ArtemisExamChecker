@@ -8,6 +8,7 @@
 import SwiftUI
 import Common
 import PencilKit
+import Kingfisher
 
 struct StudentDetailView: View {
     
@@ -32,6 +33,8 @@ struct StudentDetailView: View {
         }
     }
     @State var isScrollingEnabled = true
+
+    @State var imageLoadingError = false
     
     @Binding var student: ExamUser
     @Binding var hasUnsavedChanges: Bool
@@ -40,6 +43,14 @@ struct StudentDetailView: View {
     
     let examId: Int
     let courseId: Int
+
+    var requestModifier = AnyModifier { request in
+        var r = request
+        if let cookies = URLSession.shared.authenticationCookie {
+            r.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookies)
+        }
+        return r
+    }
     
     init(examId: Int,
          courseId: Int,
@@ -65,35 +76,44 @@ struct StudentDetailView: View {
         ScrollView {
             VStack(spacing: 8) {
                 HStack {
-                    AsyncImage(url: student.imageURL) { phase in
-                        switch phase {
-                        case .empty:
-                            ProgressView()
-                                .frame(width: 200, height: 200)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .stroke(.gray)
-                                )
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 200, height: 200)
-                                .cornerRadius(16)
-                        case .failure:
-                            VStack {
-                                Image(systemName: "person.fill")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .cornerRadius(16)
-                                Text("The image could not be loaded :(")
-                                    .font(.caption)
-                                    .foregroundColor(.red)
-                            }.frame(width: 200, height: 200)
-                        @unknown default:
-                            EmptyView()
+                    KFImage.url(student.imageURL)
+                        .requestModifier(requestModifier)
+                        .placeholder {
+                            if imageLoadingError {
+                                ProgressView()
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(.gray)
+                                    )
+                            } else {
+                                VStack {
+                                    Image(systemName: "person.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .cornerRadius(16)
+                                        .frame(width: 100, height: 100)
+                                    Text("The image could not be loaded :(")
+                                        .font(.caption)
+                                        .foregroundColor(.red)
+                                }
+                            }
                         }
-                    }
+                        .onFailure { result in
+                            imageLoadingError = true
+                        }.onSuccess { reuslt in
+                            imageLoadingError = false
+                        }
+                        .cancelOnDisappear(true)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 200, height: 200)
+                        .cornerRadius(16)
+
+
+//                        }.onFailure { result in
+//                            print("KF: \(result)")
+//                            .frame(width: 200, height: 200)
+//                        }
 
                     VStack(spacing: 12) {
                         StudentDetailCell(description: "Name", value: student.user.name)
@@ -369,5 +389,12 @@ struct StudentSeatingDetailCell: View {
                     .frame(width: 150)
             }
         }
+    }
+}
+
+extension URLSession {
+    var authenticationCookie: [HTTPCookie]? {
+        let cookies = HTTPCookieStorage.shared.cookies
+        return cookies
     }
 }
