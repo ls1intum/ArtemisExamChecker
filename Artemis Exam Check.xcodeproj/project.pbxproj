@@ -29,6 +29,7 @@
 		D589000529795A5C00541D18 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D589000429795A5C00541D18 /* ContentViewModel.swift */; };
 		D589FFFB297959D800541D18 /* APIClient in Frameworks */ = {isa = PBXBuildFile; productRef = D589FFFA297959D800541D18 /* APIClient */; };
 		D589FFFD297959D800541D18 /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = D589FFFC297959D800541D18 /* Login */; };
+		D5F7AE202996498000C75A81 /* Account in Frameworks */ = {isa = PBXBuildFile; productRef = D5F7AE1F2996498000C75A81 /* Account */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		D589FFFE297959DF00541D18 /* UserStore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = UserStore; path = core/UserStore; sourceTree = "<group>"; };
 		D5CC96DC29800A62006D8653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5F7AE1D299160D400C75A81 /* ProfileInfo */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ProfileInfo; path = feature/ProfileInfo; sourceTree = "<group>"; };
+		D5F7AE1E2996428000C75A81 /* Account */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Account; path = feature/Account; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5890000297959FE00541D18 /* UserStore in Frameworks */,
+				D5F7AE202996498000C75A81 /* Account in Frameworks */,
 				D589FFFB297959D800541D18 /* APIClient in Frameworks */,
 				D589FFFD297959D800541D18 /* Login in Frameworks */,
 				D589000329795A2300541D18 /* Common in Frameworks */,
@@ -185,6 +188,7 @@
 		D55C088D297956B200DC6B80 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				D5F7AE1E2996428000C75A81 /* Account */,
 				D5F7AE1D299160D400C75A81 /* ProfileInfo */,
 				D589000129795A0500541D18 /* Common */,
 				D589FFFE297959DF00541D18 /* UserStore */,
@@ -231,6 +235,7 @@
 				D589FFFC297959D800541D18 /* Login */,
 				D589FFFF297959FE00541D18 /* UserStore */,
 				D589000229795A2300541D18 /* Common */,
+				D5F7AE1F2996498000C75A81 /* Account */,
 			);
 			productName = "Artemis Exam Check";
 			productReference = D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */;
@@ -572,6 +577,10 @@
 		D589FFFF297959FE00541D18 /* UserStore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = UserStore;
+		};
+		D5F7AE1F2996498000C75A81 /* Account */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Account;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

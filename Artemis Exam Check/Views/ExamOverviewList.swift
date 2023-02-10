@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Common
+import Account
 
 struct ExamOverviewList: View {
     
@@ -63,27 +64,7 @@ struct ExamOverviewList: View {
             .toolbarBackground(Color.blue, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu(content: {
-                        DataStateView(data: $viewModel.username) { username in
-                            Text(username)
-                        }
-                        Button("Logout") {
-                            viewModel.logout()
-                        }
-                    }, label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "person.fill")
-                            DataStateView(data: $viewModel.username) { username in
-                                Text(username)
-                            }
-                            Image(systemName: "arrowtriangle.down.fill")
-                                .scaleEffect(0.3)
-                        }
-                    })
-                }
-            }
+            .accountMenu()
         }
     }
 }

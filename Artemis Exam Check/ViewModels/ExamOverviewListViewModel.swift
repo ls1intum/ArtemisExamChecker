@@ -13,8 +13,7 @@ import APIClient
 @MainActor
 class ExamOverviewListViewModel: ObservableObject {
     
-    @Published var exams: DataState<[Exam]> = .loading
-    @Published var username: DataState<String> = .loading
+    @Published var exams: DataState<[Exam]> = .loading    
 
     @Published var fromDate = Calendar.current.date(byAdding: .day, value: -7, to: .now)! {
         didSet {
@@ -35,20 +34,9 @@ class ExamOverviewListViewModel: ObservableObject {
         Task {
             await getExams()
         }
-        Task {
-            await getAccount()
-        }
     }
     
     func getExams() async {
         exams = await ExamServiceFactory.shared.getAllExams(from: fromDate, to: toDate)
-    }
-
-    func getAccount() async {
-//        username = .done(response: "ga48lug") // TODO: implement Account Service
-    }
-    
-    func logout() {
-        APIClient().perfomLogout()
     }
 }
