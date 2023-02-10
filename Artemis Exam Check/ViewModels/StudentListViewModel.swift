@@ -117,9 +117,9 @@ class StudentListViewModel: ObservableObject {
         selectedStudents = selectedStudents.sorted {
             switch sortingDirection {
             case .bottomToTop:
-                return $0.plannedSeat < $1.plannedSeat
+                return $0.actualSeat ?? $0.plannedSeat < $1.actualSeat ?? $0.plannedSeat
             case .topToBottom:
-                return $0.plannedSeat > $1.plannedSeat
+                return $0.actualSeat ?? $0.plannedSeat > $1.actualSeat ?? $0.plannedSeat
             }
         }
     }
