@@ -37,6 +37,7 @@ class ExamOverviewListViewModel: ObservableObject {
     }
     
     func getExams() async {
+        exams = .loading
         exams = await ExamServiceFactory.shared.getActiveExams()
     }
 }

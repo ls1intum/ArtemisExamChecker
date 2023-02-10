@@ -72,7 +72,7 @@ class LoginViewModel: ObservableObject {
         UserSession.shared.setTokenExpired(expired: false)
     }
 
-    private func getProfileInfo() async {
+    func getProfileInfo() async {
         isLoading = true
         let response = await ProfileInfoServiceFactory.shared.getProfileInfo()
         isLoading = false

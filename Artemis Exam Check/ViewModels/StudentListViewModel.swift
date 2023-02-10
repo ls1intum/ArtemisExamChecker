@@ -70,6 +70,7 @@ class StudentListViewModel: ObservableObject {
     }
     
     func getExam() async {
+        exam = .loading
         exam = await ExamServiceFactory.shared.getFullExam(for: courseId, and: examId)
     }
     

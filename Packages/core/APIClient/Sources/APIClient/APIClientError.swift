@@ -96,7 +96,7 @@ public extension NetworkResponse {
     init(error: APIClientError) {
         switch error {
         case .jhipsterError(let userFacingError):
-            self = .failure(userFacingError: userFacingError)
+            self = .userFacingFailure(error: userFacingError)
         default:
             self = .failure(error: error)
         }

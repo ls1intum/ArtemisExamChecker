@@ -13,7 +13,7 @@ struct AccountNavigationBarMenuView: View {
 
     var body: some View {
         Menu(content: {
-            DataStateView(data: $viewModel.account) { account in
+            DataStateView(data: $viewModel.account, retryHandler: viewModel.getAccount) { account in
                 Text(account.login)
             }
             Button("Logout") {
@@ -22,7 +22,7 @@ struct AccountNavigationBarMenuView: View {
         }, label: {
             HStack(spacing: 4) {
                 Image(systemName: "person.fill")
-                DataStateView(data: $viewModel.account) { account in
+                DataStateView(data: $viewModel.account, retryHandler: viewModel.getAccount) { account in
                     Text(account.login)
                 }
                 Image(systemName: "arrowtriangle.down.fill")

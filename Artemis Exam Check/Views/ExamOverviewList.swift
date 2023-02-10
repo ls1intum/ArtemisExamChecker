@@ -24,7 +24,7 @@ struct ExamOverviewList: View {
                     Spacer()
                 }.padding(.horizontal, 16)
                 Spacer()
-                DataStateView(data: $viewModel.exams) { exams in
+                DataStateView(data: $viewModel.exams, retryHandler: viewModel.getExams) { exams in
                     if exams.isEmpty {
                         Text("There are no exams available to you in the selected time period!")
                         Spacer()

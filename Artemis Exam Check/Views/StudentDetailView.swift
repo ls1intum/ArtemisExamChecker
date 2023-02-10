@@ -35,6 +35,7 @@ struct StudentDetailView: View {
     @State var isScrollingEnabled = true
 
     @State var imageLoadingError = false
+    @State var signingImageLoadingStatus = NetworkResponse.loading
     
     @Binding var student: ExamUser
     @Binding var hasUnsavedChanges: Bool
@@ -76,45 +77,38 @@ struct StudentDetailView: View {
         ScrollView {
             VStack(spacing: 8) {
                 HStack {
-                    KFImage.url(student.imageURL)
-                        .requestModifier(requestModifier)
-                        .placeholder {
-                            if imageLoadingError {
+                    if imageLoadingError {
+                        VStack {
+                            Image(systemName: "person.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .cornerRadius(16)
+                                .frame(width: 100, height: 100)
+                            Text("The image could not be loaded :(")
+                                .font(.caption)
+                                .foregroundColor(.red)
+                        }.frame(width: 200, height: 200)
+                    } else {
+                        KFImage.url(student.imageURL)
+                            .requestModifier(requestModifier)
+                            .placeholder {
                                 ProgressView()
+                                    .frame(width: 200, height: 200)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 16)
                                             .stroke(.gray)
                                     )
-                            } else {
-                                VStack {
-                                    Image(systemName: "person.fill")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .cornerRadius(16)
-                                        .frame(width: 100, height: 100)
-                                    Text("The image could not be loaded :(")
-                                        .font(.caption)
-                                        .foregroundColor(.red)
-                                }
                             }
-                        }
-                        .onFailure { result in
-                            imageLoadingError = true
-                        }.onSuccess { reuslt in
-                            imageLoadingError = false
-                        }
-                        .cancelOnDisappear(true)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 200, height: 200)
-                        .cornerRadius(16)
-
-
-//                        }.onFailure { result in
-//                            print("KF: \(result)")
-//                            .frame(width: 200, height: 200)
-//                        }
-
+                            .onFailure { result in
+                                imageLoadingError = true
+                            }.onSuccess { reuslt in
+                                imageLoadingError = false
+                            }
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 200, height: 200)
+                            .cornerRadius(16)
+                    }
                     VStack(spacing: 12) {
                         StudentDetailCell(description: "Name", value: student.user.name)
                         StudentDetailCell(description: "Matriculation Nr.", value: student.user.visibleRegistrationNumber)
@@ -144,38 +138,9 @@ struct StudentDetailView: View {
 
                 Group {
                     if showSigningImage {
-                        AsyncImage(url: student.signingImageURL) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                            case .success(let image):
-                                HStack(alignment: .bottom) {
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                    VStack(spacing: 32) {
-                                        Button(action: {
-                                            isScrollingEnabled.toggle()
-                                        }) {
-                                            Image(systemName: "hand.draw.fill")
-                                                .imageScale(.large)
-                                                .foregroundColor(isScrollingEnabled ? Color.gray : Color.blue)
-                                        }
-                                        Button(action: {
-                                            if student.signingImageURL != nil {
-                                                student.signingImagePath = nil
-                                                showSigningImage = false
-                                            }
-                                            canvasView.drawing = PKDrawing()
-                                        }) {
-                                            Image(systemName: "trash.fill")
-                                                .imageScale(.large)
-                                                .foregroundColor(.red)
-                                        }
-                                    }
-                                }
-                            case .failure:
-                                HStack(alignment: .bottom) {
+                        HStack(alignment: .bottom) {
+                            if case .failure = signingImageLoadingStatus {
+                                HStack {
                                     Spacer()
                                     VStack {
                                         Image(systemName: "signature")
@@ -185,34 +150,36 @@ struct StudentDetailView: View {
                                         Text("The signature could not be loaded :(")
                                             .font(.caption)
                                             .foregroundColor(.red)
-                                    }
+                                    }.frame(height: 200)
                                     Spacer()
-                                    VStack(spacing: 32) {
-                                        Button(action: {
-                                            isScrollingEnabled.toggle()
-                                        }) {
-                                            Image(systemName: "hand.draw.fill")
-                                                .imageScale(.large)
-                                                .foregroundColor(isScrollingEnabled ? Color.gray : Color.blue)
-                                        }
-                                        Button(action: {
-                                            if student.signingImageURL != nil {
-                                                student.signingImagePath = nil
-                                                showSigningImage = false
-                                            }
-                                            canvasView.drawing = PKDrawing()
-                                        }) {
-                                            Image(systemName: "trash.fill")
-                                                .imageScale(.large)
-                                                .foregroundColor(.red)
-                                        }
-                                    }
                                 }
-                            @unknown default:
-                                EmptyView()
+                            } else {
+                                KFImage.url(student.signingImageURL)
+                                    .requestModifier(requestModifier)
+                                    .placeholder {
+                                        ProgressView()
+                                    }
+                                    .onFailure { result in
+                                        signingImageLoadingStatus = .failure(error: result)
+                                    }.onSuccess { _ in
+                                        signingImageLoadingStatus = .success
+                                    }.onProgress { _, _ in
+                                        signingImageLoadingStatus = .loading
+                                    }
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 200)
                             }
-                        }.frame(height: 200)
-//                            .frame(height: 200, minWidth: 300)
+                            switch signingImageLoadingStatus {
+                            case .notStarted, .loading:
+                                EmptyView()
+                            case .success, .failure, .userFacingFailure:
+                                PencilSideButtons(isScrollingEnabled: $isScrollingEnabled,
+                                                  student: $student,
+                                                  showSigningImage: $showSigningImage,
+                                                  canvasView: $canvasView)
+                            }
+                        }
                     } else {
                         HStack(alignment: .bottom) {
                             CanvasView(canvasView: $canvasView)
@@ -346,6 +313,37 @@ struct StudentDetailView: View {
         showSigningImage = student.signingImageURL != nil
         actualRoom = student.actualRoom ?? ""
         actualSeat = student.actualSeat ?? ""
+    }
+}
+
+struct PencilSideButtons: View {
+
+    @Binding var isScrollingEnabled: Bool
+    @Binding var student: ExamUser
+    @Binding var showSigningImage: Bool
+    @Binding var canvasView: PKCanvasView
+
+    var body: some View {
+        VStack(spacing: 32) {
+            Button(action: {
+                isScrollingEnabled.toggle()
+            }) {
+                Image(systemName: "hand.draw.fill")
+                    .imageScale(.large)
+                    .foregroundColor(isScrollingEnabled ? Color.gray : Color.blue)
+            }
+            Button(action: {
+                if student.signingImageURL != nil {
+                    student.signingImagePath = nil
+                    showSigningImage = false
+                }
+                canvasView.drawing = PKDrawing()
+            }) {
+                Image(systemName: "trash.fill")
+                    .imageScale(.large)
+                    .foregroundColor(.red)
+            }
+        }
     }
 }
 
