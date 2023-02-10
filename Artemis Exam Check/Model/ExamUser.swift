@@ -29,12 +29,12 @@ struct ExamUser: Identifiable, Codable {
     var studentImagePath: String?
     
     var signingImageURL: URL? {
-        guard let signingImagePath = signingImagePath else { return Config.baseEndpointUrl }
+        guard let signingImagePath = signingImagePath else { return nil }
         return URL(string: signingImagePath, relativeTo: Config.baseEndpointUrl)
     }
 
     var imageURL: URL? {
-        guard let studentImagePath = studentImagePath else { return Config.baseEndpointUrl }
+        guard let studentImagePath = studentImagePath else { return nil }
         return URL(string: studentImagePath, relativeTo: Config.baseEndpointUrl)
     }
 
