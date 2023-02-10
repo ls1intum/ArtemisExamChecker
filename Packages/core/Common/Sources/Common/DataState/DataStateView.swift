@@ -23,8 +23,16 @@ public struct DataStateView<T, Content: View>: View {
             case .loading:
                 ProgressView()
             case .failure(let error):
-                Text(error.description)
-                    .foregroundColor(.red)
+                VStack(spacing: 8) {
+                    Text(error.title)
+                        .font(.title)
+                        .foregroundColor(.red)
+                    if let message = error.message {
+                        Text(message)
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
+                }
             case .done(let result):
                 if let content = content {
                     content(result)

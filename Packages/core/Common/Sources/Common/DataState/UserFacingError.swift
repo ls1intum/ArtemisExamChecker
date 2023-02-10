@@ -20,9 +20,8 @@ public struct UserFacingError: Codable {
         return detail ?? message ?? title
     }
 
-    public init(error: Error) {
-        // TODO: add better error messages
-        title = error.localizedDescription
+    public init(title: String) {
+        self.title = title
     }
 }
 

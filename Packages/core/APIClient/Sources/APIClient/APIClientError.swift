@@ -18,12 +18,53 @@ public enum APIClientError: Error {
     case invalidURL
     case notHTTPResponse
     case wrongParameters
-    case noRedirectLinkPayment
     case other(message: String)
+
+    var title: String {
+        switch self {
+        case .jhipsterError:
+            return "J Hipster Error"
+        case .httpURLResponseError:
+            return "HTTP Response Error"
+        case .networkError:
+            return "Network Error"
+        case .decodingError:
+            return "Decoding Error"
+        case .encodingError:
+            return "Encoding Error"
+        case .imageCompressionFailed:
+            return "Image Compression Failed"
+        case .invalidURL:
+            return "Invalid URL"
+        case .notHTTPResponse:
+            return "Not a HTTP response"
+        case .wrongParameters:
+            return "Wrong Parameters"
+        case .other:
+            return "Error"
+        }
+    }
 
     var message: String {
         switch self {
-        case .other(message: let message): return message
+        case .other(let message):
+            return message
+        case .jhipsterError(let error):
+            return error.description
+        case .httpURLResponseError(_, let artemisError):
+            return artemisError?.description ?? localizedDescription
+        case .networkError(let error):
+            return error.localizedDescription
+        case .decodingError(let error, _):
+            guard let decodingError = error as? DecodingError else {
+                return error.localizedDescription
+            }
+            switch decodingError {
+            case .keyNotFound(_, let context):
+                return context.debugDescription
+            default:
+                return decodingError.failureReason ?? decodingError.localizedDescription
+            }
         default: return localizedDescription
         }
     }
@@ -59,5 +100,12 @@ public extension NetworkResponse {
         default:
             self = .failure(error: error)
         }
+    }
+}
+
+public extension UserFacingError {
+    init(error: APIClientError) {
+        self.init(title: error.title)
+        self.message = error.message
     }
 }

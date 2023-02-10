@@ -60,7 +60,7 @@ class LoginViewModel: ObservableObject {
                 }
             } else {
                 isLoading = false
-                self.error = UserFacingError(error: error)
+                self.error = UserFacingError(title: error.localizedDescription)
             }
         default:
             isLoading = false
