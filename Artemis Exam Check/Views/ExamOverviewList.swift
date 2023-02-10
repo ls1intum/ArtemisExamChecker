@@ -16,7 +16,7 @@ struct ExamOverviewList: View {
     var body: some View {
         NavigationStack {
             VStack {
-                DataStateView(data: $viewModel.exams, retryHandler: viewModel.getExams) { exams in
+                DataStateView(data: $viewModel.exams, retryHandler: { await viewModel.getExams() }) { exams in
                     if exams.isEmpty {
                         Text("There are no active exams (+-7days) available to you!")
                         Spacer()
@@ -43,7 +43,7 @@ struct ExamOverviewList: View {
                                 }
                             }
                         }.refreshable {
-                            await viewModel.getExams()
+                            await viewModel.getExams(showLoadingIndicator: false)
                         }
                     }
                 }

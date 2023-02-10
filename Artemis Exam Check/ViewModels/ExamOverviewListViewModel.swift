@@ -21,8 +21,10 @@ class ExamOverviewListViewModel: ObservableObject {
         }
     }
     
-    func getExams() async {
-        exams = .loading
+    func getExams(showLoadingIndicator: Bool = true) async {
+        if showLoadingIndicator {
+            exams = .loading
+        }
         exams = await ExamServiceFactory.shared.getActiveExams()
     }
 }
