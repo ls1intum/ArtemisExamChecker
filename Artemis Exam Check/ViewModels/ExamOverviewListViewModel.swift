@@ -13,7 +13,7 @@ import APIClient
 @MainActor
 class ExamOverviewListViewModel: ObservableObject {
     
-    @Published var exams: DataState<[Exam]> = .loading
+    @Published var exams: DataState<[Exam]> = .loading        
     
     init() {
         Task {
@@ -21,11 +21,10 @@ class ExamOverviewListViewModel: ObservableObject {
         }
     }
     
-    func getExams() async {
-        exams = await ExamServiceFactory.shared.getAllExams()
-    }
-    
-    func logout() {
-        APIClient().perfomLogout()
+    func getExams(showLoadingIndicator: Bool = true) async {
+        if showLoadingIndicator {
+            exams = .loading
+        }
+        exams = await ExamServiceFactory.shared.getActiveExams()
     }
 }

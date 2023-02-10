@@ -9,10 +9,9 @@ import Foundation
 import Common
 
 protocol ExamService {
-    func getAllExams() async -> DataState<[Exam]>
+    func getActiveExams() async -> DataState<[Exam]>
     func getFullExam(for courseId: Int, and examId: Int) async -> DataState<Exam>
 }
-
 
 enum ExamServiceFactory {
     

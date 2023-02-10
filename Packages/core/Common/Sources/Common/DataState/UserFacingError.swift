@@ -20,13 +20,20 @@ public struct UserFacingError: Codable {
         return detail ?? message ?? title
     }
 
-    public init(error: Error) {
-        title = error.localizedDescription
+    public init(title: String) {
+        self.title = title
     }
 }
 
 extension UserFacingError: LocalizedError {
     public var errorDescription: String? {
-        description
+        var description = title
+        if let message = message {
+            description += "\nMessage: \(message)"
+        }
+        if let detail = detail {
+            description += "\nDetail: \(detail)"
+        }
+        return description
     }
 }

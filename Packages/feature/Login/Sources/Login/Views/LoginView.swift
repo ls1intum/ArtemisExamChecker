@@ -25,8 +25,8 @@ public struct LoginView: View {
 
             if viewModel.captchaRequired {
                 //    "externalUserManagementWarning": "You have entered your password incorrectly too many times :-(</span><br />Please go to <a href='{{ url }}' target='_blank'>{{ name }}</a>, sign in with your account and solve the <a href='{{ url }}' target='_blank'>CAPTCHA</a>. After you have solved it, try to log in again here.",
-                DataStateView(data: $viewModel.externalUserManagementUrl) { externalUserManagementURL in
-                    DataStateView(data: $viewModel.externalUserManagementName) { externalUserManagementName in
+                DataStateView(data: $viewModel.externalUserManagementUrl, retryHandler: viewModel.getProfileInfo) { externalUserManagementURL in
+                    DataStateView(data: $viewModel.externalUserManagementName, retryHandler: viewModel.getProfileInfo) { externalUserManagementName in
                         VStack {
                             Text("You have entered your password incorrectly too many times :-(")
                             Text(.init("Please go to [\(externalUserManagementName)](\(externalUserManagementURL.absoluteString)), sign in with your account and solve the [CAPTCHA](\(externalUserManagementURL.absoluteString)). After you have solved it, try to log in again here."))
@@ -55,18 +55,14 @@ public struct LoginView: View {
                 }
             })
             .frame(maxWidth: .infinity)
-            .disabled(viewModel.username.isEmpty || viewModel.password.isEmpty)
+            .disabled(viewModel.username.isEmpty || viewModel.password.count < 8)
             .buttonStyle(.borderedProminent)
 
             Spacer()
         }
         .loadingIndicator(isLoading: $viewModel.isLoading)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .alert(viewModel.error?.description ?? "Login failed", isPresented: $viewModel.showError) {
-            Button("OK", role: .cancel) {
-                viewModel.error = nil
-            }
-        }
+        .alert(isPresented: $viewModel.showError, error: viewModel.error, actions: {})
         .alert(isPresented: $viewModel.loginExpired) {
             Alert(title: Text("Your session expired. Please login again!"),
                   dismissButton: .default(Text("OK"),

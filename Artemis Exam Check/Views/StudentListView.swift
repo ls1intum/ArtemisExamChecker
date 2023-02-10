@@ -23,7 +23,7 @@ struct StudentListView: View {
     
     var body: some View {
         NavigationSplitView(sidebar: {
-            DataStateView(data: $viewModel.exam) { _ in
+            DataStateView(data: $viewModel.exam, retryHandler: viewModel.getExam) { _ in
                 VStack {
                     Group {
                         HStack {
@@ -41,34 +41,38 @@ struct StudentListView: View {
                         Toggle("Hide Checked-In Students: ", isOn: $viewModel.hideDoneStudents)
                             .padding(.horizontal, 8)
                     }.padding(.horizontal, 8)
-                    List(viewModel.selectedStudents, selection: $selectedStudent) { student in
-                        Button(action: {
-                            if viewModel.hasUnsavedChanges {
-                                unsavedUserAlert = true
-                                nextSelectedStudent = student
-                            } else {
-                                selectedStudent = student
-                            }
-                        }) {
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    Text(student.user.name)
-                                        .bold()
-                                    Text("Seat: \(student.plannedSeat)")
+                    if viewModel.selectedStudents.isEmpty {
+                        Text("There are no students. Maybe try removing some filters.")
+                    } else {
+                        List(viewModel.selectedStudents, selection: $selectedStudent) { student in
+                            Button(action: {
+                                if viewModel.hasUnsavedChanges {
+                                    unsavedUserAlert = true
+                                    nextSelectedStudent = student
+                                } else {
+                                    selectedStudent = student
                                 }
-                                Spacer()
-                                if student.isStudentDone {
-                                    Image(systemName: "checkmark.seal.fill")
-                                        .foregroundColor(.green)
-                                        .imageScale(.large)
+                            }) {
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text(student.user.name)
+                                            .bold()
+                                        Text("Seat: \(student.actualSeat ?? student.plannedSeat)")
+                                    }
+                                    Spacer()
+                                    if student.isStudentDone {
+                                        Image(systemName: "checkmark.seal.fill")
+                                            .foregroundColor(.green)
+                                            .imageScale(.large)
+                                    }
                                 }
-                            }
-                        }.listRowBackground(self.selectedStudent == student ? Color.gray.opacity(0.4) : Color.clear)
-                    }
-                    .searchable(text: $viewModel.searchText)
-                    .listStyle(SidebarListStyle())
-                    .refreshable {
-                        await viewModel.getExam()
+                            }.listRowBackground(self.selectedStudent == student ? Color.gray.opacity(0.4) : Color.clear)
+                        }
+                        .searchable(text: $viewModel.searchText)
+                        .listStyle(SidebarListStyle())
+                        .refreshable {
+                            await viewModel.getExam()
+                        }
                     }
                 }
             }
@@ -89,6 +93,9 @@ struct StudentListView: View {
         })
         .navigationBarTitle(viewModel.exam.value?.title ?? "Loading...")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.blue, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .alert("Unsaved Changes", isPresented: $unsavedUserAlert, actions: {
             Button(role: .destructive, action: {
                 selectedStudent = nextSelectedStudent

@@ -35,7 +35,6 @@ class StudentListViewModel: ObservableObject {
             sortStudents()
         }
     }
-    @Published var saveStudentNetworkResponse: NetworkResponse = .notStarted
     
     @Published var lectureHalls: [String] = []
     @Published var selectedStudents: [ExamUser] = []
@@ -70,6 +69,7 @@ class StudentListViewModel: ObservableObject {
     }
     
     func getExam() async {
+        exam = .loading
         exam = await ExamServiceFactory.shared.getFullExam(for: courseId, and: examId)
     }
     
@@ -117,9 +117,9 @@ class StudentListViewModel: ObservableObject {
         selectedStudents = selectedStudents.sorted {
             switch sortingDirection {
             case .bottomToTop:
-                return $0.plannedSeat < $1.plannedSeat
+                return $0.actualSeat ?? $0.plannedSeat < $1.actualSeat ?? $0.plannedSeat
             case .topToBottom:
-                return $0.plannedSeat > $1.plannedSeat
+                return $0.actualSeat ?? $0.plannedSeat > $1.actualSeat ?? $0.plannedSeat
             }
         }
     }

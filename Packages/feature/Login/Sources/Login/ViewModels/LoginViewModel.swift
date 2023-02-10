@@ -57,10 +57,14 @@ class LoginViewModel: ObservableObject {
                     await getProfileInfo()
                     isLoading = false
                     captchaRequired = true
+                    self.error = UserFacingError(title: "You entered your password incorrectly. Solve the capture to continue.")
                 }
+            } else if let apiClientError = error as? APIClientError {
+                isLoading = false
+                self.error = UserFacingError(error: apiClientError)
             } else {
                 isLoading = false
-                self.error = UserFacingError(error: error)
+                self.error = UserFacingError(title: error.localizedDescription)
             }
         default:
             isLoading = false
@@ -72,7 +76,7 @@ class LoginViewModel: ObservableObject {
         UserSession.shared.setTokenExpired(expired: false)
     }
 
-    private func getProfileInfo() async {
+    func getProfileInfo() async {
         isLoading = true
         let response = await ProfileInfoServiceFactory.shared.getProfileInfo()
         isLoading = false

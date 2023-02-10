@@ -15,17 +15,17 @@ class ExamServiceImpl: ExamService {
     
     struct GetAllExamsRequest: APIRequest {
         typealias Response = [Exam]
-        
+
         var method: HTTPMethod {
             return .get
         }
         
         var resourceName: String {
-            return "api/exams/all"
+            return "api/exams/active"
         }
     }
-    
-    func getAllExams() async -> DataState<[Exam]> {
+
+    func getActiveExams() async -> DataState<[Exam]> {
         let result = await client.sendRequest(GetAllExamsRequest())
         
         switch result {
