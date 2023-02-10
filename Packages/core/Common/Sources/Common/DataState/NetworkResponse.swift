@@ -1,6 +1,5 @@
 import Foundation
 
-// swiftlint:disable duplicate_enum_cases
 /**
  * Wrapper around network responses. Used to propagate failures correctly.
  */
