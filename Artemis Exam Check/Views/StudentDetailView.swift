@@ -386,6 +386,8 @@ struct StudentSeatingDetailCell: View {
                 Text(actualValue)
                     .frame(width: 150)
             }
+        }.onAppear {
+            UITextField.appearance().clearButtonMode = .always
         }
     }
 }
