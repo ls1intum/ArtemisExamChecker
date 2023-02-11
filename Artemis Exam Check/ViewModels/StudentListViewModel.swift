@@ -68,8 +68,10 @@ class StudentListViewModel: ObservableObject {
         }
     }
     
-    func getExam() async {
-        exam = .loading
+    func getExam(showLoadingIndicator: Bool = true) async {
+        if showLoadingIndicator {
+            exam = .loading
+        }
         exam = await ExamServiceFactory.shared.getFullExam(for: courseId, and: examId)
     }
     
