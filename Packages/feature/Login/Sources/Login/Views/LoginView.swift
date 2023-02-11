@@ -24,7 +24,6 @@ public struct LoginView: View {
                 .multilineTextAlignment(.center)
 
             if viewModel.captchaRequired {
-                //    "externalUserManagementWarning": "You have entered your password incorrectly too many times :-(</span><br />Please go to <a href='{{ url }}' target='_blank'>{{ name }}</a>, sign in with your account and solve the <a href='{{ url }}' target='_blank'>CAPTCHA</a>. After you have solved it, try to log in again here.",
                 DataStateView(data: $viewModel.externalUserManagementUrl, retryHandler: viewModel.getProfileInfo) { externalUserManagementURL in
                     DataStateView(data: $viewModel.externalUserManagementName, retryHandler: viewModel.getProfileInfo) { externalUserManagementName in
                         VStack {
@@ -42,7 +41,6 @@ public struct LoginView: View {
                     .textFieldStyle(.roundedBorder)
                 SecureField("Password", text: $viewModel.password)
                     .textFieldStyle(.roundedBorder)
-
                 Toggle("Automatic login", isOn: $viewModel.rememberMe)
                     .toggleStyle(.switch)
             }

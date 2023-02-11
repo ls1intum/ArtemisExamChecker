@@ -23,7 +23,7 @@ struct StudentListView: View {
     
     var body: some View {
         NavigationSplitView(sidebar: {
-            DataStateView(data: $viewModel.exam, retryHandler: viewModel.getExam) { _ in
+            DataStateView(data: $viewModel.exam, retryHandler: { await viewModel.getExam() }) { _ in
                 VStack {
                     Group {
                         HStack {
@@ -71,7 +71,7 @@ struct StudentListView: View {
                         .searchable(text: $viewModel.searchText)
                         .listStyle(SidebarListStyle())
                         .refreshable {
-                            await viewModel.getExam()
+                            await viewModel.getExam(showLoadingIndicator: false)
                         }
                     }
                 }

@@ -111,7 +111,7 @@ struct StudentDetailView: View {
                     }
                     VStack(spacing: 12) {
                         StudentDetailCell(description: "Name", value: student.user.name)
-                        StudentDetailCell(description: "Matriculation Nr.", value: student.user.visibleRegistrationNumber)
+                        StudentDetailCell(description: "Matriculation Nr.", value: student.user.visibleRegistrationNumber ?? "not available")
                         StudentDetailCell(description: "Artemis Username", value: student.user.login)
                         HStack {
                             VStack(spacing: 12) {
@@ -380,12 +380,14 @@ struct StudentSeatingDetailCell: View {
             if showActualValue {
                 TextField("Actual \(description)", text: $actualValue)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: 150)
+                    .frame(width: 200)
                     .padding(.leading, 8)
             } else if !actualValue.isEmpty {
                 Text(actualValue)
-                    .frame(width: 150)
+                    .frame(width: 200)
             }
+        }.onAppear {
+            UITextField.appearance().clearButtonMode = .always
         }
     }
 }

@@ -68,8 +68,10 @@ class StudentListViewModel: ObservableObject {
         }
     }
     
-    func getExam() async {
-        exam = .loading
+    func getExam(showLoadingIndicator: Bool = true) async {
+        if showLoadingIndicator {
+            exam = .loading
+        }
         exam = await ExamServiceFactory.shared.getFullExam(for: courseId, and: examId)
     }
     
@@ -98,7 +100,7 @@ class StudentListViewModel: ObservableObject {
             selectedStudents = selectedStudents.filter {
                 $0.user.name.lowercased().contains(searchText) ||
                 $0.user.login.lowercased().contains(searchText) ||
-                $0.user.visibleRegistrationNumber.lowercased().contains(searchText)
+                ($0.user.visibleRegistrationNumber ?? "").lowercased().contains(searchText)
             }
         }
         
@@ -117,9 +119,9 @@ class StudentListViewModel: ObservableObject {
         selectedStudents = selectedStudents.sorted {
             switch sortingDirection {
             case .bottomToTop:
-                return $0.actualSeat ?? $0.plannedSeat < $1.actualSeat ?? $0.plannedSeat
+                return $0.actualSeat ?? $0.plannedSeat < $1.actualSeat ?? $1.plannedSeat
             case .topToBottom:
-                return $0.actualSeat ?? $0.plannedSeat > $1.actualSeat ?? $0.plannedSeat
+                return $0.actualSeat ?? $0.plannedSeat > $1.actualSeat ?? $1.plannedSeat
             }
         }
     }
