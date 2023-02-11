@@ -380,11 +380,11 @@ struct StudentSeatingDetailCell: View {
             if showActualValue {
                 TextField("Actual \(description)", text: $actualValue)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: 150)
+                    .frame(width: 200)
                     .padding(.leading, 8)
             } else if !actualValue.isEmpty {
                 Text(actualValue)
-                    .frame(width: 150)
+                    .frame(width: 200)
             }
         }.onAppear {
             UITextField.appearance().clearButtonMode = .always
