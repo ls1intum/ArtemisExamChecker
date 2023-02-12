@@ -44,7 +44,7 @@ class StudentListViewModel: ObservableObject {
             switch exam {
             case .done(let exam):
                 lectureHalls = Array(Set((exam.examUsers ?? []).map {
-                    $0.plannedRoom
+                    $0.actualRoom ?? $0.plannedRoom ?? "not set"
                 }))
                 setSelectedStudents()
             default:
@@ -90,7 +90,7 @@ class StudentListViewModel: ObservableObject {
         // filter by selected Lecture Hall
         if !selectedLectureHall.isEmpty {
             selectedStudents = selectedStudents.filter {
-                $0.plannedRoom == selectedLectureHall || $0.actualRoom == selectedLectureHall
+                ($0.actualRoom ?? $0.plannedRoom ?? "not set") == selectedLectureHall
             }
         }
         
@@ -119,9 +119,9 @@ class StudentListViewModel: ObservableObject {
         selectedStudents = selectedStudents.sorted {
             switch sortingDirection {
             case .bottomToTop:
-                return $0.actualSeat ?? $0.plannedSeat < $1.actualSeat ?? $1.plannedSeat
+                return $0.actualSeat ?? $0.plannedSeat ?? "" < $1.actualSeat ?? $1.plannedSeat ?? ""
             case .topToBottom:
-                return $0.actualSeat ?? $0.plannedSeat > $1.actualSeat ?? $1.plannedSeat
+                return $0.actualSeat ?? $0.plannedSeat ?? "" > $1.actualSeat ?? $1.plannedSeat ?? ""
             }
         }
     }

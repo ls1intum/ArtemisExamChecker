@@ -21,8 +21,8 @@ struct ExamUser: Identifiable, Codable {
     
     var actualRoom: String?
     var actualSeat: String?
-    let plannedRoom: String
-    let plannedSeat: String
+    let plannedRoom: String?
+    let plannedSeat: String?
 
     var signing: Data?
     var signingImagePath: String?
@@ -66,9 +66,6 @@ struct ExamUser: Identifiable, Codable {
 struct User: Codable, Identifiable {
     let id: Int
     let login: String
-    let firstName: String
-    let lastName: String
-    let email: String
     let name: String
     let visibleRegistrationNumber: String?
 }

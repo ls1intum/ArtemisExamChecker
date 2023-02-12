@@ -27,8 +27,8 @@ struct StudentListView: View {
                 VStack {
                     Group {
                         HStack {
-                            Picker("Lecture Hall", selection: $viewModel.selectedLectureHall) {
-                                Text("All Lecture Halls").tag("")
+                            Picker("Room", selection: $viewModel.selectedLectureHall) {
+                                Text("All Rooms").tag("")
                                 ForEach(viewModel.lectureHalls, id: \.self) { lectureHall in
                                     Text(lectureHall).tag(lectureHall)
                                 }
@@ -42,7 +42,9 @@ struct StudentListView: View {
                             .padding(.horizontal, 8)
                     }.padding(.horizontal, 8)
                     if viewModel.selectedStudents.isEmpty {
-                        Text("There are no students. Maybe try removing some filters.")
+                        List {
+                            Text("There are no students. Maybe try removing some filters.")
+                        }
                     } else {
                         List(viewModel.selectedStudents, selection: $selectedStudent) { student in
                             Button(action: {
@@ -57,7 +59,7 @@ struct StudentListView: View {
                                     VStack(alignment: .leading) {
                                         Text(student.user.name)
                                             .bold()
-                                        Text("Seat: \(student.actualSeat ?? student.plannedSeat)")
+                                        Text("Seat: \(student.actualSeat ?? student.plannedSeat ?? "not set")")
                                     }
                                     Spacer()
                                     if student.isStudentDone {
