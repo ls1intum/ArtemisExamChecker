@@ -33,11 +33,16 @@ struct ExamOverviewList: View {
                                             .bold()
                                     }
                                     HStack(spacing: 16) {
-                                        Text(exam.startDate, formatter: DateFormatter.dayAndDate)
+                                        Text(exam.testExam ? "Test Exam" : "Exam")
+                                            .padding(.vertical, 2)
+                                            .padding(.horizontal, 4)
+                                            .background(exam.testExam ? Color.blue : Color.green)
+                                            .foregroundColor(.white)
+                                            .cornerRadius(4)
                                         HStack(spacing: 0) {
-                                            Text(exam.startDate, formatter: DateFormatter.timeOnly)
+                                            Text(exam.startDate, formatter: DateFormatter.shortDateAndTime)
                                             Text(" - ")
-                                            Text(exam.endDate, formatter: DateFormatter.timeOnly)
+                                            Text(exam.endDate, formatter: DateFormatter.shortDateAndTime)
                                         }
                                     }
                                 }

@@ -30,10 +30,10 @@ class StudentServiceImpl: StudentService {
         }
         let encoder = JSONEncoder()
         let examUserDTO = ExamUserDTO(login: student.user.login,
-                                      didCheckImage: student.didCheckImage,
-                                      didCheckLogin: student.didCheckLogin,
-                                      didCheckName: student.didCheckName,
-                                      didCheckRegistrationNumber: student.didCheckRegistrationNumber,
+                                      didCheckImage: student.didCheckImage ?? false,
+                                      didCheckLogin: student.didCheckLogin ?? false,
+                                      didCheckName: student.didCheckName ?? false,
+                                      didCheckRegistrationNumber: student.didCheckRegistrationNumber ?? false,
                                       room: student.actualRoom,
                                       seat: student.actualSeat)
         if let studentData = try? encoder.encode(examUserDTO) {
