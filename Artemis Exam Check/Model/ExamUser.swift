@@ -14,10 +14,10 @@ struct ExamUser: Identifiable, Codable {
     
     let user: User
                 
-    var didCheckImage: Bool
-    var didCheckName: Bool
-    var didCheckLogin: Bool
-    var didCheckRegistrationNumber: Bool
+    var didCheckImage: Bool?
+    var didCheckName: Bool?
+    var didCheckLogin: Bool?
+    var didCheckRegistrationNumber: Bool?
     
     var actualRoom: String?
     var actualSeat: String?
@@ -39,7 +39,11 @@ struct ExamUser: Identifiable, Codable {
     }
 
     var isStudentDone: Bool {
-        didCheckImage && didCheckName && didCheckLogin && didCheckRegistrationNumber && signingImagePath != nil
+        didCheckImage ?? false &&
+        didCheckName ?? false &&
+        didCheckLogin ?? false &&
+        didCheckRegistrationNumber ?? false &&
+        signingImagePath != nil
     }
 
     func copy(checkedImage: Bool,

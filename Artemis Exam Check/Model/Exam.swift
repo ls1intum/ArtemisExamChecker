@@ -14,6 +14,7 @@ struct Exam: Identifiable, Codable {
     var endDate: Date
     var course: Course
     var examUsers: [ExamUser]?
+    var testExam: Bool
 }
 
 struct Course: Identifiable, Codable {

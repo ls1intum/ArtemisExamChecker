@@ -64,10 +64,10 @@ struct StudentDetailView: View {
         self._student = student
         self._hasUnsavedChanges = hasUnsavedChanges
         
-        _didCheckImage = State(wrappedValue: student.wrappedValue.didCheckImage)
-        _didCheckName = State(wrappedValue: student.wrappedValue.didCheckName)
-        _didCheckLogin = State(wrappedValue: student.wrappedValue.didCheckLogin)
-        _didCheckRegistrationNumber = State(wrappedValue: student.wrappedValue.didCheckRegistrationNumber)
+        _didCheckImage = State(wrappedValue: student.wrappedValue.didCheckImage ?? false)
+        _didCheckName = State(wrappedValue: student.wrappedValue.didCheckName ?? false)
+        _didCheckLogin = State(wrappedValue: student.wrappedValue.didCheckLogin ?? false)
+        _didCheckRegistrationNumber = State(wrappedValue: student.wrappedValue.didCheckRegistrationNumber ?? false)
         _showSigningImage = State(wrappedValue: student.wrappedValue.signingImagePath != nil)
         _actualRoom = State(wrappedValue: student.wrappedValue.actualRoom ?? "")
         _actualSeat = State(wrappedValue: student.wrappedValue.actualSeat ?? "")
@@ -306,10 +306,10 @@ struct StudentDetailView: View {
     }
     
     private func updateDetailViewStates() {
-        didCheckImage = student.didCheckImage
-        didCheckName = student.didCheckName
-        didCheckLogin = student.didCheckLogin
-        didCheckRegistrationNumber = student.didCheckRegistrationNumber
+        didCheckImage = student.didCheckImage ?? false
+        didCheckName = student.didCheckName ?? false
+        didCheckLogin = student.didCheckLogin ?? false
+        didCheckRegistrationNumber = student.didCheckRegistrationNumber ?? false
         showSigningImage = student.signingImageURL != nil
         actualRoom = student.actualRoom ?? ""
         actualSeat = student.actualSeat ?? ""
