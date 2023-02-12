@@ -27,8 +27,8 @@ struct StudentListView: View {
                 VStack {
                     Group {
                         HStack {
-                            Picker("Lecture Hall", selection: $viewModel.selectedLectureHall) {
-                                Text("All Lecture Halls").tag("")
+                            Picker("Room", selection: $viewModel.selectedLectureHall) {
+                                Text("All Rooms").tag("")
                                 ForEach(viewModel.lectureHalls, id: \.self) { lectureHall in
                                     Text(lectureHall).tag(lectureHall)
                                 }
