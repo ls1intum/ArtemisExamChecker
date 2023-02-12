@@ -365,7 +365,7 @@ struct StudentDetailCell: View {
 struct StudentSeatingDetailCell: View {
 
     var description: String
-    var value: String
+    var value: String?
 
     @Binding var actualValue: String
     @Binding var showActualValue: Bool
@@ -375,7 +375,7 @@ struct StudentSeatingDetailCell: View {
             Text("\(description): ")
                 .bold()
             Spacer()
-            Text(value)
+            Text(value ?? "not set")
                 .strikethrough(showActualValue || !actualValue.isEmpty)
             if showActualValue {
                 TextField("Actual \(description)", text: $actualValue)
