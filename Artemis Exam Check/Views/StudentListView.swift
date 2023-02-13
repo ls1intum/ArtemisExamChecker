@@ -20,6 +20,22 @@ struct StudentListView: View {
     init(exam: Exam) {
         self._viewModel = StateObject(wrappedValue: StudentListViewModel(courseId: exam.course.id, examId: exam.id))
     }
+
+    var images: [URL] {
+        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return [] }
+
+        return viewModel.exam.value?.examUsers?.compactMap { examUser in
+            // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
+            let imageName = "\(viewModel.examId)-\(examUser.id)-\(examUser.user.name)-\(examUser.user.visibleRegistrationNumber ?? "missing").png"
+            let fileURL = documentsDirectory
+                .appendingPathComponent("ExamAttendaceChecker")
+                .appendingPathComponent(imageName)
+            if FileManager.default.fileExists(atPath: fileURL.path) {
+                return fileURL
+            }
+            return nil
+        } ?? []
+    }
     
     var body: some View {
         NavigationSplitView(sidebar: {
@@ -77,6 +93,7 @@ struct StudentListView: View {
                             await viewModel.getExam(showLoadingIndicator: false)
                         }
                     }
+                    ShareLink("Export Signatures", items: images)
                 }
             }
         }, detail: {

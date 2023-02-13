@@ -286,6 +286,10 @@ struct StudentDetailView: View {
                                       actualRoom: actualRoom.isEmpty ? nil : actualRoom,
                                       actualSeat: actualSeat.isEmpty ? nil : actualSeat,
                                       signing: imageData)
+
+        // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
+        let imageName = "\(examId)-\(student.id)-\(student.user.name)-\(student.user.visibleRegistrationNumber ?? "missing").png"
+        saveImageToDocuments(imageData: imageData, imageName: imageName)
         
         Task {
             isSaving = true
@@ -313,6 +317,48 @@ struct StudentDetailView: View {
         showSigningImage = student.signingImageURL != nil
         actualRoom = student.actualRoom ?? ""
         actualSeat = student.actualSeat ?? ""
+    }
+
+    private func saveImageToDocuments(imageData: Data?, imageName: String) {
+        guard let data = imageData,
+              let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+
+        let fileURL = documentsDirectory
+            .appendingPathComponent("ExamAttendaceChecker")
+            .appendingPathComponent(imageName)
+
+        createDirectoryIfNecessary()
+
+        //Checks if file exists, removes it if so.
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                try FileManager.default.removeItem(atPath: fileURL.path)
+                print("Removed old image")
+            } catch let removeError {
+                print("couldn't remove file at path", removeError)
+            }
+        }
+
+        do {
+            try data.write(to: fileURL)
+        } catch let error {
+            print("error saving file with error", error)
+        }
+    }
+
+    private func createDirectoryIfNecessary() {
+        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+
+        let folderURL = documentsDirectory
+            .appendingPathComponent("ExamAttendaceChecker")
+
+        if !FileManager.default.fileExists(atPath: folderURL.path) {
+            do {
+                try FileManager.default.createDirectory(atPath: folderURL.path, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 
