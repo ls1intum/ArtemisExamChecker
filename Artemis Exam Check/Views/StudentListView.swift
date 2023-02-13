@@ -93,7 +93,9 @@ struct StudentListView: View {
                             await viewModel.getExam(showLoadingIndicator: false)
                         }
                     }
-                    ShareLink("Export Signatures", items: images)
+                    if !images.isEmpty {
+                        ShareLink("Export Signatures", items: images)
+                    }
                 }
             }
         }, detail: {
