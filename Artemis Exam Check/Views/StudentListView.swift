@@ -40,6 +40,7 @@ struct StudentListView: View {
                         }
                         Toggle("Hide Checked-In Students: ", isOn: $viewModel.hideDoneStudents)
                             .padding(.horizontal, 8)
+                        Text("Progress: \(viewModel.checkedInStudentsInSelectedRoom) / \(viewModel.totalStudentsInSelectedRoom)")
                     }.padding(.horizontal, 8)
                     if viewModel.selectedStudents.isEmpty {
                         List {

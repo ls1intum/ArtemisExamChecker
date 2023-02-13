@@ -38,6 +38,9 @@ class StudentListViewModel: ObservableObject {
     
     @Published var lectureHalls: [String] = []
     @Published var selectedStudents: [ExamUser] = []
+
+    @Published var checkedInStudentsInSelectedRoom = 0
+    @Published var totalStudentsInSelectedRoom = 0
     
     @Published var exam: DataState<Exam> = .loading {
         didSet {
@@ -93,8 +96,11 @@ class StudentListViewModel: ObservableObject {
                 ($0.actualRoom ?? $0.plannedRoom ?? "not set") == selectedLectureHall
             }
         }
+
+        totalStudentsInSelectedRoom = selectedStudents.count
+        checkedInStudentsInSelectedRoom = selectedStudents.filter { $0.isStudentDone }.count
         
-        // filter by selected Lecture Hall
+        // filter by search Text
         if !searchText.isEmpty {
             let searchText = searchText.lowercased()
             selectedStudents = selectedStudents.filter {
