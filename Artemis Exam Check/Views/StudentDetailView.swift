@@ -232,7 +232,9 @@ struct StudentDetailView: View {
                 }
                 .alert(isPresented: $showErrorAlert, error: error, actions: {})
             }
-                .padding(32)
+                .padding(.horizontal, 32)
+                .padding(.top, 8)
+                .padding(.bottom, 32)
         }
             .scrollDisabled(!isScrollingEnabled)
             .loadingIndicator(isLoading: $isSaving)
