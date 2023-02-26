@@ -21,6 +21,7 @@ struct StudentDetailView: View {
     @State var showSigningImage: Bool
     @State var actualSeat: String
     @State var actualRoom: String
+    @State var actualOtherRoom: String = ""
 
     @State var showSeatingEdit = false
     @State var showDidNotCompleteDialog = false
@@ -39,6 +40,7 @@ struct StudentDetailView: View {
     
     @Binding var student: ExamUser
     @Binding var hasUnsavedChanges: Bool
+    @Binding var allRooms: [String]
     
     var successfullySavedCompletion: @MainActor (ExamUser) -> Void
     
@@ -57,12 +59,14 @@ struct StudentDetailView: View {
          courseId: Int,
          student: Binding<ExamUser>,
          hasUnsavedChanges: Binding<Bool>,
+         allRooms: Binding<[String]>,
          successfullySavedCompletion: @MainActor @escaping (ExamUser) -> Void) {
         self.examId = examId
         self.courseId = courseId
         self.successfullySavedCompletion = successfullySavedCompletion
         self._student = student
         self._hasUnsavedChanges = hasUnsavedChanges
+        self._allRooms = allRooms
         
         _didCheckImage = State(wrappedValue: student.wrappedValue.didCheckImage ?? false)
         _didCheckName = State(wrappedValue: student.wrappedValue.didCheckName ?? false)
@@ -115,8 +119,16 @@ struct StudentDetailView: View {
                         StudentDetailCell(description: "Artemis Username", value: student.user.login)
                         HStack {
                             VStack(spacing: 12) {
-                                StudentSeatingDetailCell(description: "Room", value: student.plannedRoom, actualValue: $actualRoom, showActualValue: $showSeatingEdit)
-                                StudentSeatingDetailCell(description: "Seat", value: student.plannedSeat, actualValue: $actualSeat, showActualValue: $showSeatingEdit)
+                                StudentRoomDetailCell(description: "Room",
+                                                      value: student.plannedRoom,
+                                                      actualValue: $actualRoom,
+                                                      actualOtherValue: $actualOtherRoom,
+                                                      showActualValue: $showSeatingEdit,
+                                                      allRooms: $allRooms)
+                                StudentSeatingDetailCell(description: "Seat",
+                                                         value: student.plannedSeat,
+                                                         actualValue: $actualSeat,
+                                                         showActualValue: $showSeatingEdit)
                             }
                             Button(action: { showSeatingEdit.toggle() }) {
                                 Image(systemName: "pencil")
@@ -131,8 +143,8 @@ struct StudentDetailView: View {
                 VStack {
                     Toggle("Image is correct:", isOn: $didCheckImage)
                     Toggle("Name is correct:", isOn: $didCheckName)
-                    Toggle("Artemis Username is correct:", isOn: $didCheckLogin)
                     Toggle("Matriculation Number is correct:", isOn: $didCheckRegistrationNumber)
+                    Toggle("Artemis Username is correct:", isOn: $didCheckLogin)
                 }.padding(.vertical, 16)
 
 
@@ -283,7 +295,7 @@ struct StudentDetailView: View {
                                       checkedName: didCheckName,
                                       checkedLogin: didCheckLogin,
                                       checkedRegistrationNumber: didCheckRegistrationNumber,
-                                      actualRoom: actualRoom.isEmpty ? nil : actualRoom,
+                                      actualRoom: actualOtherRoom.isEmpty ? (actualRoom.isEmpty ? nil : actualRoom) : actualOtherRoom,
                                       actualSeat: actualSeat.isEmpty ? nil : actualSeat,
                                       signing: imageData)
 
@@ -437,6 +449,49 @@ struct StudentSeatingDetailCell: View {
         }
     }
 }
+
+struct StudentRoomDetailCell: View {
+
+    var description: String
+    var value: String?
+
+    @Binding var actualValue: String
+    @Binding var actualOtherValue: String
+    @Binding var showActualValue: Bool
+    @Binding var allRooms: [String]
+
+    var body: some View {
+        HStack {
+            Text("\(description): ")
+                .bold()
+            Spacer()
+            Text(value ?? "not set")
+                .strikethrough(showActualValue || !actualValue.isEmpty)
+            if showActualValue {
+                Picker("Room", selection: $actualValue) {
+                    ForEach(allRooms, id: \.self) { lectureHall in
+                        Text(lectureHall).tag(lectureHall)
+                    }
+                    Text("Other").tag("other")
+                }
+                    .frame(width: actualValue == "other" ? 100 : 200)
+                    .padding(.leading, 8)
+                if actualValue == "other" {
+                    TextField("Actual \(description)", text: $actualOtherValue)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 200)
+                        .padding(.leading, 8)
+                }
+            } else if !actualValue.isEmpty {
+                Text(actualValue)
+                    .frame(width: 200)
+            }
+        }.onAppear {
+            UITextField.appearance().clearButtonMode = .always
+        }
+    }
+}
+
 
 extension URLSession {
     var authenticationCookie: [HTTPCookie]? {

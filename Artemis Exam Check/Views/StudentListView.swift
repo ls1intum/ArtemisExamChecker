@@ -106,6 +106,7 @@ struct StudentListView: View {
                                   courseId: courseId,
                                   student: studentBinding,
                                   hasUnsavedChanges: $viewModel.hasUnsavedChanges,
+                                  allRooms: $viewModel.lectureHalls,
                                   successfullySavedCompletion: viewModel.updateStudent)
                     .id(studentBinding.wrappedValue.id)
             } else {
