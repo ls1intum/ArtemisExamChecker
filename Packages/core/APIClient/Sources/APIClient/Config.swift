@@ -8,6 +8,6 @@
 import Foundation
 
 public enum Config {
-    public static let baseEndpointUrl = URL(string: "https://artemis.ase.in.tum.de/")
+    public static let baseEndpointUrl = URL(string: "https://artemis.cit.tum.de/")
 //    public static let baseEndpointUrl = URL(string: "https://artemis-test10.artemis.in.tum.de/")
 }
