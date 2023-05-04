@@ -9,6 +9,7 @@ import SwiftUI
 import Common
 import PencilKit
 import Kingfisher
+import DesignLibrary
 
 struct StudentDetailView: View {
     
@@ -48,11 +49,11 @@ struct StudentDetailView: View {
     let courseId: Int
 
     var requestModifier = AnyModifier { request in
-        var r = request
+        var newRequest = request
         if let cookies = URLSession.shared.authenticationCookie {
-            r.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookies)
+            newRequest.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookies)
         }
-        return r
+        return newRequest
     }
     
     init(examId: Int,
@@ -221,7 +222,7 @@ struct StudentDetailView: View {
                     saveStudent()
                 }
                 .disabled(!hasUnsavedChanges)
-                .buttonStyle(GrowingButton())
+                .buttonStyle(ArtemisButton())
                 .padding(16)
                 .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
                     Button("Yes, I want to continue.", role: .destructive) {

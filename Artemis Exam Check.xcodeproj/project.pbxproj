@@ -16,7 +16,6 @@
 		D55C08492975A2B400DC6B80 /* StudentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08482975A2B400DC6B80 /* StudentListViewModel.swift */; };
 		D55C084C2975A45100DC6B80 /* StudentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C084B2975A45100DC6B80 /* StudentDetailView.swift */; };
 		D55C084E2975A85C00DC6B80 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C084D2975A85C00DC6B80 /* CanvasView.swift */; };
-		D55C08532975B17400DC6B80 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08522975B17400DC6B80 /* ButtonStyle.swift */; };
 		D55C08562975BCF300DC6B80 /* ExamService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08552975BCF300DC6B80 /* ExamService.swift */; };
 		D55C08592975BD0300DC6B80 /* StudentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08582975BD0300DC6B80 /* StudentService.swift */; };
 		D55C08772975BE9600DC6B80 /* StudentServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08762975BE9600DC6B80 /* StudentServiceImpl.swift */; };
@@ -52,7 +51,6 @@
 		D55C08482975A2B400DC6B80 /* StudentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentListViewModel.swift; sourceTree = "<group>"; };
 		D55C084B2975A45100DC6B80 /* StudentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentDetailView.swift; sourceTree = "<group>"; };
 		D55C084D2975A85C00DC6B80 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
-		D55C08522975B17400DC6B80 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		D55C08552975BCF300DC6B80 /* ExamService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamService.swift; sourceTree = "<group>"; };
 		D55C08582975BD0300DC6B80 /* StudentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentService.swift; sourceTree = "<group>"; };
 		D55C08762975BE9600DC6B80 /* StudentServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentServiceImpl.swift; sourceTree = "<group>"; };
@@ -111,7 +109,6 @@
 			children = (
 				D5D98A08298003DC00ECD017 /* Supporting */,
 				D55C08542975BCDA00DC6B80 /* Services */,
-				D55C08512975B16300DC6B80 /* DesignLibrary */,
 				D55C084A2975A2BE00DC6B80 /* ViewModels */,
 				D55C08432975A11000DC6B80 /* Model */,
 				D55C08422975A0F800DC6B80 /* Views */,
@@ -159,14 +156,6 @@
 				D589000429795A5C00541D18 /* ContentViewModel.swift */,
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		D55C08512975B16300DC6B80 /* DesignLibrary */ = {
-			isa = PBXGroup;
-			children = (
-				D55C08522975B17400DC6B80 /* ButtonStyle.swift */,
-			);
-			path = DesignLibrary;
 			sourceTree = "<group>";
 		};
 		D55C08542975BCDA00DC6B80 /* Services */ = {
@@ -335,7 +324,6 @@
 				D55C08802975C28600DC6B80 /* ExamOverviewListViewModel.swift in Sources */,
 				D55C08472975A25700DC6B80 /* StudentListView.swift in Sources */,
 				D55C08562975BCF300DC6B80 /* ExamService.swift in Sources */,
-				D55C08532975B17400DC6B80 /* ButtonStyle.swift in Sources */,
 				D589000529795A5C00541D18 /* ContentViewModel.swift in Sources */,
 				D55C08352975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift in Sources */,
 				D55C084C2975A45100DC6B80 /* StudentDetailView.swift in Sources */,

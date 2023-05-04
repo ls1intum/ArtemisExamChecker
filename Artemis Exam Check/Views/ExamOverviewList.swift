@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import Common
 import Account
+import DesignLibrary
 
 struct ExamOverviewList: View {
     
@@ -61,7 +61,7 @@ struct ExamOverviewList: View {
             .toolbarBackground(Color.blue, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .accountMenu()
+            .accountMenu(error: $viewModel.error)
         }
     }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import APIClient
+import UserStore
 
 struct ExamUser: Identifiable, Codable {
     
@@ -30,12 +31,12 @@ struct ExamUser: Identifiable, Codable {
     
     var signingImageURL: URL? {
         guard let signingImagePath = signingImagePath else { return nil }
-        return URL(string: signingImagePath, relativeTo: Config.baseEndpointUrl)
+        return URL(string: signingImagePath, relativeTo: UserSession.shared.institution?.baseURL)
     }
 
     var imageURL: URL? {
         guard let studentImagePath = studentImagePath else { return nil }
-        return URL(string: studentImagePath, relativeTo: Config.baseEndpointUrl)
+        return URL(string: studentImagePath, relativeTo: UserSession.shared.institution?.baseURL)
     }
 
     var isStudentDone: Bool {
