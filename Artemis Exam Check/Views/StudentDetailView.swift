@@ -12,9 +12,9 @@ import Kingfisher
 import DesignLibrary
 
 struct StudentDetailView: View {
-    
+
     @State var canvasView = PKCanvasView()
-    
+
     @State var didCheckImage: Bool
     @State var didCheckName: Bool
     @State var didCheckLogin: Bool
@@ -29,7 +29,7 @@ struct StudentDetailView: View {
     @State var showDidNotCompleteDialogNavigationBar = false
     @State var isSaving = false
     @State var showErrorAlert = false
-    @State var error: UserFacingError? = nil {
+    @State var error: UserFacingError? {
         didSet {
             showErrorAlert = error != nil
         }
@@ -38,13 +38,13 @@ struct StudentDetailView: View {
 
     @State var imageLoadingError = false
     @State var signingImageLoadingStatus = NetworkResponse.loading
-    
+
     @Binding var student: ExamUser
     @Binding var hasUnsavedChanges: Bool
     @Binding var allRooms: [String]
-    
+
     var successfullySavedCompletion: @MainActor (ExamUser) -> Void
-    
+
     let examId: Int
     let courseId: Int
 
@@ -55,7 +55,7 @@ struct StudentDetailView: View {
         }
         return newRequest
     }
-    
+
     init(examId: Int,
          courseId: Int,
          student: Binding<ExamUser>,
@@ -68,7 +68,7 @@ struct StudentDetailView: View {
         self._student = student
         self._hasUnsavedChanges = hasUnsavedChanges
         self._allRooms = allRooms
-        
+
         _didCheckImage = State(wrappedValue: student.wrappedValue.didCheckImage ?? false)
         _didCheckName = State(wrappedValue: student.wrappedValue.didCheckName ?? false)
         _didCheckLogin = State(wrappedValue: student.wrappedValue.didCheckLogin ?? false)
@@ -77,7 +77,7 @@ struct StudentDetailView: View {
         _actualRoom = State(wrappedValue: student.wrappedValue.actualRoom ?? "")
         _actualSeat = State(wrappedValue: student.wrappedValue.actualSeat ?? "")
     }
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 8) {
@@ -104,9 +104,9 @@ struct StudentDetailView: View {
                                             .stroke(.gray)
                                     )
                             }
-                            .onFailure { result in
+                            .onFailure { _ in
                                 imageLoadingError = true
-                            }.onSuccess { reuslt in
+                            }.onSuccess { _ in
                                 imageLoadingError = false
                             }
                             .resizable()
@@ -147,7 +147,6 @@ struct StudentDetailView: View {
                     Toggle("Matriculation Number is correct:", isOn: $didCheckRegistrationNumber)
                     Toggle("Artemis Username is correct:", isOn: $didCheckLogin)
                 }.padding(.vertical, 16)
-
 
                 Group {
                     if showSigningImage {
@@ -275,9 +274,8 @@ struct StudentDetailView: View {
                     }
                 }
             }
-
     }
-    
+
     private func saveStudent(force: Bool = false, isNavigationBarButton: Bool = false) {
         if !force && (!didCheckName || !didCheckLogin || !didCheckImage || !didCheckRegistrationNumber || (canvasView.drawing.bounds.isEmpty && student.signingImageURL == nil)) {
             if isNavigationBarButton {
@@ -287,13 +285,13 @@ struct StudentDetailView: View {
             }
             return
         }
-        
-        var imageData: Data? = nil
+
+        var imageData: Data?
         if !canvasView.drawing.bounds.isEmpty {
             let signingImage = canvasView.drawing.image(from: canvasView.bounds, scale: UIScreen.main.scale)
             imageData = signingImage.pngData()
         }
-        
+
         let newStudent = student.copy(checkedImage: didCheckImage,
                                       checkedName: didCheckName,
                                       checkedLogin: didCheckLogin,
@@ -305,7 +303,7 @@ struct StudentDetailView: View {
         // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
         let imageName = "\(examId)-\(student.id)-\(student.user.name)-\(student.user.visibleRegistrationNumber ?? "missing").png"
         saveImageToDocuments(imageData: imageData, imageName: imageName)
-        
+
         Task {
             isSaving = true
             let result = await StudentServiceFactory.shared.saveStudent(student: newStudent, examId: examId, courseId: courseId)
@@ -323,7 +321,7 @@ struct StudentDetailView: View {
             }
         }
     }
-    
+
     private func updateDetailViewStates() {
         didCheckImage = student.didCheckImage ?? false
         didCheckName = student.didCheckName ?? false
@@ -344,19 +342,19 @@ struct StudentDetailView: View {
 
         createDirectoryIfNecessary()
 
-        //Checks if file exists, removes it if so.
+        // Checks if file exists, removes it if so.
         if FileManager.default.fileExists(atPath: fileURL.path) {
             do {
                 try FileManager.default.removeItem(atPath: fileURL.path)
                 print("Removed old image")
-            } catch let removeError {
-                print("couldn't remove file at path", removeError)
+            } catch {
+                print("couldn't remove file at path", error)
             }
         }
 
         do {
             try data.write(to: fileURL)
-        } catch let error {
+        } catch {
             print("error saving file with error", error)
         }
     }
@@ -409,10 +407,10 @@ struct PencilSideButtons: View {
 }
 
 struct StudentDetailCell: View {
-    
+
     var description: String
     var value: String
-    
+
     var body: some View {
         HStack {
             Text("\(description): ")
@@ -494,7 +492,6 @@ struct StudentRoomDetailCell: View {
         }
     }
 }
-
 
 extension URLSession {
     var authenticationCookie: [HTTPCookie]? {

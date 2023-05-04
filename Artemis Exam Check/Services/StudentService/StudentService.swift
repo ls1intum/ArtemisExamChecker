@@ -12,9 +12,7 @@ protocol StudentService {
     func saveStudent(student: ExamUser, examId: Int, courseId: Int) async -> DataState<ExamUser>
 }
 
-
 enum StudentServiceFactory {
-    
+
     static let shared: StudentService = StudentServiceImpl()
-    
 }

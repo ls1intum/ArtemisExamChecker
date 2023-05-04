@@ -10,9 +10,9 @@ import APIClient
 import Common
 
 class StudentServiceImpl: StudentService {
-    
+
     private let client = APIClient()
-    
+
     struct ExamUserDTO: Encodable {
         let login: String
         let didCheckImage: Bool
@@ -22,7 +22,7 @@ class StudentServiceImpl: StudentService {
         let room: String?
         let seat: String?
     }
-    
+
     func saveStudent(student: ExamUser, examId: Int, courseId: Int) async -> DataState<ExamUser> {
         let request = MultipartFormDataRequest(path: "api/courses/\(courseId)/exams/\(examId)/exam-users")
         if let signing = student.signing {
@@ -40,7 +40,7 @@ class StudentServiceImpl: StudentService {
             request.addDataField(named: "examUserDTO", filename: nil, data: studentData, mimeType: "application/json")
         }
         let result: Result<(ExamUser, Int), APIClientError> = await client.sendRequest(request)
-        
+
         switch result {
         case .success((let examUser, _)):
             return .done(response: examUser)

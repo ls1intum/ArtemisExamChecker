@@ -10,16 +10,16 @@ import APIClient
 import UserStore
 
 struct ExamUser: Identifiable, Codable {
-    
+
     let id: Int
-    
+
     let user: User
-                
+
     var didCheckImage: Bool?
     var didCheckName: Bool?
     var didCheckLogin: Bool?
     var didCheckRegistrationNumber: Bool?
-    
+
     var actualRoom: String?
     var actualSeat: String?
     let plannedRoom: String?
@@ -28,14 +28,14 @@ struct ExamUser: Identifiable, Codable {
     var signing: Data?
     var signingImagePath: String?
     var studentImagePath: String?
-    
+
     var signingImageURL: URL? {
-        guard let signingImagePath = signingImagePath else { return nil }
+        guard let signingImagePath else { return nil }
         return URL(string: signingImagePath, relativeTo: UserSession.shared.institution?.baseURL)
     }
 
     var imageURL: URL? {
-        guard let studentImagePath = studentImagePath else { return nil }
+        guard let studentImagePath else { return nil }
         return URL(string: studentImagePath, relativeTo: UserSession.shared.institution?.baseURL)
     }
 

@@ -10,9 +10,9 @@ import Account
 import DesignLibrary
 
 struct ExamOverviewList: View {
-    
+
     @StateObject private var viewModel = ExamOverviewListViewModel()
-    
+
     var body: some View {
         NavigationStack {
             VStack {

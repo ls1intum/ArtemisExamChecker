@@ -12,7 +12,7 @@ import APIClient
 
 @MainActor
 class ExamOverviewListViewModel: ObservableObject {
-    
+
     @Published var exams: DataState<[Exam]> = .loading
 
     @Published var error: UserFacingError? {
@@ -21,13 +21,13 @@ class ExamOverviewListViewModel: ObservableObject {
         }
     }
     @Published var showError = false
-    
+
     init() {
         Task {
             await getExams()
         }
     }
-    
+
     func getExams(showLoadingIndicator: Bool = true) async {
         if showLoadingIndicator {
             exams = .loading

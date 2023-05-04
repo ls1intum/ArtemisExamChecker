@@ -14,7 +14,6 @@ protocol ExamService {
 }
 
 enum ExamServiceFactory {
-    
+
     static let shared: ExamService = ExamServiceImpl()
-    
 }
