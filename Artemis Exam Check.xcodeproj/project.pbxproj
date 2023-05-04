@@ -29,6 +29,14 @@
 		D589000529795A5C00541D18 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D589000429795A5C00541D18 /* ContentViewModel.swift */; };
 		D589FFFB297959D800541D18 /* APIClient in Frameworks */ = {isa = PBXBuildFile; productRef = D589FFFA297959D800541D18 /* APIClient */; };
 		D589FFFD297959D800541D18 /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = D589FFFC297959D800541D18 /* Login */; };
+		D5DC36782A0442DE00DA32AF /* APIClient in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36772A0442DE00DA32AF /* APIClient */; };
+		D5DC367A2A0442DE00DA32AF /* Account in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36792A0442DE00DA32AF /* Account */; };
+		D5DC367C2A0442DE00DA32AF /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC367B2A0442DE00DA32AF /* Common */; };
+		D5DC367E2A0442DE00DA32AF /* DesignLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC367D2A0442DE00DA32AF /* DesignLibrary */; };
+		D5DC36802A0442DE00DA32AF /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC367F2A0442DE00DA32AF /* Login */; };
+		D5DC36822A0442DE00DA32AF /* ProfileInfo in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36812A0442DE00DA32AF /* ProfileInfo */; };
+		D5DC36842A0442DE00DA32AF /* SharedModels in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36832A0442DE00DA32AF /* SharedModels */; };
+		D5DC36862A0442DE00DA32AF /* UserStore in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36852A0442DE00DA32AF /* UserStore */; };
 		D5EED1122996651300B2C047 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D5EED1112996651300B2C047 /* Kingfisher */; };
 		D5F7AE202996498000C75A81 /* Account in Frameworks */ = {isa = PBXBuildFile; productRef = D5F7AE1F2996498000C75A81 /* Account */; };
 /* End PBXBuildFile section */
@@ -52,14 +60,8 @@
 		D55C087B2975BF2200DC6B80 /* Exam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exam.swift; sourceTree = "<group>"; };
 		D55C087D2975C24C00DC6B80 /* ExamOverviewList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamOverviewList.swift; sourceTree = "<group>"; };
 		D55C087F2975C28600DC6B80 /* ExamOverviewListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamOverviewListViewModel.swift; sourceTree = "<group>"; };
-		D589000129795A0500541D18 /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Common; path = core/Common; sourceTree = "<group>"; };
 		D589000429795A5C00541D18 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
-		D589FFF22979588E00541D18 /* APIClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = APIClient; path = core/APIClient; sourceTree = "<group>"; };
-		D589FFF52979593300541D18 /* Login */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Login; path = feature/Login; sourceTree = "<group>"; };
-		D589FFFE297959DF00541D18 /* UserStore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = UserStore; path = core/UserStore; sourceTree = "<group>"; };
 		D5CC96DC29800A62006D8653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D5F7AE1D299160D400C75A81 /* ProfileInfo */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ProfileInfo; path = feature/ProfileInfo; sourceTree = "<group>"; };
-		D5F7AE1E2996428000C75A81 /* Account */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Account; path = feature/Account; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,12 +69,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5DC36842A0442DE00DA32AF /* SharedModels in Frameworks */,
+				D5DC36802A0442DE00DA32AF /* Login in Frameworks */,
 				D5EED1122996651300B2C047 /* Kingfisher in Frameworks */,
 				D5890000297959FE00541D18 /* UserStore in Frameworks */,
+				D5DC367E2A0442DE00DA32AF /* DesignLibrary in Frameworks */,
+				D5DC36822A0442DE00DA32AF /* ProfileInfo in Frameworks */,
 				D5F7AE202996498000C75A81 /* Account in Frameworks */,
 				D589FFFB297959D800541D18 /* APIClient in Frameworks */,
+				D5DC367A2A0442DE00DA32AF /* Account in Frameworks */,
+				D5DC367C2A0442DE00DA32AF /* Common in Frameworks */,
 				D589FFFD297959D800541D18 /* Login in Frameworks */,
+				D5DC36782A0442DE00DA32AF /* APIClient in Frameworks */,
 				D589000329795A2300541D18 /* Common in Frameworks */,
+				D5DC36862A0442DE00DA32AF /* UserStore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +92,6 @@
 		D55C08282975A0E800DC6B80 = {
 			isa = PBXGroup;
 			children = (
-				D55C088D297956B200DC6B80 /* Packages */,
 				D55C08332975A0E800DC6B80 /* Artemis Exam Check */,
 				D55C08322975A0E800DC6B80 /* Products */,
 				D589FFF9297959D800541D18 /* Frameworks */,
@@ -187,19 +196,6 @@
 			path = ExamService;
 			sourceTree = "<group>";
 		};
-		D55C088D297956B200DC6B80 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				D5F7AE1E2996428000C75A81 /* Account */,
-				D5F7AE1D299160D400C75A81 /* ProfileInfo */,
-				D589000129795A0500541D18 /* Common */,
-				D589FFFE297959DF00541D18 /* UserStore */,
-				D589FFF52979593300541D18 /* Login */,
-				D589FFF22979588E00541D18 /* APIClient */,
-			);
-			path = Packages;
-			sourceTree = "<group>";
-		};
 		D589FFF9297959D800541D18 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +235,14 @@
 				D589000229795A2300541D18 /* Common */,
 				D5F7AE1F2996498000C75A81 /* Account */,
 				D5EED1112996651300B2C047 /* Kingfisher */,
+				D5DC36772A0442DE00DA32AF /* APIClient */,
+				D5DC36792A0442DE00DA32AF /* Account */,
+				D5DC367B2A0442DE00DA32AF /* Common */,
+				D5DC367D2A0442DE00DA32AF /* DesignLibrary */,
+				D5DC367F2A0442DE00DA32AF /* Login */,
+				D5DC36812A0442DE00DA32AF /* ProfileInfo */,
+				D5DC36832A0442DE00DA32AF /* SharedModels */,
+				D5DC36852A0442DE00DA32AF /* UserStore */,
 			);
 			productName = "Artemis Exam Check";
 			productReference = D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */;
@@ -272,6 +276,7 @@
 				D55C086D2975BDEA00DC6B80 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
 				D55C08832978525E00DC6B80 /* XCRemoteSwiftPackageReference "ReSwift" */,
 				D5EED1102996651300B2C047 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */,
 			);
 			productRefGroup = D55C08322975A0E800DC6B80 /* Products */;
 			projectDirPath = "";
@@ -565,6 +570,14 @@
 				minimumVersion = 6.0.0;
 			};
 		};
+		D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ls1intum/artemis-ios-core-modules";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.7;
+			};
+		};
 		D5EED1102996651300B2C047 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -590,6 +603,46 @@
 		};
 		D589FFFF297959FE00541D18 /* UserStore */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = UserStore;
+		};
+		D5DC36772A0442DE00DA32AF /* APIClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
+			productName = APIClient;
+		};
+		D5DC36792A0442DE00DA32AF /* Account */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
+			productName = Account;
+		};
+		D5DC367B2A0442DE00DA32AF /* Common */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
+			productName = Common;
+		};
+		D5DC367D2A0442DE00DA32AF /* DesignLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
+			productName = DesignLibrary;
+		};
+		D5DC367F2A0442DE00DA32AF /* Login */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
+			productName = Login;
+		};
+		D5DC36812A0442DE00DA32AF /* ProfileInfo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
+			productName = ProfileInfo;
+		};
+		D5DC36832A0442DE00DA32AF /* SharedModels */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
+			productName = SharedModels;
+		};
+		D5DC36852A0442DE00DA32AF /* UserStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
 			productName = UserStore;
 		};
 		D5EED1112996651300B2C047 /* Kingfisher */ = {
