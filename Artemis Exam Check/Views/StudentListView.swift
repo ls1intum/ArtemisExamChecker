@@ -6,17 +6,17 @@
 //
 
 import SwiftUI
-import Common
+import DesignLibrary
 
 struct StudentListView: View {
-    
+
     @StateObject var viewModel: StudentListViewModel
-    
+
     @State private var selectedStudent: ExamUser?
 
     @State private var unsavedUserAlert = false
     @State private var nextSelectedStudent: ExamUser?
-    
+
     init(exam: Exam) {
         self._viewModel = StateObject(wrappedValue: StudentListViewModel(courseId: exam.course.id, examId: exam.id))
     }
@@ -36,7 +36,7 @@ struct StudentListView: View {
             return nil
         } ?? []
     }
-    
+
     var body: some View {
         NavigationSplitView(sidebar: {
             DataStateView(data: $viewModel.exam, retryHandler: { await viewModel.getExam() }) { _ in
