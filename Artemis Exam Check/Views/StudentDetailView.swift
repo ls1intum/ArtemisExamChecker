@@ -8,7 +8,6 @@
 import SwiftUI
 import Common
 import PencilKit
-import Kingfisher
 import DesignLibrary
 
 struct StudentDetailView: View {
@@ -48,14 +47,6 @@ struct StudentDetailView: View {
     let examId: Int
     let courseId: Int
 
-    var requestModifier = AnyModifier { request in
-        var newRequest = request
-        if let cookies = URLSession.shared.authenticationCookie {
-            newRequest.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookies)
-        }
-        return newRequest
-    }
-
     init(examId: Int,
          courseId: Int,
          student: Binding<ExamUser>,
@@ -82,7 +73,7 @@ struct StudentDetailView: View {
         ScrollView {
             VStack(spacing: 8) {
                 HStack {
-                    if imageLoadingError {
+                    ArtemisAsyncImage(imageURL: student.imageURL) {
                         VStack {
                             Image(systemName: "person.fill")
                                 .resizable()
@@ -93,27 +84,10 @@ struct StudentDetailView: View {
                                 .font(.caption)
                                 .foregroundColor(.red)
                         }.frame(width: 200, height: 200)
-                    } else {
-                        KFImage.url(student.imageURL)
-                            .requestModifier(requestModifier)
-                            .placeholder {
-                                ProgressView()
-                                    .frame(width: 200, height: 200)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 16)
-                                            .stroke(.gray)
-                                    )
-                            }
-                            .onFailure { _ in
-                                imageLoadingError = true
-                            }.onSuccess { _ in
-                                imageLoadingError = false
-                            }
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 200, height: 200)
-                            .cornerRadius(16)
                     }
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 200, height: 200)
+                        .cornerRadius(16)
                     VStack(spacing: 12) {
                         StudentDetailCell(description: "Name", value: student.user.name)
                         StudentDetailCell(description: "Matriculation Nr.", value: student.user.visibleRegistrationNumber ?? "not available")
@@ -151,7 +125,10 @@ struct StudentDetailView: View {
                 Group {
                     if showSigningImage {
                         HStack(alignment: .bottom) {
-                            if case .failure = signingImageLoadingStatus {
+                            ArtemisAsyncImage(imageURL: student.signingImageURL,
+                                              onFailure: { signingImageLoadingStatus = .failure(error: $0) },
+                                              onProgress: { _, _ in signingImageLoadingStatus = .loading },
+                                              onSuccess: { _ in signingImageLoadingStatus = .success }) {
                                 HStack {
                                     Spacer()
                                     VStack {
@@ -165,23 +142,9 @@ struct StudentDetailView: View {
                                     }.frame(height: 200)
                                     Spacer()
                                 }
-                            } else {
-                                KFImage.url(student.signingImageURL)
-                                    .requestModifier(requestModifier)
-                                    .placeholder {
-                                        ProgressView()
-                                    }
-                                    .onFailure { result in
-                                        signingImageLoadingStatus = .failure(error: result)
-                                    }.onSuccess { _ in
-                                        signingImageLoadingStatus = .success
-                                    }.onProgress { _, _ in
-                                        signingImageLoadingStatus = .loading
-                                    }
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 200)
                             }
+                                .scaledToFit()
+                                .frame(height: 200)
                             switch signingImageLoadingStatus {
                             case .notStarted, .loading:
                                 EmptyView()

@@ -23,11 +23,7 @@
 		D55C087C2975BF2200DC6B80 /* Exam.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C087B2975BF2200DC6B80 /* Exam.swift */; };
 		D55C087E2975C24C00DC6B80 /* ExamOverviewList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C087D2975C24C00DC6B80 /* ExamOverviewList.swift */; };
 		D55C08802975C28600DC6B80 /* ExamOverviewListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C087F2975C28600DC6B80 /* ExamOverviewListViewModel.swift */; };
-		D5890000297959FE00541D18 /* UserStore in Frameworks */ = {isa = PBXBuildFile; productRef = D589FFFF297959FE00541D18 /* UserStore */; };
-		D589000329795A2300541D18 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = D589000229795A2300541D18 /* Common */; };
 		D589000529795A5C00541D18 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D589000429795A5C00541D18 /* ContentViewModel.swift */; };
-		D589FFFB297959D800541D18 /* APIClient in Frameworks */ = {isa = PBXBuildFile; productRef = D589FFFA297959D800541D18 /* APIClient */; };
-		D589FFFD297959D800541D18 /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = D589FFFC297959D800541D18 /* Login */; };
 		D5DC36782A0442DE00DA32AF /* APIClient in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36772A0442DE00DA32AF /* APIClient */; };
 		D5DC367A2A0442DE00DA32AF /* Account in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36792A0442DE00DA32AF /* Account */; };
 		D5DC367C2A0442DE00DA32AF /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC367B2A0442DE00DA32AF /* Common */; };
@@ -37,7 +33,6 @@
 		D5DC36842A0442DE00DA32AF /* SharedModels in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36832A0442DE00DA32AF /* SharedModels */; };
 		D5DC36862A0442DE00DA32AF /* UserStore in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36852A0442DE00DA32AF /* UserStore */; };
 		D5EED1122996651300B2C047 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D5EED1112996651300B2C047 /* Kingfisher */; };
-		D5F7AE202996498000C75A81 /* Account in Frameworks */ = {isa = PBXBuildFile; productRef = D5F7AE1F2996498000C75A81 /* Account */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,16 +65,11 @@
 				D5DC36842A0442DE00DA32AF /* SharedModels in Frameworks */,
 				D5DC36802A0442DE00DA32AF /* Login in Frameworks */,
 				D5EED1122996651300B2C047 /* Kingfisher in Frameworks */,
-				D5890000297959FE00541D18 /* UserStore in Frameworks */,
 				D5DC367E2A0442DE00DA32AF /* DesignLibrary in Frameworks */,
 				D5DC36822A0442DE00DA32AF /* ProfileInfo in Frameworks */,
-				D5F7AE202996498000C75A81 /* Account in Frameworks */,
-				D589FFFB297959D800541D18 /* APIClient in Frameworks */,
 				D5DC367A2A0442DE00DA32AF /* Account in Frameworks */,
 				D5DC367C2A0442DE00DA32AF /* Common in Frameworks */,
-				D589FFFD297959D800541D18 /* Login in Frameworks */,
 				D5DC36782A0442DE00DA32AF /* APIClient in Frameworks */,
-				D589000329795A2300541D18 /* Common in Frameworks */,
 				D5DC36862A0442DE00DA32AF /* UserStore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,11 +208,6 @@
 			);
 			name = "Artemis Exam Check";
 			packageProductDependencies = (
-				D589FFFA297959D800541D18 /* APIClient */,
-				D589FFFC297959D800541D18 /* Login */,
-				D589FFFF297959FE00541D18 /* UserStore */,
-				D589000229795A2300541D18 /* Common */,
-				D5F7AE1F2996498000C75A81 /* Account */,
 				D5EED1112996651300B2C047 /* Kingfisher */,
 				D5DC36772A0442DE00DA32AF /* APIClient */,
 				D5DC36792A0442DE00DA32AF /* Account */,
@@ -577,22 +562,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		D589000229795A2300541D18 /* Common */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Common;
-		};
-		D589FFFA297959D800541D18 /* APIClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = APIClient;
-		};
-		D589FFFC297959D800541D18 /* Login */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Login;
-		};
-		D589FFFF297959FE00541D18 /* UserStore */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = UserStore;
-		};
 		D5DC36772A0442DE00DA32AF /* APIClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
@@ -637,10 +606,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D5EED1102996651300B2C047 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
-		};
-		D5F7AE1F2996498000C75A81 /* Account */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Account;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
