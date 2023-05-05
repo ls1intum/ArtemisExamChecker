@@ -32,7 +32,6 @@
 		D5DC36822A0442DE00DA32AF /* ProfileInfo in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36812A0442DE00DA32AF /* ProfileInfo */; };
 		D5DC36842A0442DE00DA32AF /* SharedModels in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36832A0442DE00DA32AF /* SharedModels */; };
 		D5DC36862A0442DE00DA32AF /* UserStore in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36852A0442DE00DA32AF /* UserStore */; };
-		D5EED1122996651300B2C047 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D5EED1112996651300B2C047 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,7 +63,6 @@
 			files = (
 				D5DC36842A0442DE00DA32AF /* SharedModels in Frameworks */,
 				D5DC36802A0442DE00DA32AF /* Login in Frameworks */,
-				D5EED1122996651300B2C047 /* Kingfisher in Frameworks */,
 				D5DC367E2A0442DE00DA32AF /* DesignLibrary in Frameworks */,
 				D5DC36822A0442DE00DA32AF /* ProfileInfo in Frameworks */,
 				D5DC367A2A0442DE00DA32AF /* Account in Frameworks */,
@@ -208,7 +206,6 @@
 			);
 			name = "Artemis Exam Check";
 			packageProductDependencies = (
-				D5EED1112996651300B2C047 /* Kingfisher */,
 				D5DC36772A0442DE00DA32AF /* APIClient */,
 				D5DC36792A0442DE00DA32AF /* Account */,
 				D5DC367B2A0442DE00DA32AF /* Common */,
@@ -247,9 +244,6 @@
 			);
 			mainGroup = D55C08282975A0E800DC6B80;
 			packageReferences = (
-				D55C086D2975BDEA00DC6B80 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
-				D55C08832978525E00DC6B80 /* XCRemoteSwiftPackageReference "ReSwift" */,
-				D5EED1102996651300B2C047 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */,
 			);
 			productRefGroup = D55C08322975A0E800DC6B80 /* Products */;
@@ -527,36 +521,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		D55C086D2975BDEA00DC6B80 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SwiftyBeaver/SwiftyBeaver.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		D55C08832978525E00DC6B80 /* XCRemoteSwiftPackageReference "ReSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReSwift/ReSwift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.0.0;
-			};
-		};
 		D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ls1intum/artemis-ios-core-modules";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.7;
-			};
-		};
-		D5EED1102996651300B2C047 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -601,11 +571,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
 			productName = UserStore;
-		};
-		D5EED1112996651300B2C047 /* Kingfisher */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D5EED1102996651300B2C047 /* XCRemoteSwiftPackageReference "Kingfisher" */;
-			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
