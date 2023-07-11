@@ -58,41 +58,43 @@ struct StudentListView: View {
                             .padding(.horizontal, 8)
                         Text("Progress: \(viewModel.checkedInStudentsInSelectedRoom) / \(viewModel.totalStudentsInSelectedRoom)")
                     }.padding(.horizontal, 8)
-                    if viewModel.selectedStudents.isEmpty {
-                        List {
-                            Text("There are no students. Maybe try removing some filters.")
-                        }
-                    } else {
-                        List(viewModel.selectedStudents, selection: $selectedStudent) { student in
-                            Button(action: {
-                                if viewModel.hasUnsavedChanges {
-                                    unsavedUserAlert = true
-                                    nextSelectedStudent = student
-                                } else {
-                                    selectedStudent = student
-                                }
-                            }) {
-                                HStack {
-                                    VStack(alignment: .leading) {
-                                        Text(student.user.name)
-                                            .bold()
-                                        Text("Seat: \(student.actualSeat ?? student.plannedSeat ?? "not set")")
+                    Group {
+                        if viewModel.selectedStudents.isEmpty {
+                            List {
+                                Text("There are no students. Maybe try removing some filters.")
+                            }
+                        } else {
+                            List(viewModel.selectedStudents, selection: $selectedStudent) { student in
+                                Button(action: {
+                                    if viewModel.hasUnsavedChanges {
+                                        unsavedUserAlert = true
+                                        nextSelectedStudent = student
+                                    } else {
+                                        selectedStudent = student
                                     }
-                                    Spacer()
-                                    if student.isStudentDone {
-                                        Image(systemName: "checkmark.seal.fill")
-                                            .foregroundColor(.green)
-                                            .imageScale(.large)
+                                }) {
+                                    HStack {
+                                        VStack(alignment: .leading) {
+                                            Text(student.user.name)
+                                                .bold()
+                                            Text("Seat: \(student.actualSeat ?? student.plannedSeat ?? "not set")")
+                                        }
+                                        Spacer()
+                                        if student.isStudentDone {
+                                            Image(systemName: "checkmark.seal.fill")
+                                                .foregroundColor(.green)
+                                                .imageScale(.large)
+                                        }
                                     }
-                                }
-                            }.listRowBackground(self.selectedStudent == student ? Color.gray.opacity(0.4) : Color.clear)
+                                }.listRowBackground(self.selectedStudent == student ? Color.gray.opacity(0.4) : Color.clear)
+                            }
                         }
+                    }
                         .searchable(text: $viewModel.searchText)
                         .listStyle(SidebarListStyle())
                         .refreshable {
                             await viewModel.getExam(showLoadingIndicator: false)
                         }
-                    }
                     if !images.isEmpty {
                         ShareLink("Export Signatures", items: images)
                     }
