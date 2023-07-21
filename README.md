@@ -1,6 +1,9 @@
 # Artemis Exam Checker
 
-The Artemis Exam Participation Checker iPad application (in short: `Exam Checker`) is designed to streamline the process of checking student attendance during onsite exams conducted with the Artemis platform. The application replaces the traditional paper-based method with a digitalized process, making tracking and managing student attendance easier. The application includes features such as student identification, digital signing, and attendance tracking. The Artemis web platform was adapted to support additional exam management tasks, such as uploading the seating arrangement and images for students.
+The Artemis Exam Participation Checker iPad application (in short: `Exam Checker`) is designed to streamline the process of checking student attendance during onsite exams conducted with the Artemis platform.
+The application replaces the traditional paper-based method with a digitalized process, making tracking and managing student attendance easier.
+The application includes features such as student identification, digital signing, and attendance tracking.
+The Artemis web platform was adapted to support additional exam management tasks, such as uploading the seating arrangement and images for students.
 
 ## Architecture
 
