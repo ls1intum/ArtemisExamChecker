@@ -14,7 +14,10 @@ Eeach UI-related subsystem is associated with a dedicated service.
 These services use the shared *API Client* for network communication with the server.
 Additional components are employed for user handling, including the *Login* subsystem for handling the authentication process and the *Account* subsystem for account management functionalities.
 
-For the sake of simplicity, the referenced figure (`exam-checker-subsystem`) does not show all `Core Module` subsystems. Therefore the *User Session Store*, *Artemis Profile Info*, and *Shared Models* subsystems are not shown in the figure. However, `Exam Checker` also uses these subsystems. More information about the `Core Module` can be found [here](https://github.com/ls1intum/artemis-ios-core-modules/blob/main/README.md)
+For the sake of simplicity, the referenced figure (`exam-checker-subsystem`) does not show all `Core Module` subsystems.
+Therefore the *User Session Store*, *Artemis Profile Info*, and *Shared Models* subsystems are not shown in the figure.
+However, `Exam Checker` also uses these subsystems.
+More information about the `Core Module` can be found [here](https://github.com/ls1intum/artemis-ios-core-modules/blob/main/README.md).
 
 ![Subsystem decomposition of the Exam Checker application](docu/EXAM-CHECKER-subsystem.png)
 
