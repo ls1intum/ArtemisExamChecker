@@ -7,7 +7,8 @@ The Artemis web platform was adapted to support additional exam management tasks
 
 ## Architecture
 
-The `Exam Checker` primarily comprises two screens: the *Exam Overview* and the *Student Detail View*. Each view utilizes the *Design Library* for shared UI components and employs the *Common Utility* for additional utility functionalities such as date formatting.
+The `Exam Checker` primarily comprises two screens: the *Exam Overview* and the *Student Detail View*.
+Each view utilizes the *Design Library* for shared UI components and employs the *Common Utility* for additional utility functionalities such as date formatting.
 
 Eeach UI-related subsystem is associated with a dedicated service. These services use the shared *Api Client* for network communication with the server. Additional components are employed for user handling, including the *Login* subsystem for handling the authentication process and the *Account* subsystem for account management functionalities.
 
