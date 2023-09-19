@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D55C08352975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08342975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift */; };
+		A1440CE32AB9AA6700315873 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = A1440CE22AB9AA6700315873 /* Starscream */; };
+		D55C08352975A0E800DC6B80 /* ArtemisExamCheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */; };
 		D55C08372975A0E800DC6B80 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08362975A0E800DC6B80 /* ContentView.swift */; };
 		D55C08392975A0EB00DC6B80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55C08382975A0EB00DC6B80 /* Assets.xcassets */; };
 		D55C083C2975A0EB00DC6B80 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55C083B2975A0EB00DC6B80 /* Preview Assets.xcassets */; };
@@ -36,7 +37,7 @@
 
 /* Begin PBXFileReference section */
 		D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Artemis Exam Check.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D55C08342975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artemis_Exam_CheckApp.swift; sourceTree = "<group>"; };
+		D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtemisExamCheckApp.swift; sourceTree = "<group>"; };
 		D55C08362975A0E800DC6B80 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D55C08382975A0EB00DC6B80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D55C083B2975A0EB00DC6B80 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -69,6 +70,7 @@
 				D5DC367C2A0442DE00DA32AF /* Common in Frameworks */,
 				D5DC36782A0442DE00DA32AF /* APIClient in Frameworks */,
 				D5DC36862A0442DE00DA32AF /* UserStore in Frameworks */,
+				A1440CE32AB9AA6700315873 /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +102,7 @@
 				D55C084A2975A2BE00DC6B80 /* ViewModels */,
 				D55C08432975A11000DC6B80 /* Model */,
 				D55C08422975A0F800DC6B80 /* Views */,
-				D55C08342975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift */,
+				D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */,
 				D55C08382975A0EB00DC6B80 /* Assets.xcassets */,
 				D55C083A2975A0EB00DC6B80 /* Preview Content */,
 			);
@@ -214,6 +216,7 @@
 				D5DC36812A0442DE00DA32AF /* ProfileInfo */,
 				D5DC36832A0442DE00DA32AF /* SharedModels */,
 				D5DC36852A0442DE00DA32AF /* UserStore */,
+				A1440CE22AB9AA6700315873 /* Starscream */,
 			);
 			productName = "Artemis Exam Check";
 			productReference = D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */;
@@ -245,6 +248,7 @@
 			mainGroup = D55C08282975A0E800DC6B80;
 			packageReferences = (
 				D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */,
+				A1440CE12AB9AA6700315873 /* XCRemoteSwiftPackageReference "Starscream" */,
 			);
 			productRefGroup = D55C08322975A0E800DC6B80 /* Products */;
 			projectDirPath = "";
@@ -304,7 +308,7 @@
 				D55C08472975A25700DC6B80 /* StudentListView.swift in Sources */,
 				D55C08562975BCF300DC6B80 /* ExamService.swift in Sources */,
 				D589000529795A5C00541D18 /* ContentViewModel.swift in Sources */,
-				D55C08352975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift in Sources */,
+				D55C08352975A0E800DC6B80 /* ArtemisExamCheckApp.swift in Sources */,
 				D55C084C2975A45100DC6B80 /* StudentDetailView.swift in Sources */,
 				D55C087A2975BF0B00DC6B80 /* ExamServiceImpl.swift in Sources */,
 			);
@@ -445,7 +449,7 @@
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -480,7 +484,7 @@
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -521,17 +525,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A1440CE12AB9AA6700315873 /* XCRemoteSwiftPackageReference "Starscream" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daltoniam/Starscream";
+			requirement = {
+				kind = exactVersion;
+				version = 4.0.4;
+			};
+		};
 		D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ls1intum/artemis-ios-core-modules";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				branch = ios17;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A1440CE22AB9AA6700315873 /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1440CE12AB9AA6700315873 /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
+		};
 		D5DC36772A0442DE00DA32AF /* APIClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
