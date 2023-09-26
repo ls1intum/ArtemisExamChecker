@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1DE502D2AC38CB3005D1D6E /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = A1DE502C2AC38CB3005D1D6E /* Starscream */; };
 		D55C08352975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08342975A0E800DC6B80 /* Artemis_Exam_CheckApp.swift */; };
 		D55C08372975A0E800DC6B80 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08362975A0E800DC6B80 /* ContentView.swift */; };
 		D55C08392975A0EB00DC6B80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55C08382975A0EB00DC6B80 /* Assets.xcassets */; };
@@ -69,6 +70,7 @@
 				D5DC367C2A0442DE00DA32AF /* Common in Frameworks */,
 				D5DC36782A0442DE00DA32AF /* APIClient in Frameworks */,
 				D5DC36862A0442DE00DA32AF /* UserStore in Frameworks */,
+				A1DE502D2AC38CB3005D1D6E /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +216,7 @@
 				D5DC36812A0442DE00DA32AF /* ProfileInfo */,
 				D5DC36832A0442DE00DA32AF /* SharedModels */,
 				D5DC36852A0442DE00DA32AF /* UserStore */,
+				A1DE502C2AC38CB3005D1D6E /* Starscream */,
 			);
 			productName = "Artemis Exam Check";
 			productReference = D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */;
@@ -245,6 +248,7 @@
 			mainGroup = D55C08282975A0E800DC6B80;
 			packageReferences = (
 				D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */,
+				A1DE502B2AC38CB3005D1D6E /* XCRemoteSwiftPackageReference "Starscream" */,
 			);
 			productRefGroup = D55C08322975A0E800DC6B80 /* Products */;
 			projectDirPath = "";
@@ -521,17 +525,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A1DE502B2AC38CB3005D1D6E /* XCRemoteSwiftPackageReference "Starscream" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daltoniam/Starscream";
+			requirement = {
+				kind = exactVersion;
+				version = 4.0.4;
+			};
+		};
 		D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ls1intum/artemis-ios-core-modules";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 3.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A1DE502C2AC38CB3005D1D6E /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1DE502B2AC38CB3005D1D6E /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
+		};
 		D5DC36772A0442DE00DA32AF /* APIClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
