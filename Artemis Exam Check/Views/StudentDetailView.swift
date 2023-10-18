@@ -10,6 +10,8 @@ import Common
 import PencilKit
 import DesignLibrary
 
+// swiftlint:disable file_length
+
 struct StudentDetailView: View {
 
     @State var canvasView = PKCanvasView()
@@ -201,25 +203,25 @@ struct StudentDetailView: View {
         }
             .scrollDisabled(!isScrollingEnabled)
             .loadingIndicator(isLoading: $isSaving)
-            .onChange(of: canvasView.drawing) { _ in
+            .onChange(of: canvasView.drawing) {
                 hasUnsavedChanges = true
             }
-            .onChange(of: didCheckImage) { _ in
+            .onChange(of: didCheckImage) {
                 hasUnsavedChanges = true
             }
-            .onChange(of: didCheckName) { _ in
+            .onChange(of: didCheckName) {
                 hasUnsavedChanges = true
             }
-            .onChange(of: didCheckLogin) { _ in
+            .onChange(of: didCheckLogin) {
                 hasUnsavedChanges = true
             }
-            .onChange(of: didCheckRegistrationNumber) { _ in
+            .onChange(of: didCheckRegistrationNumber) {
                 hasUnsavedChanges = true
             }
-            .onChange(of: actualRoom) { _ in
+            .onChange(of: actualRoom) {
                 hasUnsavedChanges = true
             }
-            .onChange(of: actualSeat) { _ in
+            .onChange(of: actualSeat) {
                 hasUnsavedChanges = true
             }
             .toolbar {

@@ -47,6 +47,7 @@ struct ExamUser: Identifiable, Codable {
         signingImagePath != nil
     }
 
+    // swiftlint:disable:next function_parameter_count
     func copy(checkedImage: Bool,
               checkedName: Bool,
               checkedLogin: Bool,
