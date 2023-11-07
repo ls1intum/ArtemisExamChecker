@@ -9,22 +9,8 @@
 /* Begin PBXBuildFile section */
 		A1440CE32AB9AA6700315873 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = A1440CE22AB9AA6700315873 /* Starscream */; };
 		D55C08352975A0E800DC6B80 /* ArtemisExamCheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */; };
-		D55C08372975A0E800DC6B80 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08362975A0E800DC6B80 /* ContentView.swift */; };
 		D55C08392975A0EB00DC6B80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55C08382975A0EB00DC6B80 /* Assets.xcassets */; };
 		D55C083C2975A0EB00DC6B80 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55C083B2975A0EB00DC6B80 /* Preview Assets.xcassets */; };
-		D55C08452975A12F00DC6B80 /* ExamUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08442975A12F00DC6B80 /* ExamUser.swift */; };
-		D55C08472975A25700DC6B80 /* StudentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08462975A25700DC6B80 /* StudentListView.swift */; };
-		D55C08492975A2B400DC6B80 /* StudentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08482975A2B400DC6B80 /* StudentListViewModel.swift */; };
-		D55C084C2975A45100DC6B80 /* StudentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C084B2975A45100DC6B80 /* StudentDetailView.swift */; };
-		D55C084E2975A85C00DC6B80 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C084D2975A85C00DC6B80 /* CanvasView.swift */; };
-		D55C08562975BCF300DC6B80 /* ExamService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08552975BCF300DC6B80 /* ExamService.swift */; };
-		D55C08592975BD0300DC6B80 /* StudentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08582975BD0300DC6B80 /* StudentService.swift */; };
-		D55C08772975BE9600DC6B80 /* StudentServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08762975BE9600DC6B80 /* StudentServiceImpl.swift */; };
-		D55C087A2975BF0B00DC6B80 /* ExamServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08792975BF0B00DC6B80 /* ExamServiceImpl.swift */; };
-		D55C087C2975BF2200DC6B80 /* Exam.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C087B2975BF2200DC6B80 /* Exam.swift */; };
-		D55C087E2975C24C00DC6B80 /* ExamOverviewList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C087D2975C24C00DC6B80 /* ExamOverviewList.swift */; };
-		D55C08802975C28600DC6B80 /* ExamOverviewListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C087F2975C28600DC6B80 /* ExamOverviewListViewModel.swift */; };
-		D589000529795A5C00541D18 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D589000429795A5C00541D18 /* ContentViewModel.swift */; };
 		D5DC36782A0442DE00DA32AF /* APIClient in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36772A0442DE00DA32AF /* APIClient */; };
 		D5DC367A2A0442DE00DA32AF /* Account in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36792A0442DE00DA32AF /* Account */; };
 		D5DC367C2A0442DE00DA32AF /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC367B2A0442DE00DA32AF /* Common */; };
@@ -39,22 +25,8 @@
 		A1B574072AFAA4FB00A54ACE /* ArtemisExamCheckKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ArtemisExamCheckKit; sourceTree = "<group>"; };
 		D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Artemis Exam Check.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtemisExamCheckApp.swift; sourceTree = "<group>"; };
-		D55C08362975A0E800DC6B80 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D55C08382975A0EB00DC6B80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D55C083B2975A0EB00DC6B80 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		D55C08442975A12F00DC6B80 /* ExamUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamUser.swift; sourceTree = "<group>"; };
-		D55C08462975A25700DC6B80 /* StudentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentListView.swift; sourceTree = "<group>"; };
-		D55C08482975A2B400DC6B80 /* StudentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentListViewModel.swift; sourceTree = "<group>"; };
-		D55C084B2975A45100DC6B80 /* StudentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentDetailView.swift; sourceTree = "<group>"; };
-		D55C084D2975A85C00DC6B80 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
-		D55C08552975BCF300DC6B80 /* ExamService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamService.swift; sourceTree = "<group>"; };
-		D55C08582975BD0300DC6B80 /* StudentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentService.swift; sourceTree = "<group>"; };
-		D55C08762975BE9600DC6B80 /* StudentServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentServiceImpl.swift; sourceTree = "<group>"; };
-		D55C08792975BF0B00DC6B80 /* ExamServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamServiceImpl.swift; sourceTree = "<group>"; };
-		D55C087B2975BF2200DC6B80 /* Exam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exam.swift; sourceTree = "<group>"; };
-		D55C087D2975C24C00DC6B80 /* ExamOverviewList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamOverviewList.swift; sourceTree = "<group>"; };
-		D55C087F2975C28600DC6B80 /* ExamOverviewListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamOverviewListViewModel.swift; sourceTree = "<group>"; };
-		D589000429795A5C00541D18 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		D5CC96DC29800A62006D8653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,10 +72,6 @@
 			isa = PBXGroup;
 			children = (
 				D5D98A08298003DC00ECD017 /* Supporting */,
-				D55C08542975BCDA00DC6B80 /* Services */,
-				D55C084A2975A2BE00DC6B80 /* ViewModels */,
-				D55C08432975A11000DC6B80 /* Model */,
-				D55C08422975A0F800DC6B80 /* Views */,
 				D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */,
 				D55C08382975A0EB00DC6B80 /* Assets.xcassets */,
 				D55C083A2975A0EB00DC6B80 /* Preview Content */,
@@ -117,64 +85,6 @@
 				D55C083B2975A0EB00DC6B80 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		D55C08422975A0F800DC6B80 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D55C08362975A0E800DC6B80 /* ContentView.swift */,
-				D55C084B2975A45100DC6B80 /* StudentDetailView.swift */,
-				D55C08462975A25700DC6B80 /* StudentListView.swift */,
-				D55C084D2975A85C00DC6B80 /* CanvasView.swift */,
-				D55C087D2975C24C00DC6B80 /* ExamOverviewList.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		D55C08432975A11000DC6B80 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				D55C08442975A12F00DC6B80 /* ExamUser.swift */,
-				D55C087B2975BF2200DC6B80 /* Exam.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		D55C084A2975A2BE00DC6B80 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				D55C08482975A2B400DC6B80 /* StudentListViewModel.swift */,
-				D55C087F2975C28600DC6B80 /* ExamOverviewListViewModel.swift */,
-				D589000429795A5C00541D18 /* ContentViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		D55C08542975BCDA00DC6B80 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				D55C08782975BEBF00DC6B80 /* ExamService */,
-				D55C08752975BE4200DC6B80 /* StudentService */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		D55C08752975BE4200DC6B80 /* StudentService */ = {
-			isa = PBXGroup;
-			children = (
-				D55C08582975BD0300DC6B80 /* StudentService.swift */,
-				D55C08762975BE9600DC6B80 /* StudentServiceImpl.swift */,
-			);
-			path = StudentService;
-			sourceTree = "<group>";
-		};
-		D55C08782975BEBF00DC6B80 /* ExamService */ = {
-			isa = PBXGroup;
-			children = (
-				D55C08552975BCF300DC6B80 /* ExamService.swift */,
-				D55C08792975BF0B00DC6B80 /* ExamServiceImpl.swift */,
-			);
-			path = ExamService;
 			sourceTree = "<group>";
 		};
 		D589FFF9297959D800541D18 /* Frameworks */ = {
@@ -298,21 +208,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D55C08492975A2B400DC6B80 /* StudentListViewModel.swift in Sources */,
-				D55C08592975BD0300DC6B80 /* StudentService.swift in Sources */,
-				D55C087E2975C24C00DC6B80 /* ExamOverviewList.swift in Sources */,
-				D55C08772975BE9600DC6B80 /* StudentServiceImpl.swift in Sources */,
-				D55C08372975A0E800DC6B80 /* ContentView.swift in Sources */,
-				D55C087C2975BF2200DC6B80 /* Exam.swift in Sources */,
-				D55C084E2975A85C00DC6B80 /* CanvasView.swift in Sources */,
-				D55C08452975A12F00DC6B80 /* ExamUser.swift in Sources */,
-				D55C08802975C28600DC6B80 /* ExamOverviewListViewModel.swift in Sources */,
-				D55C08472975A25700DC6B80 /* StudentListView.swift in Sources */,
-				D55C08562975BCF300DC6B80 /* ExamService.swift in Sources */,
-				D589000529795A5C00541D18 /* ContentViewModel.swift in Sources */,
 				D55C08352975A0E800DC6B80 /* ArtemisExamCheckApp.swift in Sources */,
-				D55C084C2975A45100DC6B80 /* StudentDetailView.swift in Sources */,
-				D55C087A2975BF0B00DC6B80 /* ExamServiceImpl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
