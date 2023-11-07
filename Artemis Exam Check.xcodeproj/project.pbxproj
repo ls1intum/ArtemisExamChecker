@@ -36,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A1B574072AFAA4FB00A54ACE /* ArtemisExamCheckKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ArtemisExamCheckKit; sourceTree = "<group>"; };
 		D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Artemis Exam Check.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtemisExamCheckApp.swift; sourceTree = "<group>"; };
 		D55C08362975A0E800DC6B80 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -80,6 +81,7 @@
 		D55C08282975A0E800DC6B80 = {
 			isa = PBXGroup;
 			children = (
+				A1B574072AFAA4FB00A54ACE /* ArtemisExamCheckKit */,
 				D55C08332975A0E800DC6B80 /* Artemis Exam Check */,
 				D55C08322975A0E800DC6B80 /* Products */,
 				D589FFF9297959D800541D18 /* Frameworks */,
