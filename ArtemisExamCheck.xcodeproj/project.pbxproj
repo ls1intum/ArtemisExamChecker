@@ -15,7 +15,7 @@
 
 /* Begin PBXFileReference section */
 		A1B574072AFAA4FB00A54ACE /* ArtemisExamCheckKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ArtemisExamCheckKit; sourceTree = "<group>"; };
-		D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Artemis Exam Check.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D55C08312975A0E800DC6B80 /* ArtemisExamCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArtemisExamCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtemisExamCheckApp.swift; sourceTree = "<group>"; };
 		D55C08382975A0EB00DC6B80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D55C083B2975A0EB00DC6B80 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -38,7 +38,7 @@
 			isa = PBXGroup;
 			children = (
 				A1B574072AFAA4FB00A54ACE /* ArtemisExamCheckKit */,
-				D55C08332975A0E800DC6B80 /* Artemis Exam Check */,
+				D55C08332975A0E800DC6B80 /* ArtemisExamCheck */,
 				D55C08322975A0E800DC6B80 /* Products */,
 				D589FFF9297959D800541D18 /* Frameworks */,
 			);
@@ -47,20 +47,20 @@
 		D55C08322975A0E800DC6B80 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */,
+				D55C08312975A0E800DC6B80 /* ArtemisExamCheck.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D55C08332975A0E800DC6B80 /* Artemis Exam Check */ = {
+		D55C08332975A0E800DC6B80 /* ArtemisExamCheck */ = {
 			isa = PBXGroup;
 			children = (
-				D5D98A08298003DC00ECD017 /* Supporting */,
 				D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */,
 				D55C08382975A0EB00DC6B80 /* Assets.xcassets */,
 				D55C083A2975A0EB00DC6B80 /* Preview Content */,
+				D5D98A08298003DC00ECD017 /* Supporting */,
 			);
-			path = "Artemis Exam Check";
+			path = ArtemisExamCheck;
 			sourceTree = "<group>";
 		};
 		D55C083A2975A0EB00DC6B80 /* Preview Content */ = {
@@ -89,9 +89,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D55C08302975A0E800DC6B80 /* Artemis Exam Check */ = {
+		D55C08302975A0E800DC6B80 /* ArtemisExamCheck */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D55C083F2975A0EB00DC6B80 /* Build configuration list for PBXNativeTarget "Artemis Exam Check" */;
+			buildConfigurationList = D55C083F2975A0EB00DC6B80 /* Build configuration list for PBXNativeTarget "ArtemisExamCheck" */;
 			buildPhases = (
 				D5E3D3C7298541970036239F /* ShellScript */,
 				D55C082D2975A0E800DC6B80 /* Sources */,
@@ -102,12 +102,12 @@
 			);
 			dependencies = (
 			);
-			name = "Artemis Exam Check";
+			name = ArtemisExamCheck;
 			packageProductDependencies = (
 				A1B574082AFAA89300A54ACE /* ArtemisExamCheckKit */,
 			);
 			productName = "Artemis Exam Check";
-			productReference = D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */;
+			productReference = D55C08312975A0E800DC6B80 /* ArtemisExamCheck.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -125,7 +125,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D55C082C2975A0E800DC6B80 /* Build configuration list for PBXProject "Artemis Exam Check" */;
+			buildConfigurationList = D55C082C2975A0E800DC6B80 /* Build configuration list for PBXProject "ArtemisExamCheck" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -140,7 +140,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D55C08302975A0E800DC6B80 /* Artemis Exam Check */,
+				D55C08302975A0E800DC6B80 /* ArtemisExamCheck */,
 			);
 		};
 /* End PBXProject section */
@@ -380,7 +380,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D55C082C2975A0E800DC6B80 /* Build configuration list for PBXProject "Artemis Exam Check" */ = {
+		D55C082C2975A0E800DC6B80 /* Build configuration list for PBXProject "ArtemisExamCheck" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D55C083D2975A0EB00DC6B80 /* Debug */,
@@ -389,7 +389,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D55C083F2975A0EB00DC6B80 /* Build configuration list for PBXNativeTarget "Artemis Exam Check" */ = {
+		D55C083F2975A0EB00DC6B80 /* Build configuration list for PBXNativeTarget "ArtemisExamCheck" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D55C08402975A0EB00DC6B80 /* Debug */,
