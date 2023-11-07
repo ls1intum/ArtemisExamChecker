@@ -7,18 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1440CE32AB9AA6700315873 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = A1440CE22AB9AA6700315873 /* Starscream */; };
 		D55C08352975A0E800DC6B80 /* ArtemisExamCheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */; };
 		D55C08392975A0EB00DC6B80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55C08382975A0EB00DC6B80 /* Assets.xcassets */; };
 		D55C083C2975A0EB00DC6B80 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55C083B2975A0EB00DC6B80 /* Preview Assets.xcassets */; };
-		D5DC36782A0442DE00DA32AF /* APIClient in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36772A0442DE00DA32AF /* APIClient */; };
-		D5DC367A2A0442DE00DA32AF /* Account in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36792A0442DE00DA32AF /* Account */; };
-		D5DC367C2A0442DE00DA32AF /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC367B2A0442DE00DA32AF /* Common */; };
-		D5DC367E2A0442DE00DA32AF /* DesignLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC367D2A0442DE00DA32AF /* DesignLibrary */; };
-		D5DC36802A0442DE00DA32AF /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC367F2A0442DE00DA32AF /* Login */; };
-		D5DC36822A0442DE00DA32AF /* ProfileInfo in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36812A0442DE00DA32AF /* ProfileInfo */; };
-		D5DC36842A0442DE00DA32AF /* SharedModels in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36832A0442DE00DA32AF /* SharedModels */; };
-		D5DC36862A0442DE00DA32AF /* UserStore in Frameworks */ = {isa = PBXBuildFile; productRef = D5DC36852A0442DE00DA32AF /* UserStore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,15 +26,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5DC36842A0442DE00DA32AF /* SharedModels in Frameworks */,
-				D5DC36802A0442DE00DA32AF /* Login in Frameworks */,
-				D5DC367E2A0442DE00DA32AF /* DesignLibrary in Frameworks */,
-				D5DC36822A0442DE00DA32AF /* ProfileInfo in Frameworks */,
-				D5DC367A2A0442DE00DA32AF /* Account in Frameworks */,
-				D5DC367C2A0442DE00DA32AF /* Common in Frameworks */,
-				D5DC36782A0442DE00DA32AF /* APIClient in Frameworks */,
-				D5DC36862A0442DE00DA32AF /* UserStore in Frameworks */,
-				A1440CE32AB9AA6700315873 /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,15 +102,6 @@
 			);
 			name = "Artemis Exam Check";
 			packageProductDependencies = (
-				D5DC36772A0442DE00DA32AF /* APIClient */,
-				D5DC36792A0442DE00DA32AF /* Account */,
-				D5DC367B2A0442DE00DA32AF /* Common */,
-				D5DC367D2A0442DE00DA32AF /* DesignLibrary */,
-				D5DC367F2A0442DE00DA32AF /* Login */,
-				D5DC36812A0442DE00DA32AF /* ProfileInfo */,
-				D5DC36832A0442DE00DA32AF /* SharedModels */,
-				D5DC36852A0442DE00DA32AF /* UserStore */,
-				A1440CE22AB9AA6700315873 /* Starscream */,
 			);
 			productName = "Artemis Exam Check";
 			productReference = D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */;
@@ -159,8 +132,6 @@
 			);
 			mainGroup = D55C08282975A0E800DC6B80;
 			packageReferences = (
-				D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */,
-				A1440CE12AB9AA6700315873 /* XCRemoteSwiftPackageReference "Starscream" */,
 			);
 			productRefGroup = D55C08322975A0E800DC6B80 /* Products */;
 			projectDirPath = "";
@@ -425,73 +396,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		A1440CE12AB9AA6700315873 /* XCRemoteSwiftPackageReference "Starscream" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/daltoniam/Starscream";
-			requirement = {
-				kind = exactVersion;
-				version = 4.0.4;
-			};
-		};
-		D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ls1intum/artemis-ios-core-modules";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		A1440CE22AB9AA6700315873 /* Starscream */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A1440CE12AB9AA6700315873 /* XCRemoteSwiftPackageReference "Starscream" */;
-			productName = Starscream;
-		};
-		D5DC36772A0442DE00DA32AF /* APIClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
-			productName = APIClient;
-		};
-		D5DC36792A0442DE00DA32AF /* Account */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
-			productName = Account;
-		};
-		D5DC367B2A0442DE00DA32AF /* Common */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
-			productName = Common;
-		};
-		D5DC367D2A0442DE00DA32AF /* DesignLibrary */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
-			productName = DesignLibrary;
-		};
-		D5DC367F2A0442DE00DA32AF /* Login */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
-			productName = Login;
-		};
-		D5DC36812A0442DE00DA32AF /* ProfileInfo */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
-			productName = ProfileInfo;
-		};
-		D5DC36832A0442DE00DA32AF /* SharedModels */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
-			productName = SharedModels;
-		};
-		D5DC36852A0442DE00DA32AF /* UserStore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D5DC36762A0442DE00DA32AF /* XCRemoteSwiftPackageReference "artemis-ios-core-modules" */;
-			productName = UserStore;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D55C08292975A0E800DC6B80 /* Project object */;
 }
