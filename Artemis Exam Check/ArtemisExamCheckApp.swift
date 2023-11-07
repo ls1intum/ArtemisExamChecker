@@ -5,6 +5,7 @@
 //  Created by Sven Andabaka on 16.01.23.
 //
 
+import ArtemisExamCheckKit
 import SwiftUI
 
 @main

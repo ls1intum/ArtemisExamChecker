@@ -8,11 +8,13 @@
 import SwiftUI
 import Login
 
-struct ContentView: View {
+public struct ContentView: View {
 
     @StateObject var viewModel = ContentViewModel()
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         if viewModel.isLoggedIn {
             ExamOverviewList()
         } else {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1B574092AFAA89300A54ACE /* ArtemisExamCheckKit in Frameworks */ = {isa = PBXBuildFile; productRef = A1B574082AFAA89300A54ACE /* ArtemisExamCheckKit */; };
 		D55C08352975A0E800DC6B80 /* ArtemisExamCheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */; };
 		D55C08392975A0EB00DC6B80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55C08382975A0EB00DC6B80 /* Assets.xcassets */; };
 		D55C083C2975A0EB00DC6B80 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55C083B2975A0EB00DC6B80 /* Preview Assets.xcassets */; };
@@ -26,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1B574092AFAA89300A54ACE /* ArtemisExamCheckKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +104,7 @@
 			);
 			name = "Artemis Exam Check";
 			packageProductDependencies = (
+				A1B574082AFAA89300A54ACE /* ArtemisExamCheckKit */,
 			);
 			productName = "Artemis Exam Check";
 			productReference = D55C08312975A0E800DC6B80 /* Artemis Exam Check.app */;
@@ -396,6 +399,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A1B574082AFAA89300A54ACE /* ArtemisExamCheckKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ArtemisExamCheckKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D55C08292975A0E800DC6B80 /* Project object */;
 }
