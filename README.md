@@ -10,7 +10,7 @@ The Artemis web platform was adapted to support additional exam management tasks
 The `Exam Checker` primarily comprises two screens: the *Exam Overview* and the *Student Detail View*.
 Each view utilizes the *Design Library* for shared UI components and employs the *Common Utility* for additional utility functionalities such as date formatting.
 
-Eeach UI-related subsystem is associated with a dedicated service.
+Each UI-related subsystem is associated with a dedicated service.
 These services use the shared *API Client* for network communication with the server.
 Additional components are employed for user handling, including the *Login* subsystem for handling the authentication process and the *Account* subsystem for account management functionalities.
 
@@ -19,6 +19,6 @@ Therefore the *User Session Store*, *Artemis Profile Info*, and *Shared Models* 
 However, `Exam Checker` also uses these subsystems.
 More information about the `Core Module` can be found [here](https://github.com/ls1intum/artemis-ios-core-modules/blob/main/README.md).
 
-![Subsystem decomposition of the Exam Checker application](docu/EXAM-CHECKER-subsystem.png)
+![Subsystem decomposition of the Exam Checker application](docs/EXAM-CHECKER-subsystem.png)
 
 *Figure: Subsystem decomposition of the `Exam Checker` application.*
