@@ -6,17 +6,17 @@ import PackageDescription
 let package = Package(
     name: "ArtemisExamCheckKit",
     platforms: [
-        .iOS(.v17),
+        .iOS(.v17)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "ArtemisExamCheckKit",
-            targets: ["ArtemisExamCheckKit"]),
+            targets: ["ArtemisExamCheckKit"])
     ],
     dependencies: [
         .package(url: "https://github.com/daltoniam/Starscream", exact: "4.0.4"),
-        .package(url: "https://github.com/ls1intum/artemis-ios-core-modules", from: "7.0.0"),
+        .package(url: "https://github.com/ls1intum/artemis-ios-core-modules", from: "7.0.1")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -30,10 +30,10 @@ let package = Package(
                 .product(name: "Common", package: "artemis-ios-core-modules"),
                 .product(name: "DesignLibrary", package: "artemis-ios-core-modules"),
                 .product(name: "Login", package: "artemis-ios-core-modules"),
-                .product(name: "UserStore", package: "artemis-ios-core-modules"),
+                .product(name: "UserStore", package: "artemis-ios-core-modules")
             ]),
         .testTarget(
             name: "ArtemisExamCheckKitTests",
-            dependencies: ["ArtemisExamCheckKit"]),
+            dependencies: ["ArtemisExamCheckKit"])
     ]
 )
