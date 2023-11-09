@@ -314,11 +314,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Artemis Exam Check/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"ArtemisExamCheck/Preview Content\"";
 				DEVELOPMENT_TEAM = 2J3C6P6X3N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Artemis Exam Check/Supporting/Info.plist";
+				INFOPLIST_FILE = ArtemisExamCheck/Supporting/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -349,11 +349,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Artemis Exam Check/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"ArtemisExamCheck/Preview Content\"";
 				DEVELOPMENT_TEAM = 2J3C6P6X3N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Artemis Exam Check/Supporting/Info.plist";
+				INFOPLIST_FILE = ArtemisExamCheck/Supporting/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
