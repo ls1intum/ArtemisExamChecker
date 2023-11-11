@@ -120,6 +120,12 @@ struct StudentDetailView: View {
                     .animation(.easeInOut, value: showSeatingEdit)
                 }
 
+                Button("Attendance Check") {
+                    Task {
+                        _ = await ExamServiceFactory.shared.attendanceCheck(for: courseId, and: examId, with: student.user.login)
+                    }
+                }
+
                 VStack {
                     Toggle("Image is correct:", isOn: $didCheckImage)
                     Toggle("Name is correct:", isOn: $didCheckName)
