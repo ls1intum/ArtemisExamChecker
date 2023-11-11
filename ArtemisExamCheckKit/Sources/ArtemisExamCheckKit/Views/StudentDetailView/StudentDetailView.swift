@@ -47,12 +47,14 @@ struct StudentDetailView: View {
     let examId: Int
     let courseId: Int
 
-    init(examId: Int,
-         courseId: Int,
-         student: Binding<ExamUser>,
-         hasUnsavedChanges: Binding<Bool>,
-         allRooms: Binding<[String]>,
-         successfullySavedCompletion: @MainActor @escaping (ExamUser) -> Void) {
+    init(
+        examId: Int,
+        courseId: Int,
+        student: Binding<ExamUser>,
+        hasUnsavedChanges: Binding<Bool>,
+        allRooms: Binding<[String]>,
+        successfullySavedCompletion: @MainActor @escaping (ExamUser) -> Void
+    ) {
         self.examId = examId
         self.courseId = courseId
         self.successfullySavedCompletion = successfullySavedCompletion
@@ -90,21 +92,29 @@ struct StudentDetailView: View {
                     .frame(width: 200, height: 200)
                     .cornerRadius(16)
                     VStack(spacing: 12) {
-                        StudentDetailCell(description: "Name", value: student.user.name)
-                        StudentDetailCell(description: "Matriculation Nr.", value: student.user.visibleRegistrationNumber ?? "not available")
-                        StudentDetailCell(description: "Artemis Username", value: student.user.login)
+                        StudentDetailCell(
+                            description: "Name",
+                            value: student.user.name)
+                        StudentDetailCell(
+                            description: "Matriculation Nr.",
+                            value: student.user.visibleRegistrationNumber ?? "not available")
+                        StudentDetailCell(
+                            description: "Artemis Username",
+                            value: student.user.login)
                         HStack {
                             VStack(spacing: 12) {
-                                StudentRoomDetailCell(description: "Room",
-                                                      value: student.plannedRoom,
-                                                      actualValue: $actualRoom,
-                                                      actualOtherValue: $actualOtherRoom,
-                                                      showActualValue: $showSeatingEdit,
-                                                      allRooms: $allRooms)
-                                StudentSeatingDetailCell(description: "Seat",
-                                                         value: student.plannedSeat,
-                                                         actualValue: $actualSeat,
-                                                         showActualValue: $showSeatingEdit)
+                                StudentRoomDetailCell(
+                                    description: "Room",
+                                    value: student.plannedRoom,
+                                    actualValue: $actualRoom,
+                                    actualOtherValue: $actualOtherRoom,
+                                    showActualValue: $showSeatingEdit,
+                                    allRooms: $allRooms)
+                                StudentSeatingDetailCell(
+                                    description: "Seat",
+                                    value: student.plannedSeat,
+                                    actualValue: $actualSeat,
+                                    showActualValue: $showSeatingEdit)
                             }
                             Button {
                                 showSeatingEdit.toggle()
@@ -126,6 +136,8 @@ struct StudentDetailView: View {
                     }
                 }
                 .buttonStyle(ArtemisButton())
+                // TODO: Unhide if server implementation is ready
+                .hidden()
 
                 VStack {
                     Toggle("Image is correct:", isOn: $didCheckImage)
@@ -225,10 +237,11 @@ struct StudentDetailView: View {
                 case .notStarted, .loading:
                     EmptyView()
                 case .success, .failure:
-                    PencilSideButtons(isScrollingEnabled: $isScrollingEnabled,
-                                      student: $student,
-                                      showSigningImage: $showSigningImage,
-                                      canvasView: $canvasView)
+                    PencilSideButtons(
+                        isScrollingEnabled: $isScrollingEnabled,
+                        student: $student,
+                        showSigningImage: $showSigningImage,
+                        canvasView: $canvasView)
                 }
             }
         } else {

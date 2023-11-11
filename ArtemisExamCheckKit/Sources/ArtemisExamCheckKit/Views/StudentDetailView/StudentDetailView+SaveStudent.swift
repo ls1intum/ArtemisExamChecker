@@ -24,13 +24,14 @@ extension StudentDetailView {
             imageData = signingImage.pngData()
         }
 
-        let newStudent = student.copy(checkedImage: didCheckImage,
-                                      checkedName: didCheckName,
-                                      checkedLogin: didCheckLogin,
-                                      checkedRegistrationNumber: didCheckRegistrationNumber,
-                                      actualRoom: actualOtherRoom.isEmpty ? (actualRoom.isEmpty ? nil : actualRoom) : actualOtherRoom,
-                                      actualSeat: actualSeat.isEmpty ? nil : actualSeat,
-                                      signing: imageData)
+        let newStudent = student.copy(
+            checkedImage: didCheckImage,
+            checkedName: didCheckName,
+            checkedLogin: didCheckLogin,
+            checkedRegistrationNumber: didCheckRegistrationNumber,
+            actualRoom: actualOtherRoom.isEmpty ? (actualRoom.isEmpty ? nil : actualRoom) : actualOtherRoom,
+            actualSeat: actualSeat.isEmpty ? nil : actualSeat,
+            signing: imageData)
 
         // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
         let imageName = "\(examId)-\(student.id)-\(student.user.name)-\(student.user.visibleRegistrationNumber ?? "missing").png"
@@ -71,7 +72,9 @@ private extension StudentDetailView {
 
     func saveImageToDocuments(imageData: Data?, imageName: String) {
         guard let data = imageData,
-              let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+              let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            return
+        }
 
         let fileURL = documentsDirectory
             .appendingPathComponent("ExamAttendaceChecker")
@@ -97,7 +100,9 @@ private extension StudentDetailView {
     }
 
     func createDirectoryIfNecessary() {
-        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            return
+        }
 
         let folderURL = documentsDirectory
             .appendingPathComponent("ExamAttendaceChecker")
