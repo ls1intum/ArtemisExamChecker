@@ -1,7 +1,6 @@
 included:
-  - Source
-  - Tests
-  - Artemis Exam Check
+  - ArtemisExamCheck
+  - ArtemisExamCheckKit
 excluded:
   - Tests/SwiftLintFrameworkTests/Resources
 analyzer_rules:
