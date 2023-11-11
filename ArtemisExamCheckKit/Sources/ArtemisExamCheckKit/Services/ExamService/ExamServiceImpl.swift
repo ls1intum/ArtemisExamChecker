@@ -17,11 +17,11 @@ class ExamServiceImpl: ExamService {
         typealias Response = [Exam]
 
         var method: HTTPMethod {
-            return .get
+            .get
         }
 
         var resourceName: String {
-            return "api/exams/active"
+            "api/exams/active"
         }
     }
 
@@ -29,9 +29,9 @@ class ExamServiceImpl: ExamService {
         let result = await client.sendRequest(GetAllExamsRequest())
 
         switch result {
-        case .success((let exams, _)):
+        case let .success((exams, _)):
             return .done(response: exams)
-        case .failure(let error):
+        case let .failure(error):
             return DataState(error: error)
         }
     }
@@ -43,11 +43,11 @@ class ExamServiceImpl: ExamService {
         var examId: Int
 
         var method: HTTPMethod {
-            return .get
+            .get
         }
 
         var resourceName: String {
-            return "api/courses/\(courseId)/exams/\(examId)?withStudents=true"
+            "api/courses/\(courseId)/exams/\(examId)?withStudents=true"
         }
     }
 
@@ -55,9 +55,36 @@ class ExamServiceImpl: ExamService {
         let result = await client.sendRequest(GetFullExamRequest(courseId: courseId, examId: examId))
 
         switch result {
-        case .success((let exam, _)):
+        case let .success((exam, _)):
             return .done(response: exam)
-        case .failure(let error):
+        case let .failure(error):
+            return .failure(error: UserFacingError(error: error))
+        }
+    }
+
+    struct AttendanceCheckRequest: APIRequest {
+        typealias Response = ExamAttendanceCheckEventDTO
+
+        let courseId: Int
+        let examId: Int
+        let studentLogin: String
+
+        var method: HTTPMethod {
+            .post
+        }
+
+        var resourceName: String {
+            "api/courses/\(courseId)/exams/\(examId)/students/\(studentLogin)/attendance-check"
+        }
+    }
+
+    func attendanceCheck(for courseId: Int, and examId: Int, with login: String) async -> DataState<ExamAttendanceCheckEventDTO> {
+        let result = await client.sendRequest(AttendanceCheckRequest(courseId: courseId, examId: examId, studentLogin: login))
+
+        switch result {
+        case let .success((examAttendanceCheckEvent, _)):
+            return .done(response: examAttendanceCheckEvent)
+        case let .failure(error):
             return .failure(error: UserFacingError(error: error))
         }
     }
