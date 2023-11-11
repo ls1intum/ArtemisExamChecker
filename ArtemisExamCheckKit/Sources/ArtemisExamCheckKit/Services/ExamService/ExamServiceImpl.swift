@@ -63,7 +63,7 @@ class ExamServiceImpl: ExamService {
     }
 
     struct AttendanceCheckRequest: APIRequest {
-        struct Response: Decodable {}
+        typealias Response = ExamAttendanceCheckEventDTO
 
         let courseId: Int
         let examId: Int
@@ -78,12 +78,12 @@ class ExamServiceImpl: ExamService {
         }
     }
 
-    func attendanceCheck(for courseId: Int, and examId: Int, with login: String) async -> DataState<Void> {
+    func attendanceCheck(for courseId: Int, and examId: Int, with login: String) async -> DataState<ExamAttendanceCheckEventDTO> {
         let result = await client.sendRequest(AttendanceCheckRequest(courseId: courseId, examId: examId, studentLogin: login))
 
         switch result {
-        case .success:
-            return .done(response: ())
+        case let .success((examAttendanceCheckEvent, _)):
+            return .done(response: examAttendanceCheckEvent)
         case let .failure(error):
             return .failure(error: UserFacingError(error: error))
         }
