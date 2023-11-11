@@ -125,6 +125,7 @@ struct StudentDetailView: View {
                         _ = await ExamServiceFactory.shared.attendanceCheck(for: courseId, and: examId, with: student.user.login)
                     }
                 }
+                .buttonStyle(ArtemisButton())
 
                 VStack {
                     Toggle("Image is correct:", isOn: $didCheckImage)
