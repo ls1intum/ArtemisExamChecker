@@ -61,4 +61,30 @@ class ExamServiceImpl: ExamService {
             return .failure(error: UserFacingError(error: error))
         }
     }
+
+    struct AttendanceCheckRequest: APIRequest {
+        struct Response: Decodable {
+
+        }
+
+        let courseId: Int
+        let examId: Int
+        let studentLogin: String
+
+        var method: HTTPMethod { .post }
+        var resourceName: String { "api/courses/\(courseId)/exams/\(examId)/students/\(studentLogin)/attendance-check" }
+    }
+
+    func attendanceCheck(for courseId: Int, and examId: Int, with studentLogin: String) async -> DataState<Void> {
+        let result = await client.sendRequest(AttendanceCheckRequest(courseId: courseId,
+                                                                     examId: examId,
+                                                                     studentLogin: studentLogin))
+
+        switch result {
+        case let .success((_, _)):
+            return .done(response: ())
+        case let .failure(error):
+            return .failure(error: UserFacingError(error: error))
+        }
+    }
 }
