@@ -10,8 +10,6 @@ import Common
 import PencilKit
 import DesignLibrary
 
-// swiftlint:disable file_length
-
 struct StudentDetailView: View {
 
     @State var canvasView = PKCanvasView()
@@ -85,11 +83,12 @@ struct StudentDetailView: View {
                             Text("The image could not be loaded :(")
                                 .font(.caption)
                                 .foregroundColor(.red)
-                        }.frame(width: 200, height: 200)
-                    }
-                        .aspectRatio(contentMode: .fit)
+                        }
                         .frame(width: 200, height: 200)
-                        .cornerRadius(16)
+                    }
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 200, height: 200)
+                    .cornerRadius(16)
                     VStack(spacing: 12) {
                         StudentDetailCell(description: "Name", value: student.user.name)
                         StudentDetailCell(description: "Matriculation Nr.", value: student.user.visibleRegistrationNumber ?? "not available")
@@ -107,11 +106,15 @@ struct StudentDetailView: View {
                                                          actualValue: $actualSeat,
                                                          showActualValue: $showSeatingEdit)
                             }
-                            Button(action: { showSeatingEdit.toggle() }) {
+                            Button {
+                                showSeatingEdit.toggle()
+                            } label: {
                                 Image(systemName: "pencil")
                                     .imageScale(.large)
-                            }.padding(.leading, 8)
-                        }.padding(.top, 12)
+                            }
+                            .padding(.leading, 8)
+                        }
+                        .padding(.top, 12)
                     }
                     .padding(.leading, 32)
                     .animation(.easeInOut, value: showSeatingEdit)
@@ -122,15 +125,18 @@ struct StudentDetailView: View {
                     Toggle("Name is correct:", isOn: $didCheckName)
                     Toggle("Matriculation Number is correct:", isOn: $didCheckRegistrationNumber)
                     Toggle("Artemis Username is correct:", isOn: $didCheckLogin)
-                }.padding(.vertical, 16)
+                }
+                .padding(.vertical, 16)
 
                 Group {
                     if showSigningImage {
                         HStack(alignment: .bottom) {
-                            ArtemisAsyncImage(imageURL: student.signingImageURL,
-                                              onFailure: { signingImageLoadingStatus = .failure(error: $0) },
-                                              onProgress: { _, _ in signingImageLoadingStatus = .loading },
-                                              onSuccess: { _ in signingImageLoadingStatus = .success }) {
+                            ArtemisAsyncImage(
+                                imageURL: student.signingImageURL,
+                                onFailure: { signingImageLoadingStatus = .failure(error: $0) },
+                                onProgress: { _, _ in signingImageLoadingStatus = .loading },
+                                onSuccess: { _ in signingImageLoadingStatus = .success }
+                            ) {
                                 HStack {
                                     Spacer()
                                     VStack {
@@ -145,8 +151,8 @@ struct StudentDetailView: View {
                                     Spacer()
                                 }
                             }
-                                .scaledToFit()
-                                .frame(height: 200)
+                            .scaledToFit()
+                            .frame(height: 200)
                             switch signingImageLoadingStatus {
                             case .notStarted, .loading:
                                 EmptyView()
@@ -163,16 +169,16 @@ struct StudentDetailView: View {
                                 .frame(minHeight: 200)
                                 .border(Color(UIColor.label))
                             VStack(spacing: 32) {
-                                Button(action: {
+                                Button {
                                     isScrollingEnabled.toggle()
-                                }) {
+                                } label: {
                                     Image(systemName: "hand.draw.fill")
                                         .imageScale(.large)
                                         .foregroundColor(isScrollingEnabled ? Color.gray : Color.blue)
                                 }
-                                Button(action: {
+                                Button {
                                     canvasView.drawing = PKDrawing()
-                                }) {
+                                } label: {
                                     Image(systemName: "trash.fill")
                                         .imageScale(.large)
                                         .foregroundColor(.red)
@@ -197,48 +203,48 @@ struct StudentDetailView: View {
                 }
                 .alert(isPresented: $showErrorAlert, error: error, actions: {})
             }
-                .padding(.horizontal, 32)
-                .padding(.top, 8)
-                .padding(.bottom, 32)
+            .padding(.horizontal, 32)
+            .padding(.top, 8)
+            .padding(.bottom, 32)
         }
-            .scrollDisabled(!isScrollingEnabled)
-            .loadingIndicator(isLoading: $isSaving)
-            .onChange(of: canvasView.drawing) {
-                hasUnsavedChanges = true
-            }
-            .onChange(of: didCheckImage) {
-                hasUnsavedChanges = true
-            }
-            .onChange(of: didCheckName) {
-                hasUnsavedChanges = true
-            }
-            .onChange(of: didCheckLogin) {
-                hasUnsavedChanges = true
-            }
-            .onChange(of: didCheckRegistrationNumber) {
-                hasUnsavedChanges = true
-            }
-            .onChange(of: actualRoom) {
-                hasUnsavedChanges = true
-            }
-            .onChange(of: actualSeat) {
-                hasUnsavedChanges = true
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        saveStudent(isNavigationBarButton: true)
+        .scrollDisabled(!isScrollingEnabled)
+        .loadingIndicator(isLoading: $isSaving)
+        .onChange(of: canvasView.drawing) {
+            hasUnsavedChanges = true
+        }
+        .onChange(of: didCheckImage) {
+            hasUnsavedChanges = true
+        }
+        .onChange(of: didCheckName) {
+            hasUnsavedChanges = true
+        }
+        .onChange(of: didCheckLogin) {
+            hasUnsavedChanges = true
+        }
+        .onChange(of: didCheckRegistrationNumber) {
+            hasUnsavedChanges = true
+        }
+        .onChange(of: actualRoom) {
+            hasUnsavedChanges = true
+        }
+        .onChange(of: actualSeat) {
+            hasUnsavedChanges = true
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Save") {
+                    saveStudent(isNavigationBarButton: true)
+                }
+                .disabled(!hasUnsavedChanges)
+                .confirmationDialog("", isPresented: $showDidNotCompleteDialogNavigationBar) {
+                    Button("Yes, I want to continue.", role: .destructive) {
+                        saveStudent(force: true)
                     }
-                    .disabled(!hasUnsavedChanges)
-                    .confirmationDialog("", isPresented: $showDidNotCompleteDialogNavigationBar) {
-                        Button("Yes, I want to continue.", role: .destructive) {
-                            saveStudent(force: true)
-                        }
-                    } message: {
-                        Text("You did not fill out all requiered fields. Do you still want to proceed?")
-                    }
+                } message: {
+                    Text("You did not fill out all requiered fields. Do you still want to proceed?")
                 }
             }
+        }
     }
 
     private func saveStudent(force: Bool = false, isNavigationBarButton: Bool = false) {
@@ -296,8 +302,13 @@ struct StudentDetailView: View {
         actualRoom = student.actualRoom ?? ""
         actualSeat = student.actualSeat ?? ""
     }
+}
 
-    private func saveImageToDocuments(imageData: Data?, imageName: String) {
+// MARK: - File Manager
+
+private extension StudentDetailView {
+
+    func saveImageToDocuments(imageData: Data?, imageName: String) {
         guard let data = imageData,
               let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
 
@@ -324,7 +335,7 @@ struct StudentDetailView: View {
         }
     }
 
-    private func createDirectoryIfNecessary() {
+    func createDirectoryIfNecessary() {
         guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
 
         let folderURL = documentsDirectory
@@ -340,7 +351,9 @@ struct StudentDetailView: View {
     }
 }
 
-struct PencilSideButtons: View {
+// MARK: - Private Views
+
+private struct PencilSideButtons: View {
 
     @Binding var isScrollingEnabled: Bool
     @Binding var student: ExamUser
@@ -349,20 +362,20 @@ struct PencilSideButtons: View {
 
     var body: some View {
         VStack(spacing: 32) {
-            Button(action: {
+            Button {
                 isScrollingEnabled.toggle()
-            }) {
+            } label: {
                 Image(systemName: "hand.draw.fill")
                     .imageScale(.large)
                     .foregroundColor(isScrollingEnabled ? Color.gray : Color.blue)
             }
-            Button(action: {
+            Button {
                 if student.signingImageURL != nil {
                     student.signingImagePath = nil
                     showSigningImage = false
                 }
                 canvasView.drawing = PKDrawing()
-            }) {
+            } label: {
                 Image(systemName: "trash.fill")
                     .imageScale(.large)
                     .foregroundColor(.red)
@@ -371,7 +384,7 @@ struct PencilSideButtons: View {
     }
 }
 
-struct StudentDetailCell: View {
+private struct StudentDetailCell: View {
 
     var description: String
     var value: String
@@ -383,12 +396,5 @@ struct StudentDetailCell: View {
             Spacer()
             Text(value)
         }
-    }
-}
-
-extension URLSession {
-    var authenticationCookie: [HTTPCookie]? {
-        let cookies = HTTPCookieStorage.shared.cookies
-        return cookies
     }
 }
