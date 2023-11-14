@@ -136,8 +136,6 @@ struct StudentDetailView: View {
                     }
                 }
                 .buttonStyle(ArtemisButton())
-                // TODO: Unhide if server implementation is ready
-                .hidden()
 
                 VStack {
                     Toggle("Image is correct:", isOn: $didCheckImage)
