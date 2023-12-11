@@ -96,30 +96,33 @@ private extension StudentListView {
                             Text("There are no students. Maybe try removing some filters.")
                         }
                     } else {
-                        List(viewModel.selectedStudents, selection: $selectedStudent) { student in
-                            Button {
-                                if viewModel.hasUnsavedChanges {
-                                    unsavedUserAlert = true
-                                    nextSelectedStudent = student
-                                } else {
-                                    selectedStudent = student
+                        // ID allows users to select a single row.
+                        // List renders every row content on selection, if do not pass in an ID.
+                        List(viewModel.selectedStudents, id: \.self, selection: $selectedStudent) { student in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(student.user.name)
+                                        .bold()
+                                    Text("Seat: \(student.actualSeat ?? student.plannedSeat ?? "not set")")
                                 }
-                            } label: {
-                                HStack {
-                                    VStack(alignment: .leading) {
-                                        Text(student.user.name)
-                                            .bold()
-                                        Text("Seat: \(student.actualSeat ?? student.plannedSeat ?? "not set")")
-                                    }
-                                    Spacer()
-                                    if student.isStudentDone {
-                                        Image(systemName: "checkmark.seal.fill")
-                                            .foregroundColor(.green)
-                                            .imageScale(.large)
-                                    }
+                                Spacer()
+                                if student.isStudentDone {
+                                    Image(systemName: "checkmark.seal.fill")
+                                        .foregroundColor(.green)
+                                        .imageScale(.large)
                                 }
                             }
-                            .listRowBackground(self.selectedStudent == student ? Color.gray.opacity(0.4) : Color.clear)
+                            // TODO: Button interferes with selection.
+                            // Button {
+                            //     if viewModel.hasUnsavedChanges {
+                            //         unsavedUserAlert = true
+                            //         nextSelectedStudent = student
+                            //     } else {
+                            //         selectedStudent = student
+                            //     }
+                            // } label: {
+                            // }
+                            // .listRowBackground(self.selectedStudent == student ? Color.gray.opacity(0.4) : Color.clear)
                         }
                     }
                 }
