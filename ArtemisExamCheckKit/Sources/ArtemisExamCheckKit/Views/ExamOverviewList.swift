@@ -5,9 +5,10 @@
 //  Created by Sven Andabaka on 16.01.23.
 //
 
-import SwiftUI
 import Account
+import Common
 import DesignLibrary
+import SwiftUI
 
 struct ExamOverviewList: View {
 
@@ -15,49 +16,29 @@ struct ExamOverviewList: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
-                DataStateView(data: $viewModel.exams, retryHandler: { await viewModel.getExams() }) { exams in
-                    if exams.isEmpty {
-                        Text("There are no active exams (+-7days) available to you!")
-                        Spacer()
-                    } else {
-                        List(exams) { exam in
-                            NavigationLink(value: exam) {
-                                VStack(alignment: .leading) {
-                                    HStack(spacing: 16) {
-                                        Text("\(exam.course.title): ")
-                                            .font(.subheadline)
-                                            .bold()
-                                        Text(exam.title)
-                                            .font(.headline)
-                                            .bold()
-                                    }
-                                    HStack(spacing: 16) {
-                                        Text(exam.testExam ? "Test Exam" : "Exam")
-                                            .padding(.vertical, 2)
-                                            .padding(.horizontal, 4)
-                                            .background(exam.testExam ? Color.blue : Color.green)
-                                            .foregroundColor(.white)
-                                            .cornerRadius(4)
-                                        HStack(spacing: 0) {
-                                            Text(exam.startDate, formatter: DateFormatter.shortDateAndTime)
-                                            Text(" - ")
-                                            Text(exam.endDate, formatter: DateFormatter.shortDateAndTime)
-                                        }
-                                    }
-                                }
+            DataStateView(data: $viewModel.exams) {
+                await viewModel.getExams()
+            } content: { exams in
+                if exams.isEmpty {
+                    ContentUnavailableView {
+                        Label("No Exams", systemImage: "graduationcap")
+                    } description: {
+                        Text("There are no active exams (±7 days) available to you.")
+                    } actions: {
+                        Button("Refresh") {
+                            Task {
+                                await viewModel.getExams()
                             }
-                        }.refreshable {
-                            await viewModel.getExams(showLoadingIndicator: false)
                         }
                     }
+                } else {
+                    list(exams: exams)
                 }
             }
-            .padding(.top, 12)
             .navigationDestination(for: Exam.self) { exam in
                 StudentListView(exam: exam)
             }
-            .navigationTitle("Exam-Overview")
+            .navigationTitle("Exams")
             .toolbarBackground(Color.blue, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
@@ -66,8 +47,38 @@ struct ExamOverviewList: View {
     }
 }
 
-struct ExamOverviewList_Previews: PreviewProvider {
-    static var previews: some View {
-        ExamOverviewList()
+private extension ExamOverviewList {
+    func list(exams: [Exam]) -> some View {
+        List(exams) { exam in
+            NavigationLink(value: exam) {
+                VStack(alignment: .leading) {
+                    HStack(spacing: 16) {
+                        Text("\(exam.course.title): ")
+                            .font(.subheadline)
+                            .bold()
+                        Text(exam.title)
+                            .font(.headline)
+                            .bold()
+                    }
+                    HStack(spacing: 16) {
+                        Text(exam.testExam ? "Test Exam" : "Exam")
+                            .padding(.vertical, 2)
+                            .padding(.horizontal, 4)
+                            .background(exam.testExam ? Color.blue : Color.green)
+                            .foregroundColor(.white)
+                            .cornerRadius(4)
+                        HStack(spacing: 0) {
+                            Text(exam.startDate, formatter: DateFormatter.shortDateAndTime)
+                            Text(" - ")
+                            Text(exam.endDate, formatter: DateFormatter.shortDateAndTime)
+                        }
+                    }
+                }
+            }
+        }
+        .listStyle(.plain)
+        .refreshable {
+            await viewModel.getExams(showLoadingIndicator: false)
+        }
     }
 }
