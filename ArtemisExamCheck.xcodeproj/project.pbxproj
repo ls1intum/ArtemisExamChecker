@@ -14,6 +14,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A10986EB2B31CE3D007154FB /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
+		A10986EC2B31CE3D007154FB /* fastlane */ = {isa = PBXFileReference; lastKnownFileType = text; path = fastlane; sourceTree = SOURCE_ROOT; };
+		A10986ED2B31CE3D007154FB /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
+		A10986EE2B31CE3D007154FB /* Gemfile.lock */ = {isa = PBXFileReference; lastKnownFileType = file; path = Gemfile.lock; sourceTree = SOURCE_ROOT; };
+		A10986EF2B31CE3D007154FB /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
+		A10986F02B31CE3D007154FB /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = SOURCE_ROOT; };
+		A10986F12B31CE3D007154FB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		A1B574072AFAA4FB00A54ACE /* ArtemisExamCheckKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ArtemisExamCheckKit; sourceTree = "<group>"; };
 		D55C08312975A0E800DC6B80 /* ArtemisExamCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArtemisExamCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtemisExamCheckApp.swift; sourceTree = "<group>"; };
@@ -55,6 +62,13 @@
 		D55C08332975A0E800DC6B80 /* ArtemisExamCheck */ = {
 			isa = PBXGroup;
 			children = (
+				A10986EC2B31CE3D007154FB /* fastlane */,
+				A10986EB2B31CE3D007154FB /* .gitignore */,
+				A10986ED2B31CE3D007154FB /* .swiftlint.yml */,
+				A10986F02B31CE3D007154FB /* Gemfile */,
+				A10986EE2B31CE3D007154FB /* Gemfile.lock */,
+				A10986EF2B31CE3D007154FB /* LICENSE */,
+				A10986F12B31CE3D007154FB /* README.md */,
 				D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */,
 				D55C08382975A0EB00DC6B80 /* Assets.xcassets */,
 				D55C083A2975A0EB00DC6B80 /* Preview Content */,
