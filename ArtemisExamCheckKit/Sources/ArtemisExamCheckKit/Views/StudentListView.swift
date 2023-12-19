@@ -8,14 +8,34 @@
 import SwiftUI
 import DesignLibrary
 
+@Observable
+private final class StudentViewModel {
+    private var _student: ExamUser?
+    var student: ExamUser? {
+        get {
+            _student
+        }
+        set {
+            if isUnsaved {
+                next = newValue
+                isAlertPresented = true
+            } else {
+                _student = newValue
+            }
+        }
+    }
+
+    var isUnsaved = false
+    var next: ExamUser?
+
+    var isAlertPresented = false
+}
+
 struct StudentListView: View {
 
     @StateObject var viewModel: StudentListViewModel
 
-    @State private var selectedStudent: ExamUser?
-
-    @State private var unsavedUserAlert = false
-    @State private var nextSelectedStudent: ExamUser?
+    @State private var studentViewModel = StudentViewModel()
 
     init(exam: Exam) {
         self._viewModel = StateObject(wrappedValue: StudentListViewModel(courseId: exam.course.id, examId: exam.id))
@@ -50,10 +70,12 @@ struct StudentListView: View {
         .toolbarBackground(Color.blue, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .alert("Unsaved Changes", isPresented: $unsavedUserAlert) {
-            Button.init(role: .destructive) {
-                selectedStudent = nextSelectedStudent
-                viewModel.hasUnsavedChanges = false
+        .alert("Unsaved Changes", isPresented: $studentViewModel.isAlertPresented) {
+            Button(role: .destructive) {
+//                selectedStudent = nextSelectedStudent
+//                viewModel.hasUnsavedChanges = false
+                studentViewModel.isUnsaved = false
+                studentViewModel.student = studentViewModel.next
             } label: {
                 Text("Delete Changes")
             }
@@ -65,7 +87,7 @@ struct StudentListView: View {
 
 private extension StudentListView {
     var sidebar: some View {
-        DataStateView(data: $viewModel.exam) { 
+        DataStateView(data: $viewModel.exam) {
             await viewModel.getExam()
         } content: { _ in
             VStack {
@@ -98,7 +120,7 @@ private extension StudentListView {
                     } else {
                         // ID allows users to select a single row.
                         // List renders every row content on selection, if we do not pass it an ID.
-                        List(viewModel.selectedStudents, id: \.self, selection: $selectedStudent) { student in
+                        List(viewModel.selectedStudents, id: \.self, selection: $studentViewModel.student) { student in
                             HStack {
                                 VStack(alignment: .leading) {
                                     Text(student.user.name)
@@ -138,16 +160,20 @@ private extension StudentListView {
     }
 
     @ViewBuilder var detail: some View {
-        if let studentBinding = Binding($selectedStudent),
+        if let studentBinding = Binding.init($studentViewModel.student),
            let examId = viewModel.exam.value?.id,
            let courseId = viewModel.exam.value?.course.id {
             StudentDetailView(
                 examId: examId,
                 courseId: courseId,
                 student: studentBinding,
-                hasUnsavedChanges: $viewModel.hasUnsavedChanges,
+                hasUnsavedChanges: $studentViewModel.isUnsaved,
                 allRooms: $viewModel.lectureHalls,
-                successfullySavedCompletion: viewModel.updateStudent
+                successfullySavedCompletion: { student in
+                    viewModel.updateStudent(newStudent: student)
+                    studentViewModel.isUnsaved = false
+                    SortOrder.forward
+                }
             )
             .id(studentBinding.wrappedValue.id)
         } else {
