@@ -33,12 +33,12 @@ private final class StudentViewModel {
 
 struct StudentListView: View {
 
-    @StateObject var viewModel: StudentListViewModel
+    @State var viewModel: StudentListViewModel
 
     @State private var studentViewModel = StudentViewModel()
 
     init(exam: Exam) {
-        self._viewModel = StateObject(wrappedValue: StudentListViewModel(courseId: exam.course.id, examId: exam.id))
+        self.viewModel = StudentListViewModel(courseId: exam.course.id, examId: exam.id)
     }
 
     var images: [URL] {
