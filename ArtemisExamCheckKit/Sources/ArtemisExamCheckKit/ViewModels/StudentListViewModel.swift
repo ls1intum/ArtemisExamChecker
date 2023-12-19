@@ -5,8 +5,9 @@
 //  Created by Sven Andabaka on 16.01.23.
 //
 
-import Foundation
 import Common
+import Foundation
+import SwiftUI
 
 enum Sorting {
     case bottomToTop, topToBottom

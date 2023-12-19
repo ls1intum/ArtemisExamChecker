@@ -16,15 +16,9 @@ public struct ContentView: View {
 
     public var body: some View {
         if viewModel.isLoggedIn {
-            ExamOverviewList()
+            ExamListView()
         } else {
             LoginView()
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }
