@@ -58,8 +58,6 @@ class StudentListViewModel: ObservableObject {
         }
     }
 
-    @Published var hasUnsavedChanges = false
-
     let courseId: Int
     let examId: Int
 
@@ -85,10 +83,12 @@ class StudentListViewModel: ObservableObject {
 
         exam.examUsers?[examUserIndex] = newStudent
         self.exam = .done(response: exam)
-        hasUnsavedChanges = false
+        // hasUnsavedChanges = false
     }
+}
 
-    private func setSelectedStudents() {
+private extension StudentListViewModel {
+    func setSelectedStudents() {
         guard var selectedStudents = exam.value?.examUsers else { return }
 
         // filter by selected Lecture Hall
@@ -122,7 +122,7 @@ class StudentListViewModel: ObservableObject {
         sortStudents()
     }
 
-    private func sortStudents() {
+    func sortStudents() {
         selectedStudents = selectedStudents.sorted {
             switch sortingDirection {
             case .bottomToTop:

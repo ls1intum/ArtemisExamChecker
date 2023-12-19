@@ -134,17 +134,6 @@ private extension StudentListView {
                                         .imageScale(.large)
                                 }
                             }
-                            // TODO: Button interferes with selection.
-                            // Button {
-                            //     if viewModel.hasUnsavedChanges {
-                            //         unsavedUserAlert = true
-                            //         nextSelectedStudent = student
-                            //     } else {
-                            //         selectedStudent = student
-                            //     }
-                            // } label: {
-                            // }
-                            // .listRowBackground(self.selectedStudent == student ? Color.gray.opacity(0.4) : Color.clear)
                         }
                     }
                 }
@@ -160,7 +149,7 @@ private extension StudentListView {
     }
 
     @ViewBuilder var detail: some View {
-        if let studentBinding = Binding.init($studentViewModel.student),
+        if let studentBinding = Binding($studentViewModel.student),
            let examId = viewModel.exam.value?.id,
            let courseId = viewModel.exam.value?.course.id {
             StudentDetailView(
@@ -172,7 +161,6 @@ private extension StudentListView {
                 successfullySavedCompletion: { student in
                     viewModel.updateStudent(newStudent: student)
                     studentViewModel.isUnsaved = false
-                    SortOrder.forward
                 }
             )
             .id(studentBinding.wrappedValue.id)
