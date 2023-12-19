@@ -9,7 +9,7 @@ import Foundation
 import APIClient
 import UserStore
 
-struct ExamUser: Identifiable, Codable {
+struct ExamUser: Codable, Identifiable {
 
     let id: Int
 
@@ -69,7 +69,7 @@ struct ExamUser: Identifiable, Codable {
     }
 }
 
-struct User: Codable, Identifiable {
+struct User: Codable, Equatable, Identifiable {
     let id: Int
     let login: String
     let name: String
@@ -97,5 +97,3 @@ extension ExamUser: Equatable {
         lhs.signingImagePath == rhs.signingImagePath
     }
 }
-
-extension User: Equatable { }

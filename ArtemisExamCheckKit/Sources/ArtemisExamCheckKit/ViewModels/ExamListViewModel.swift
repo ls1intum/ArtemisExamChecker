@@ -5,13 +5,13 @@
 //  Created by Sven Andabaka on 16.01.23.
 //
 
+import APIClient
+import Common
 import Foundation
 import UserStore
-import Common
-import APIClient
 
 @MainActor
-class ExamOverviewListViewModel: ObservableObject {
+class ExamListViewModel: ObservableObject {
 
     @Published var exams: DataState<[Exam]> = .loading
 
