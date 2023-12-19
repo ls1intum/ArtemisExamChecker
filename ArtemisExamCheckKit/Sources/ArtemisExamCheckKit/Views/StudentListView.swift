@@ -8,34 +8,9 @@
 import SwiftUI
 import DesignLibrary
 
-@Observable
-private final class StudentViewModel {
-    private var _student: ExamUser?
-    var student: ExamUser? {
-        get {
-            _student
-        }
-        set {
-            if isUnsaved {
-                next = newValue
-                isAlertPresented = true
-            } else {
-                _student = newValue
-            }
-        }
-    }
-
-    var isUnsaved = false
-    var next: ExamUser?
-
-    var isAlertPresented = false
-}
-
 struct StudentListView: View {
 
     @State var viewModel: StudentListViewModel
-
-    @State private var studentViewModel = StudentViewModel()
 
     init(exam: Exam) {
         self.viewModel = StudentListViewModel(courseId: exam.course.id, examId: exam.id)
@@ -70,12 +45,12 @@ struct StudentListView: View {
         .toolbarBackground(Color.blue, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .alert("Unsaved Changes", isPresented: $studentViewModel.isAlertPresented) {
+        .alert("Unsaved Changes", isPresented: $viewModel.isStudentSelectionAlertPresented) {
             Button(role: .destructive) {
 //                selectedStudent = nextSelectedStudent
 //                viewModel.hasUnsavedChanges = false
-                studentViewModel.isUnsaved = false
-                studentViewModel.student = studentViewModel.next
+                viewModel.isStudentSelectionUnsaved = false
+                viewModel.studentSelection = viewModel.nextStudentSelection
             } label: {
                 Text("Delete Changes")
             }
@@ -120,7 +95,7 @@ private extension StudentListView {
                     } else {
                         // ID allows users to select a single row.
                         // List renders every row content on selection, if we do not pass it an ID.
-                        List(viewModel.selectedStudents, id: \.self, selection: $studentViewModel.student) { student in
+                        List(viewModel.selectedStudents, id: \.self, selection: $viewModel.studentSelection) { student in
                             HStack {
                                 VStack(alignment: .leading) {
                                     Text(student.user.name)
@@ -149,18 +124,18 @@ private extension StudentListView {
     }
 
     @ViewBuilder var detail: some View {
-        if let studentBinding = Binding($studentViewModel.student),
+        if let studentBinding = Binding($viewModel.studentSelection),
            let examId = viewModel.exam.value?.id,
            let courseId = viewModel.exam.value?.course.id {
             StudentDetailView(
                 examId: examId,
                 courseId: courseId,
                 student: studentBinding,
-                hasUnsavedChanges: $studentViewModel.isUnsaved,
+                hasUnsavedChanges: $viewModel.isStudentSelectionUnsaved,
                 allRooms: $viewModel.lectureHalls,
                 successfullySavedCompletion: { student in
                     viewModel.updateStudent(newStudent: student)
-                    studentViewModel.isUnsaved = false
+                    viewModel.isStudentSelectionUnsaved = false
                 }
             )
             .id(studentBinding.wrappedValue.id)

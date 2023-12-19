@@ -59,6 +59,28 @@ final class StudentListViewModel {
         }
     }
 
+    // MARK: Student selection
+
+    private var _studentSelection: ExamUser?
+    var studentSelection: ExamUser? {
+        get {
+            _studentSelection
+        }
+        set {
+            if isStudentSelectionUnsaved {
+                nextStudentSelection = newValue
+                isStudentSelectionAlertPresented = true
+            } else {
+                _studentSelection = newValue
+            }
+        }
+    }
+    
+    var isStudentSelectionUnsaved = false
+    var nextStudentSelection: ExamUser?
+    
+    var isStudentSelectionAlertPresented = false
+
     let courseId: Int
     let examId: Int
 
@@ -87,8 +109,8 @@ final class StudentListViewModel {
               let examUserIndex = exam.examUsers?.firstIndex(where: { newStudent.id == $0.id }) else { return }
 
         exam.examUsers?[examUserIndex] = newStudent
+        isStudentSelectionUnsaved = false
         self.exam = .done(response: exam)
-        // hasUnsavedChanges = false
     }
 }
 
