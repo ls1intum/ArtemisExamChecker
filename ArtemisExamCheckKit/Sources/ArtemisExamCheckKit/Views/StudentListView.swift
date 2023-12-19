@@ -100,11 +100,11 @@ private extension StudentListView {
                                     .tag(lectureHall)
                             }
                         }
-                        Picker("Sorting", selection: $viewModel.sortingDirection) {
+                        Picker("Sorting", selection: $viewModel.seatSortOrder) {
                             Text("Bottom to Top")
-                                .tag(Sorting.bottomToTop)
+                                .tag(SeatSortOrder.bottomToTop)
                             Text("Top to Bottom")
-                                .tag(Sorting.topToBottom)
+                                .tag(SeatSortOrder.topToBottom)
                         }
                     }
                     Toggle("Hide Checked-In Students: ", isOn: $viewModel.hideDoneStudents)

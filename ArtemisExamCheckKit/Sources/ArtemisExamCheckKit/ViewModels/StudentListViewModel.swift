@@ -9,8 +9,9 @@ import Common
 import Foundation
 import SwiftUI
 
-enum Sorting {
-    case bottomToTop, topToBottom
+enum SeatSortOrder {
+    case bottomToTop
+    case topToBottom
 }
 
 @Observable
@@ -31,7 +32,7 @@ final class StudentListViewModel {
             setSelectedStudents()
         }
     }
-    var sortingDirection = Sorting.bottomToTop {
+    var seatSortOrder = SeatSortOrder.bottomToTop {
         didSet {
             sortStudents()
         }
@@ -105,7 +106,7 @@ private extension StudentListViewModel {
         totalStudentsInSelectedRoom = selectedStudents.count
         checkedInStudentsInSelectedRoom = selectedStudents.filter { $0.isStudentDone }.count
 
-        // filter by search Text
+        // filter by search text
         if !searchText.isEmpty {
             let searchText = searchText.lowercased()
             selectedStudents = selectedStudents.filter {
@@ -128,7 +129,7 @@ private extension StudentListViewModel {
 
     func sortStudents() {
         selectedStudents = selectedStudents.sorted {
-            switch sortingDirection {
+            switch seatSortOrder {
             case .bottomToTop:
                 return $0.actualSeat ?? $0.plannedSeat ?? "" < $1.actualSeat ?? $1.plannedSeat ?? ""
             case .topToBottom:
