@@ -97,7 +97,7 @@ private extension StudentListView {
                         }
                     } else {
                         // ID allows users to select a single row.
-                        // List renders every row content on selection, if do not pass in an ID.
+                        // List renders every row content on selection, if we do not pass it an ID.
                         List(viewModel.selectedStudents, id: \.self, selection: $selectedStudent) { student in
                             HStack {
                                 VStack(alignment: .leading) {
@@ -127,7 +127,6 @@ private extension StudentListView {
                     }
                 }
                 .searchable(text: $viewModel.searchText)
-                .listStyle(SidebarListStyle())
                 .refreshable {
                     await viewModel.getExam(showLoadingIndicator: false)
                 }
