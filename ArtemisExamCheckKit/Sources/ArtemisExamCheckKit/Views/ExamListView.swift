@@ -10,9 +10,9 @@ import Common
 import DesignLibrary
 import SwiftUI
 
-struct ExamOverviewList: View {
+struct ExamListView: View {
 
-    @StateObject private var viewModel = ExamOverviewListViewModel()
+    @StateObject private var viewModel = ExamListViewModel()
 
     var body: some View {
         NavigationStack {
@@ -47,7 +47,7 @@ struct ExamOverviewList: View {
     }
 }
 
-private extension ExamOverviewList {
+private extension ExamListView {
     func list(exams: [Exam]) -> some View {
         List(exams) { exam in
             NavigationLink(value: exam) {
