@@ -64,6 +64,18 @@ platform :ios do
       key: "ITSAppUsesNonExemptEncryption",
       value: "NO"
     )
+    
+    ##########################################
+    # Certificates
+    ##########################################
+    
+    # Download certificates
+    # from the apple developer portal
+    get_certificates(
+      api_key: api_key,
+      keychain_path: ENV['bamboo_KeyChain'],
+      keychain_password: ENV['bamboo_KeyChainPassword']
+    )
 
     ##########################################
     # Provisioning Profile
@@ -73,7 +85,6 @@ platform :ios do
     # from the apple developer portal
     get_provisioning_profile(
       api_key: api_key,
-      adhoc: true,
       force: true
     )
 
