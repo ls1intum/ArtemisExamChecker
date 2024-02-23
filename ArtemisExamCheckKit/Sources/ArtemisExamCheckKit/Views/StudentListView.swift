@@ -10,15 +10,10 @@ import DesignLibrary
 
 struct StudentListView: View {
 
-    @StateObject var viewModel: StudentListViewModel
-
-    @State private var selectedStudent: ExamUser?
-
-    @State private var unsavedUserAlert = false
-    @State private var nextSelectedStudent: ExamUser?
+    @State var viewModel: StudentListViewModel
 
     init(exam: Exam) {
-        self._viewModel = StateObject(wrappedValue: StudentListViewModel(courseId: exam.course.id, examId: exam.id))
+        self.viewModel = StudentListViewModel(courseId: exam.course.id, examId: exam.id)
     }
 
     var images: [URL] {
@@ -50,10 +45,12 @@ struct StudentListView: View {
         .toolbarBackground(Color.blue, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .alert("Unsaved Changes", isPresented: $unsavedUserAlert) {
-            Button.init(role: .destructive) {
-                selectedStudent = nextSelectedStudent
-                viewModel.hasUnsavedChanges = false
+        .alert("Unsaved Changes", isPresented: $viewModel.isStudentSelectionAlertPresented) {
+            Button(role: .destructive) {
+//                selectedStudent = nextSelectedStudent
+//                viewModel.hasUnsavedChanges = false
+                viewModel.isStudentSelectionUnsaved = false
+                viewModel.studentSelection = viewModel.nextStudentSelection
             } label: {
                 Text("Delete Changes")
             }
@@ -65,7 +62,7 @@ struct StudentListView: View {
 
 private extension StudentListView {
     var sidebar: some View {
-        DataStateView(data: $viewModel.exam) { 
+        DataStateView(data: $viewModel.exam) {
             await viewModel.getExam()
         } content: { _ in
             VStack {
@@ -78,11 +75,11 @@ private extension StudentListView {
                                     .tag(lectureHall)
                             }
                         }
-                        Picker("Sorting", selection: $viewModel.sortingDirection) {
+                        Picker("Sorting", selection: $viewModel.seatSortOrder) {
                             Text("Bottom to Top")
-                                .tag(Sorting.bottomToTop)
+                                .tag(SeatSortOrder.bottomToTop)
                             Text("Top to Bottom")
-                                .tag(Sorting.topToBottom)
+                                .tag(SeatSortOrder.topToBottom)
                         }
                     }
                     Toggle("Hide Checked-In Students: ", isOn: $viewModel.hideDoneStudents)
@@ -98,7 +95,7 @@ private extension StudentListView {
                     } else {
                         // ID allows users to select a single row.
                         // List renders every row content on selection, if we do not pass it an ID.
-                        List(viewModel.selectedStudents, id: \.self, selection: $selectedStudent) { student in
+                        List(viewModel.selectedStudents, id: \.self, selection: $viewModel.studentSelection) { student in
                             HStack {
                                 VStack(alignment: .leading) {
                                     Text(student.user.name)
@@ -112,17 +109,6 @@ private extension StudentListView {
                                         .imageScale(.large)
                                 }
                             }
-                            // TODO: Button interferes with selection.
-                            // Button {
-                            //     if viewModel.hasUnsavedChanges {
-                            //         unsavedUserAlert = true
-                            //         nextSelectedStudent = student
-                            //     } else {
-                            //         selectedStudent = student
-                            //     }
-                            // } label: {
-                            // }
-                            // .listRowBackground(self.selectedStudent == student ? Color.gray.opacity(0.4) : Color.clear)
                         }
                     }
                 }
@@ -138,16 +124,19 @@ private extension StudentListView {
     }
 
     @ViewBuilder var detail: some View {
-        if let studentBinding = Binding($selectedStudent),
+        if let studentBinding = Binding($viewModel.studentSelection),
            let examId = viewModel.exam.value?.id,
            let courseId = viewModel.exam.value?.course.id {
             StudentDetailView(
                 examId: examId,
                 courseId: courseId,
                 student: studentBinding,
-                hasUnsavedChanges: $viewModel.hasUnsavedChanges,
+                hasUnsavedChanges: $viewModel.isStudentSelectionUnsaved,
                 allRooms: $viewModel.lectureHalls,
-                successfullySavedCompletion: viewModel.updateStudent
+                successfullySavedCompletion: { student in
+                    viewModel.updateStudent(newStudent: student)
+                    viewModel.isStudentSelectionUnsaved = false
+                }
             )
             .id(studentBinding.wrappedValue.id)
         } else {

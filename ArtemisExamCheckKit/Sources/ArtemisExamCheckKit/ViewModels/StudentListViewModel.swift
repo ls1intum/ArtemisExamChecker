@@ -9,41 +9,42 @@ import Common
 import Foundation
 import SwiftUI
 
-enum Sorting {
-    case bottomToTop, topToBottom
+enum SeatSortOrder {
+    case bottomToTop
+    case topToBottom
 }
 
-@MainActor
-class StudentListViewModel: ObservableObject {
+@Observable
+final class StudentListViewModel {
 
-    @Published var searchText = "" {
+    var searchText = "" {
         didSet {
             setSelectedStudents()
         }
     }
-    @Published var selectedLectureHall: String = "" {
+    var selectedLectureHall: String = "" {
         didSet {
             setSelectedStudents()
         }
     }
-    @Published var hideDoneStudents = false {
+    var hideDoneStudents = false {
         didSet {
             setSelectedStudents()
         }
     }
-    @Published var sortingDirection = Sorting.bottomToTop {
+    var seatSortOrder = SeatSortOrder.bottomToTop {
         didSet {
             sortStudents()
         }
     }
 
-    @Published var lectureHalls: [String] = []
-    @Published var selectedStudents: [ExamUser] = []
+    var lectureHalls: [String] = []
+    var selectedStudents: [ExamUser] = []
 
-    @Published var checkedInStudentsInSelectedRoom = 0
-    @Published var totalStudentsInSelectedRoom = 0
+    var checkedInStudentsInSelectedRoom = 0
+    var totalStudentsInSelectedRoom = 0
 
-    @Published var exam: DataState<Exam> = .loading {
+    var exam: DataState<Exam> = .loading {
         didSet {
             switch exam {
             case .done(let exam):
@@ -58,7 +59,27 @@ class StudentListViewModel: ObservableObject {
         }
     }
 
-    @Published var hasUnsavedChanges = false
+    // MARK: Student selection
+
+    private var _studentSelection: ExamUser?
+    var studentSelection: ExamUser? {
+        get {
+            _studentSelection
+        }
+        set {
+            if isStudentSelectionUnsaved {
+                nextStudentSelection = newValue
+                isStudentSelectionAlertPresented = true
+            } else {
+                _studentSelection = newValue
+            }
+        }
+    }
+    
+    var isStudentSelectionUnsaved = false
+    var nextStudentSelection: ExamUser?
+    
+    var isStudentSelectionAlertPresented = false
 
     let courseId: Int
     let examId: Int
@@ -70,6 +91,10 @@ class StudentListViewModel: ObservableObject {
         Task {
             await getExam()
         }
+    }
+
+    deinit {
+        print("Bye")
     }
 
     func getExam(showLoadingIndicator: Bool = true) async {
@@ -84,11 +109,13 @@ class StudentListViewModel: ObservableObject {
               let examUserIndex = exam.examUsers?.firstIndex(where: { newStudent.id == $0.id }) else { return }
 
         exam.examUsers?[examUserIndex] = newStudent
+        isStudentSelectionUnsaved = false
         self.exam = .done(response: exam)
-        hasUnsavedChanges = false
     }
+}
 
-    private func setSelectedStudents() {
+private extension StudentListViewModel {
+    func setSelectedStudents() {
         guard var selectedStudents = exam.value?.examUsers else { return }
 
         // filter by selected Lecture Hall
@@ -101,7 +128,7 @@ class StudentListViewModel: ObservableObject {
         totalStudentsInSelectedRoom = selectedStudents.count
         checkedInStudentsInSelectedRoom = selectedStudents.filter { $0.isStudentDone }.count
 
-        // filter by search Text
+        // filter by search text
         if !searchText.isEmpty {
             let searchText = searchText.lowercased()
             selectedStudents = selectedStudents.filter {
@@ -122,9 +149,9 @@ class StudentListViewModel: ObservableObject {
         sortStudents()
     }
 
-    private func sortStudents() {
+    func sortStudents() {
         selectedStudents = selectedStudents.sorted {
-            switch sortingDirection {
+            switch seatSortOrder {
             case .bottomToTop:
                 return $0.actualSeat ?? $0.plannedSeat ?? "" < $1.actualSeat ?? $1.plannedSeat ?? ""
             case .topToBottom:
