@@ -330,7 +330,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ArtemisExamCheck/Preview Content\"";
 				DEVELOPMENT_TEAM = 2J3C6P6X3N;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ArtemisExamCheck/Supporting/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -363,7 +363,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ArtemisExamCheck/Preview Content\"";
 				DEVELOPMENT_TEAM = 2J3C6P6X3N;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ArtemisExamCheck/Supporting/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
