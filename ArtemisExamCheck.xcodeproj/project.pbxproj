@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A17E897C2C16F4BB009CAADB /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A17E897B2C16F4BB009CAADB /* Launch Screen.storyboard */; };
 		A1B574092AFAA89300A54ACE /* ArtemisExamCheckKit in Frameworks */ = {isa = PBXBuildFile; productRef = A1B574082AFAA89300A54ACE /* ArtemisExamCheckKit */; };
 		D55C08352975A0E800DC6B80 /* ArtemisExamCheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */; };
 		D55C08392975A0EB00DC6B80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55C08382975A0EB00DC6B80 /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 		A10986EF2B31CE3D007154FB /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
 		A10986F02B31CE3D007154FB /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = SOURCE_ROOT; };
 		A10986F12B31CE3D007154FB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		A17E897B2C16F4BB009CAADB /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		A1B574072AFAA4FB00A54ACE /* ArtemisExamCheckKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ArtemisExamCheckKit; sourceTree = "<group>"; };
 		D55C08312975A0E800DC6B80 /* ArtemisExamCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArtemisExamCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D55C08342975A0E800DC6B80 /* ArtemisExamCheckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtemisExamCheckApp.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				D5CC96DC29800A62006D8653 /* Info.plist */,
+				A17E897B2C16F4BB009CAADB /* Launch Screen.storyboard */,
 			);
 			path = Supporting;
 			sourceTree = "<group>";
@@ -164,6 +167,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A17E897C2C16F4BB009CAADB /* Launch Screen.storyboard in Resources */,
 				D55C083C2975A0EB00DC6B80 /* Preview Assets.xcassets in Resources */,
 				D55C08392975A0EB00DC6B80 /* Assets.xcassets in Resources */,
 			);
