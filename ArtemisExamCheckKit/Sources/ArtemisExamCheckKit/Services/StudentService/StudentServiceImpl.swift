@@ -24,7 +24,7 @@ class StudentServiceImpl: StudentService {
     }
 
     func saveStudent(student: ExamUser, examId: Int, courseId: Int) async -> DataState<ExamUser> {
-        let request = MultipartFormDataRequest(path: "api/examcourses/\(courseId)/exams/\(examId)/exam-users")
+        let request = MultipartFormDataRequest(path: "api/exam/courses/\(courseId)/exams/\(examId)/exam-users")
         if let signing = student.signing {
             request.addDataField(named: "file", filename: "\(student.user.login).png", data: signing, mimeType: "image/png")
         }
