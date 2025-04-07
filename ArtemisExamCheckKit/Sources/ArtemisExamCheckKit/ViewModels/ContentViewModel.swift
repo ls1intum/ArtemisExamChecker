@@ -16,12 +16,12 @@ class ContentViewModel: ObservableObject {
     private var cancellables: Set<AnyCancellable> = Set()
 
     init() {
-        UserSession.shared.objectWillChange.sink {
+        UserSessionFactory.shared.objectWillChange.sink {
             DispatchQueue.main.async { [weak self] in
-                self?.isLoggedIn = UserSession.shared.isLoggedIn
+                self?.isLoggedIn = UserSessionFactory.shared.isLoggedIn
             }
         }.store(in: &cancellables)
 
-        isLoggedIn = UserSession.shared.isLoggedIn
+        isLoggedIn = UserSessionFactory.shared.isLoggedIn
     }
 }

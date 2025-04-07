@@ -42,7 +42,7 @@ struct ExamListView: View {
             .toolbarBackground(Color.blue, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .accountMenu(error: $viewModel.error, notificationsVisible: false)
+            .accountMenu(error: $viewModel.error)
         }
     }
 }
