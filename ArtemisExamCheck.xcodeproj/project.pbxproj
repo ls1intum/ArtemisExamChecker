@@ -332,7 +332,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"ArtemisExamCheck/Preview Content\"";
-				DEVELOPMENT_TEAM = 2J3C6P6X3N;
+				DEVELOPMENT_TEAM = T7PP2KY2B6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ArtemisExamCheck/Supporting/Info.plist;
@@ -347,7 +347,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.tum.cit.artemis.examattendancechecker;
+				PRODUCT_BUNDLE_IDENTIFIER = de.tum.cit.ase.artemis.examsupervision;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -365,7 +365,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"ArtemisExamCheck/Preview Content\"";
-				DEVELOPMENT_TEAM = 2J3C6P6X3N;
+				DEVELOPMENT_TEAM = T7PP2KY2B6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ArtemisExamCheck/Supporting/Info.plist;
@@ -380,7 +380,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.tum.cit.artemis.examattendancechecker;
+				PRODUCT_BUNDLE_IDENTIFIER = de.tum.cit.ase.artemis.examsupervision;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
