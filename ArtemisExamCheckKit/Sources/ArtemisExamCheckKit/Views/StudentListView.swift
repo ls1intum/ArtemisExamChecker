@@ -124,6 +124,7 @@ private extension StudentListView {
                             // }
                             // .listRowBackground(self.selectedStudent == student ? Color.gray.opacity(0.4) : Color.clear)
                         }
+                        .listStyle(.plain)
                     }
                 }
                 .searchable(text: $viewModel.searchText)
