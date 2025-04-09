@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/daltoniam/Starscream", exact: "4.0.4"),
-        .package(url: "https://github.com/ls1intum/artemis-ios-core-modules", from: "15.6.2")
+        .package(url: "https://github.com/ls1intum/artemis-ios-core-modules", from: "16.1.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -24,7 +24,6 @@ let package = Package(
         .target(
             name: "ArtemisExamCheckKit",
             dependencies: [
-                .product(name: "Starscream", package: "Starscream"),
                 .product(name: "Account", package: "artemis-ios-core-modules"),
                 .product(name: "APIClient", package: "artemis-ios-core-modules"),
                 .product(name: "Common", package: "artemis-ios-core-modules"),

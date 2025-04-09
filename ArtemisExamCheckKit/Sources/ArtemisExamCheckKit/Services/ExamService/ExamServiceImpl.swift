@@ -21,7 +21,7 @@ class ExamServiceImpl: ExamService {
         }
 
         var resourceName: String {
-            "api/exams/active"
+            "api/exam/exams/active"
         }
     }
 
@@ -47,7 +47,7 @@ class ExamServiceImpl: ExamService {
         }
 
         var resourceName: String {
-            "api/courses/\(courseId)/exams/\(examId)?withStudents=true"
+            "api/exam/courses/\(courseId)/exams/\(examId)?withStudents=true"
         }
     }
 
@@ -74,7 +74,7 @@ class ExamServiceImpl: ExamService {
         }
 
         var resourceName: String {
-            "api/courses/\(courseId)/exams/\(examId)/students/\(studentLogin)/attendance-check"
+            "api/exam/courses/\(courseId)/exams/\(examId)/students/\(studentLogin)/attendance-check"
         }
     }
 
