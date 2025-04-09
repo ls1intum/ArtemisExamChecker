@@ -31,12 +31,12 @@ struct ExamUser: Codable, Identifiable {
 
     var signingImageURL: URL? {
         guard let signingImagePath else { return nil }
-        return URL(string: signingImagePath, relativeTo: UserSession.shared.institution?.baseURL)
+        return URL(string: signingImagePath, relativeTo: UserSessionFactory.shared.institution?.baseURL)
     }
 
     var imageURL: URL? {
         guard let studentImagePath else { return nil }
-        return URL(string: studentImagePath, relativeTo: UserSession.shared.institution?.baseURL)
+        return URL(string: studentImagePath, relativeTo: UserSessionFactory.shared.institution?.baseURL)
     }
 
     var isStudentDone: Bool {

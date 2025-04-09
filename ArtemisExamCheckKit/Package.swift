@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/daltoniam/Starscream", exact: "4.0.4"),
-        .package(url: "https://github.com/ls1intum/artemis-ios-core-modules", from: "9.0.0")
+        .package(url: "https://github.com/ls1intum/artemis-ios-core-modules", from: "15.6.2")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
