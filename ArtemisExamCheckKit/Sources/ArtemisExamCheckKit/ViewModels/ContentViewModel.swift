@@ -24,10 +24,10 @@ class ContentViewModel: ObservableObject {
 
         isLoggedIn = UserSessionFactory.shared.isLoggedIn
 
-        // Set default instance to staging for App Review
+        // Set default instance to staging for App Review before April 14 evening
         let releaseDate8 = Date(timeIntervalSinceReferenceDate: 766_350_000)
         if !isLoggedIn && Date.now < releaseDate8 {
-            UserSessionFactory.shared.saveInstitution(identifier: .custom(URL(string: "http://artemis-staging-localci.artemis.cit.tum.de")))
+            UserSessionFactory.shared.saveInstitution(identifier: .custom(URL(string: "https://artemis-staging-localci.artemis.cit.tum.de")))
         }
     }
 }
