@@ -39,6 +39,7 @@ class StudentServiceImpl: StudentService {
         if let studentData = try? encoder.encode(examUserDTO) {
             request.addDataField(named: "examUserDTO", filename: nil, data: studentData, mimeType: "application/json")
         }
+        return .done(response: student)
         let result: Result<(ExamUser, Int), APIClientError> = await client.sendRequest(request)
 
         switch result {

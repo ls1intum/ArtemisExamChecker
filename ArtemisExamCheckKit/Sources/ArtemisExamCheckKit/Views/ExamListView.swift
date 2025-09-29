@@ -36,7 +36,7 @@ struct ExamListView: View {
                 }
             }
             .navigationDestination(for: Exam.self) { exam in
-                StudentListView(exam: exam)
+                ExamView(exam: exam)
             }
             .navigationTitle("Exams")
             .toolbarBackground(Color.blue, for: .navigationBar)

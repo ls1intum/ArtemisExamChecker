@@ -38,9 +38,9 @@ struct StudentDetailView: View {
     @State var imageLoadingError = false
     @State var signingImageLoadingStatus = NetworkResponse.loading
 
-    @Binding var student: ExamUser
+    var student: ExamUser
     @Binding var hasUnsavedChanges: Bool
-    @Binding var allRooms: [String]
+    var allRooms: [String]
 
     var successfullySavedCompletion: @MainActor (ExamUser) -> Void
 
@@ -50,85 +50,84 @@ struct StudentDetailView: View {
     init(
         examId: Int,
         courseId: Int,
-        student: Binding<ExamUser>,
+        student: ExamUser,
         hasUnsavedChanges: Binding<Bool>,
-        allRooms: Binding<[String]>,
+        allRooms: [String],
         successfullySavedCompletion: @MainActor @escaping (ExamUser) -> Void
     ) {
         self.examId = examId
         self.courseId = courseId
         self.successfullySavedCompletion = successfullySavedCompletion
-        self._student = student
+        self.student = student
         self._hasUnsavedChanges = hasUnsavedChanges
-        self._allRooms = allRooms
+        self.allRooms = allRooms
 
-        _didCheckImage = State(wrappedValue: student.wrappedValue.didCheckImage ?? false)
-        _didCheckName = State(wrappedValue: student.wrappedValue.didCheckName ?? false)
-        _didCheckLogin = State(wrappedValue: student.wrappedValue.didCheckLogin ?? false)
-        _didCheckRegistrationNumber = State(wrappedValue: student.wrappedValue.didCheckRegistrationNumber ?? false)
-        _showSigningImage = State(wrappedValue: student.wrappedValue.signingImagePath != nil)
-        _actualRoom = State(wrappedValue: student.wrappedValue.actualRoom ?? "")
-        _actualSeat = State(wrappedValue: student.wrappedValue.actualSeat ?? "")
+        _didCheckImage = State(wrappedValue: student.didCheckImage ?? false)
+        _didCheckName = State(wrappedValue: student.didCheckName ?? false)
+        _didCheckLogin = State(wrappedValue: student.didCheckLogin ?? false)
+        _didCheckRegistrationNumber = State(wrappedValue: student.didCheckRegistrationNumber ?? false)
+        _showSigningImage = State(wrappedValue: student.signingImagePath != nil)
+        _actualRoom = State(wrappedValue: student.actualRoom ?? "")
+        _actualSeat = State(wrappedValue: student.actualSeat ?? "")
     }
 
     var body: some View {
         ScrollView {
             VStack(spacing: 8) {
-                HStack {
-                    ArtemisAsyncImage(imageURL: student.imageURL) {
-                        VStack {
-                            Image(systemName: "person.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .cornerRadius(16)
-                                .frame(width: 100, height: 100)
-                            Text("The image could not be loaded :(")
-                                .font(.caption)
-                                .foregroundColor(.red)
-                        }
-                        .frame(width: 200, height: 200)
+                ArtemisAsyncImage(imageURL: student.imageURL) {
+                    VStack {
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .cornerRadius(16)
+                            .frame(width: 100, height: 100)
+                        Text("The image could not be loaded :(")
+                            .font(.caption)
+                            .foregroundColor(.red)
                     }
-                    .aspectRatio(contentMode: .fit)
                     .frame(width: 200, height: 200)
-                    .cornerRadius(16)
-                    VStack(spacing: 12) {
-                        StudentDetailCell(
-                            description: "Name",
-                            value: student.user.name)
-                        StudentDetailCell(
-                            description: "Matriculation Nr.",
-                            value: student.user.visibleRegistrationNumber ?? "not available")
-                        StudentDetailCell(
-                            description: "Artemis Username",
-                            value: student.user.login)
-                        HStack {
-                            VStack(spacing: 12) {
-                                StudentRoomDetailCell(
-                                    description: "Room",
-                                    value: student.plannedRoom,
-                                    actualValue: $actualRoom,
-                                    actualOtherValue: $actualOtherRoom,
-                                    showActualValue: $showSeatingEdit,
-                                    allRooms: $allRooms)
-                                StudentSeatingDetailCell(
-                                    description: "Seat",
-                                    value: student.plannedSeat,
-                                    actualValue: $actualSeat,
-                                    showActualValue: $showSeatingEdit)
-                            }
-                            Button {
-                                showSeatingEdit.toggle()
-                            } label: {
-                                Image(systemName: "pencil")
-                                    .imageScale(.large)
-                            }
-                            .padding(.leading, 8)
-                        }
-                        .padding(.top, 12)
-                    }
-                    .padding(.leading, 32)
-                    .animation(.easeInOut, value: showSeatingEdit)
                 }
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 200, height: 200)
+                .cornerRadius(16)
+                VStack(spacing: 12) {
+                    StudentDetailCell(
+                        description: "Name",
+                        value: student.user.name)
+                    StudentDetailCell(
+                        description: "Matriculation Nr.",
+                        value: student.user.visibleRegistrationNumber ?? "not available")
+                    StudentDetailCell(
+                        description: "Artemis Username",
+                        value: student.user.login)
+                    HStack {
+                        // TODO: Edit mode
+                        VStack(spacing: 12) {
+                            StudentRoomDetailCell(
+                                description: "Room",
+                                value: student.plannedRoom,
+                                actualValue: $actualRoom,
+                                actualOtherValue: $actualOtherRoom,
+                                showActualValue: $showSeatingEdit,
+                                allRooms: allRooms)
+                            StudentSeatingDetailCell(
+                                description: "Seat",
+                                value: student.plannedSeat,
+                                actualValue: $actualSeat,
+                                showActualValue: $showSeatingEdit)
+                        }
+                        Button {
+                            showSeatingEdit.toggle()
+                        } label: {
+                            Image(systemName: "pencil")
+                                .imageScale(.large)
+                        }
+                        .padding(.leading, 8)
+                    }
+                    .padding(.top, 12)
+                }
+                .padding(.leading, 32)
+                .animation(.easeInOut, value: showSeatingEdit)
 
                 Button("Attendance Check") {
                     Task {
@@ -237,7 +236,7 @@ struct StudentDetailView: View {
                 case .success, .failure:
                     PencilSideButtons(
                         isScrollingEnabled: $isScrollingEnabled,
-                        student: $student,
+                        student: student,
                         showSigningImage: $showSigningImage,
                         canvasView: $canvasView)
                 }
@@ -273,7 +272,7 @@ struct StudentDetailView: View {
 private struct PencilSideButtons: View {
 
     @Binding var isScrollingEnabled: Bool
-    @Binding var student: ExamUser
+    var student: ExamUser
     @Binding var showSigningImage: Bool
     @Binding var canvasView: PKCanvasView
 

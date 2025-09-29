@@ -15,7 +15,7 @@ struct StudentRoomDetailCell: View {
     @Binding var actualValue: String
     @Binding var actualOtherValue: String
     @Binding var showActualValue: Bool
-    @Binding var allRooms: [String]
+    var allRooms: [String]
 
     var body: some View {
         HStack {

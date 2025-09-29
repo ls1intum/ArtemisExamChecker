@@ -14,8 +14,14 @@ struct Exam: Identifiable, Codable {
     var endDate: Date
     var course: Course
     var examUsers: [ExamUser]?
+    var examRooms: [ExamRoomForAttendanceCheckerDTO]?
     var testExam: Bool
 }
+/// **Optionals**
+/// examUsers, examRooms.
+/// → Empty for `api/exam/exams/active`
+/// → Filled for `api/exam/courses/{courseId}/exams/{examId}?withStudents=true&withRooms=true`
+/// If no rooms available: examRooms = nil/null
 
 struct Course: Identifiable, Codable {
     var id: Int

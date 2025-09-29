@@ -26,6 +26,12 @@ class ExamServiceImpl: ExamService {
     }
 
     func getActiveExams() async -> DataState<[Exam]> {
+        return .done(response: [.init(id: 0,
+                                      title: "Test",
+                                      startDate: .now,
+                                      endDate: .now,
+                                      course: .init(id: 0, title: "test course"),
+                                      testExam: false)])
         let result = await client.sendRequest(GetAllExamsRequest())
 
         switch result {
@@ -52,6 +58,18 @@ class ExamServiceImpl: ExamService {
     }
 
     func getFullExam(for courseId: Int, and examId: Int) async -> DataState<Exam> {
+        return .done(response: .init(id: 0,
+                                     title: "Test",
+                                     startDate: .now,
+                                     endDate: .now,
+                                     course: .init(id: 0, title: "test course"),
+                                     examUsers: [
+                                        .init(id: 0, user: .init(id: 0, login: "ge47xow", name: "Anian", visibleRegistrationNumber: "123"),
+                                              plannedRoom: "Raum",
+                                              plannedSeat: "A2")
+                                     ],
+                                     examRooms: [.mock],
+                                     testExam: false))
         let result = await client.sendRequest(GetFullExamRequest(courseId: courseId, examId: examId))
 
         switch result {

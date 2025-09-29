@@ -13,52 +13,37 @@ enum Sorting {
     case bottomToTop, topToBottom
 }
 
-@MainActor
+@MainActor @Observable
 class StudentListViewModel: ObservableObject {
 
-    @Published var searchText = "" {
-        didSet {
-            setSelectedStudents()
-        }
+    var searchText = ""
+
+    var selectedLectureHall: String = ""
+    var selectedRoom: ExamRoomForAttendanceCheckerDTO? {
+        guard let rooms = exam.value?.examRooms else { return nil }
+        return rooms.first { $0.name == selectedLectureHall }
     }
-    @Published var selectedLectureHall: String = "" {
-        didSet {
-            setSelectedStudents()
-        }
+    
+    var hideDoneStudents = false
+    var sortingDirection = Sorting.bottomToTop
+
+    var lectureHalls: [String] {
+        Array(Set((exam.value?.examUsers ?? []).map {
+            $0.actualRoom ?? $0.plannedRoom ?? "not set"
+        }))
     }
-    @Published var hideDoneStudents = false {
-        didSet {
-            setSelectedStudents()
-        }
-    }
-    @Published var sortingDirection = Sorting.bottomToTop {
-        didSet {
-            sortStudents()
-        }
+    var selectedStudents: [ExamUser] {
+        setSelectedStudents()
     }
 
-    @Published var lectureHalls: [String] = []
-    @Published var selectedStudents: [ExamUser] = []
+    var selectedStudent: ExamUser? = nil
 
-    @Published var checkedInStudentsInSelectedRoom = 0
-    @Published var totalStudentsInSelectedRoom = 0
+    var checkedInStudentsInSelectedRoom = 0
+    var totalStudentsInSelectedRoom = 0
 
-    @Published var exam: DataState<Exam> = .loading {
-        didSet {
-            switch exam {
-            case .done(let exam):
-                lectureHalls = Array(Set((exam.examUsers ?? []).map {
-                    $0.actualRoom ?? $0.plannedRoom ?? "not set"
-                }))
-                setSelectedStudents()
-            default:
-                lectureHalls = []
-                selectedStudents = []
-            }
-        }
-    }
+    var exam: DataState<Exam> = .loading
 
-    @Published var hasUnsavedChanges = false
+    var hasUnsavedChanges = false
 
     let courseId: Int
     let examId: Int
@@ -70,6 +55,12 @@ class StudentListViewModel: ObservableObject {
         Task {
             await getExam()
         }
+    }
+
+    func selectStudent(at seat: ExamSeatDTO) {
+        selectedStudent = selectedStudents.first(where: {
+            ($0.actualSeat ?? $0.plannedSeat) == seat.name
+        })
     }
 
     func getExam(showLoadingIndicator: Bool = true) async {
@@ -88,8 +79,8 @@ class StudentListViewModel: ObservableObject {
         hasUnsavedChanges = false
     }
 
-    private func setSelectedStudents() {
-        guard var selectedStudents = exam.value?.examUsers else { return }
+    private func setSelectedStudents() -> [ExamUser] {
+        guard var selectedStudents = exam.value?.examUsers else { return [] }
 
         // filter by selected Lecture Hall
         if !selectedLectureHall.isEmpty {
@@ -118,12 +109,7 @@ class StudentListViewModel: ObservableObject {
             }
         }
 
-        self.selectedStudents = selectedStudents
-        sortStudents()
-    }
-
-    private func sortStudents() {
-        selectedStudents = selectedStudents.sorted {
+        return selectedStudents.sorted {
             switch sortingDirection {
             case .bottomToTop:
                 return $0.actualSeat ?? $0.plannedSeat ?? "" < $1.actualSeat ?? $1.plannedSeat ?? ""

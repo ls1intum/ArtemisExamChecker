@@ -48,21 +48,20 @@ extension StudentDetailView {
                 self.error = error
             case .done(let newStudent):
                 isSaving = false
-                student = newStudent
-                updateDetailViewStates()
+                updateDetailViewStates(newStudent: newStudent)
                 await successfullySavedCompletion(newStudent)
             }
         }
     }
 
-    private func updateDetailViewStates() {
-        didCheckImage = student.didCheckImage ?? false
-        didCheckName = student.didCheckName ?? false
-        didCheckLogin = student.didCheckLogin ?? false
-        didCheckRegistrationNumber = student.didCheckRegistrationNumber ?? false
-        showSigningImage = student.signingImageURL != nil
-        actualRoom = student.actualRoom ?? ""
-        actualSeat = student.actualSeat ?? ""
+    private func updateDetailViewStates(newStudent: ExamUser) {
+        didCheckImage = newStudent.didCheckImage ?? false
+        didCheckName = newStudent.didCheckName ?? false
+        didCheckLogin = newStudent.didCheckLogin ?? false
+        didCheckRegistrationNumber = newStudent.didCheckRegistrationNumber ?? false
+        showSigningImage = newStudent.signingImageURL != nil
+        actualRoom = newStudent.actualRoom ?? ""
+        actualSeat = newStudent.actualSeat ?? ""
     }
 }
 

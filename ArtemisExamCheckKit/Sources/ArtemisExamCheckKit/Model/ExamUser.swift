@@ -9,7 +9,20 @@ import Foundation
 import APIClient
 import UserStore
 
-struct ExamUser: Codable, Identifiable {
+/*
+ ExamUserWithExamRoomAndSeatDTO (
+     @NotBlank String login,
+     @NotBlank String firstName,
+     @NotBlank String lastName,
+     @NotBlank String registrationNumber,
+     @Nullable String imageUrl,
+     @NotBlank String examRoomNumber,
+     @NotNull ExamSeatDTO examSeat
+ )
+ */
+
+@Observable
+class ExamUser: Codable, Identifiable {
 
     let id: Int
 
@@ -22,8 +35,8 @@ struct ExamUser: Codable, Identifiable {
 
     var actualRoom: String?
     var actualSeat: String?
-    let plannedRoom: String?
-    let plannedSeat: String?
+    let plannedRoom: String? // könnte so bleiben, wenn wir ExamUserWithExamRoomAndSeatDTO nicht
+    let plannedSeat: String? // verwenden, und diese beiden properties den Seat identifizieren
 
     var signing: Data?
     var signingImagePath: String?
@@ -70,6 +83,22 @@ struct ExamUser: Codable, Identifiable {
                         plannedRoom: plannedRoom,
                         plannedSeat: plannedSeat,
                         signing: signing)
+    }
+    
+    init(id: Int, user: User, didCheckImage: Bool? = nil, didCheckName: Bool? = nil, didCheckLogin: Bool? = nil, didCheckRegistrationNumber: Bool? = nil, actualRoom: String? = nil, actualSeat: String? = nil, plannedRoom: String?, plannedSeat: String?, signing: Data? = nil, signingImagePath: String? = nil, studentImagePath: String? = nil) {
+        self.id = id
+        self.user = user
+        self.didCheckImage = didCheckImage
+        self.didCheckName = didCheckName
+        self.didCheckLogin = didCheckLogin
+        self.didCheckRegistrationNumber = didCheckRegistrationNumber
+        self.actualRoom = actualRoom
+        self.actualSeat = actualSeat
+        self.plannedRoom = plannedRoom
+        self.plannedSeat = plannedSeat
+        self.signing = signing
+        self.signingImagePath = signingImagePath
+        self.studentImagePath = studentImagePath
     }
 }
 
