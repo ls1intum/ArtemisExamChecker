@@ -25,7 +25,7 @@ struct ExamView: View {
                     await viewModel.getExam()
                 } content: { _ in
                     Group {
-                        if let selectedRoom = viewModel.selectedRoom, selectedRoom.seats != nil {
+                        if let selectedRoom = viewModel.selectedRoom, !viewModel.useListStyle {
                             ExamRoomView(room: selectedRoom, viewModel: viewModel)
                         } else {
                             sidebar
@@ -36,7 +36,7 @@ struct ExamView: View {
                     }
                 }
                 .toolbarVisibility(.hidden, for: .navigationBar)
-                .navigationSplitViewColumnWidth(proxy.size.width * 0.7)
+                .navigationSplitViewColumnWidth(proxy.size.width * 0.64)
             } detail: {
                 detail
                     .navigationTitle("Student")
@@ -68,7 +68,7 @@ extension ExamView {
                         }
                     }
                 }
-                if viewModel.selectedRoom == nil {
+                if viewModel.selectedRoom == nil && viewModel.useListStyle {
                     // Only makes sense in List View
                     Picker("Sorting", selection: $viewModel.sortingDirection) {
                         Text("Bottom to Top")
@@ -79,6 +79,14 @@ extension ExamView {
                     Spacer()
                     Toggle("Hide Checked-In Students: ", isOn: $viewModel.hideDoneStudents)
                         .padding(.horizontal)
+                }
+                if !viewModel.examRooms.isEmpty && viewModel.selectedLectureHall != "" {
+                    Picker("View", selection: $viewModel.preferredViewStyle) {
+                        Text("List View")
+                            .tag(StyleOption.list)
+                        Text("Room View")
+                            .tag(StyleOption.room)
+                    }
                 }
             }
             Text("Progress: \(viewModel.checkedInStudentsInSelectedRoom) / \(viewModel.totalStudentsInSelectedRoom)")

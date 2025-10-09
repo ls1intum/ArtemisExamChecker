@@ -23,6 +23,7 @@ struct StudentDetailView: View {
     @State var actualRoom: String
     @State var actualOtherRoom: String = ""
 
+    @State var showSignatureField = false
     @State var showSeatingEdit = false
     @State var showDidNotCompleteDialog = false
     @State var showDidNotCompleteDialogNavigationBar = false
@@ -72,98 +73,80 @@ struct StudentDetailView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 8) {
-                ArtemisAsyncImage(imageURL: student.imageURL) {
-                    VStack {
-                        Image(systemName: "person.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .cornerRadius(16)
-                            .frame(width: 100, height: 100)
-                        Text("The image could not be loaded :(")
-                            .font(.caption)
-                            .foregroundColor(.red)
-                    }
-                    .frame(width: 200, height: 200)
-                }
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 200, height: 200)
-                .cornerRadius(16)
-                VStack(spacing: 12) {
-                    StudentDetailCell(
-                        description: "Name",
-                        value: (student.firstName ?? "") + " " + (student.lastName ?? ""))
-                    StudentDetailCell(
-                        description: "Matriculation Nr.",
-                        value: student.registrationNumber ?? "not available")
-                    StudentDetailCell(
-                        description: "Artemis Username",
-                        value: student.login)
-                    HStack {
-                        // TODO: Edit mode
-                        VStack(spacing: 12) {
-                            StudentRoomDetailCell(
-                                description: "Room",
-                                value: student.plannedLocation.roomNumber,
-                                actualValue: $actualRoom,
-                                actualOtherValue: $actualOtherRoom,
-                                showActualValue: $showSeatingEdit,
-                                allRooms: allRooms)
-                            StudentSeatingDetailCell(
-                                description: "Seat",
-                                value: student.plannedLocation.roomName,
-                                actualValue: $actualSeat,
-                                showActualValue: $showSeatingEdit)
-                        }
-                        Button {
-                            showSeatingEdit.toggle()
-                        } label: {
-                            Image(systemName: "pencil")
-                                .imageScale(.large)
-                        }
-                        .padding(.leading, 8)
-                    }
-                    .padding(.top, 12)
-                }
-                .padding(.leading, 32)
-                .animation(.easeInOut, value: showSeatingEdit)
+        Form {
+            Section {
+                studentImage
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .listRowBackground(Color.clear)
+            }
 
+            Section {
+                Text("Name").badge(student.displayName)
+                Text("Matriculation No.").badge(student.registrationNumber)
+                Text("Artemis Username").badge(student.login)
+            }
+
+            Section {
+                Text("Room").badge((student.actualLocation ?? student.plannedLocation).roomNumber)
+                Text("Seat").badge((student.actualLocation ?? student.plannedLocation).seatName)
+                Button("Edit", systemImage: "pencil") {
+                    showSeatingEdit.toggle()
+                }
+                // TODO: Editing
+//                    StudentRoomDetailCell(
+//                        description: "Room",
+//                        value: student.plannedLocation.roomNumber,
+//                        actualValue: $actualRoom,
+//                        actualOtherValue: $actualOtherRoom,
+//                        showActualValue: $showSeatingEdit,
+//                        allRooms: allRooms)
+//                    StudentSeatingDetailCell(
+//                        description: "Seat",
+//                        value: student.plannedLocation.roomName,
+//                        actualValue: $actualSeat,
+//                        showActualValue: $showSeatingEdit)
+            }
+
+            Section {
                 Button("Attendance Check") {
                     Task {
                         _ = await ExamServiceFactory.shared.attendanceCheck(for: courseId, and: examId, with: student.login)
                     }
                 }
-                .buttonStyle(ArtemisButton())
+                .buttonStyle(.borderedProminent)
 
-                VStack {
-                    Toggle("Image is correct:", isOn: $didCheckImage)
-                    Toggle("Name is correct:", isOn: $didCheckName)
-                    Toggle("Matriculation Number is correct:", isOn: $didCheckRegistrationNumber)
-                    Toggle("Artemis Username is correct:", isOn: $didCheckLogin)
+                Button("All good") {
+                    didCheckName = true
+                    didCheckImage = true
+                    didCheckLogin = true
+                    didCheckRegistrationNumber = true
+                    showSignatureField = true
                 }
-                .padding(.vertical, 16)
-
-                signingImageOrCanvas
-
-                Button("Save") {
-                    saveStudent()
-                }
-                .disabled(!hasUnsavedChanges)
-                .buttonStyle(ArtemisButton())
-                .padding(16)
-                .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
-                    Button("Yes, I want to continue.", role: .destructive) {
-                        saveStudent(force: true)
-                    }
-                } message: {
-                    Text("You did not fill out all requiered fields. Do you still want to proceed?")
-                }
-                .alert(isPresented: $showErrorAlert, error: error, actions: {})
+                .buttonStyle(.borderedProminent)
+                .tint(.green)
+                // TODO: Button for not all good
+//                VStack {
+//                    Toggle("Image is correct:", isOn: $didCheckImage)
+//                    Toggle("Name is correct:", isOn: $didCheckName)
+//                    Toggle("Matriculation Number is correct:", isOn: $didCheckRegistrationNumber)
+//                    Toggle("Artemis Username is correct:", isOn: $didCheckLogin)
+//                }
             }
-            .padding(.horizontal, 32)
-            .padding(.top, 8)
-            .padding(.bottom, 32)
+
+            Button("Save") {
+                saveStudent()
+            }
+            .disabled(!hasUnsavedChanges)
+            .buttonStyle(ArtemisButton())
+            .padding(16)
+            .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
+                Button("Yes, I want to continue.", role: .destructive) {
+                    saveStudent(force: true)
+                }
+            } message: {
+                Text("You did not fill out all requiered fields. Do you still want to proceed?")
+            }
+            .alert(isPresented: $showErrorAlert, error: error, actions: {})
         }
         .scrollDisabled(!isScrollingEnabled)
         .loadingIndicator(isLoading: $isSaving)
@@ -203,6 +186,42 @@ struct StudentDetailView: View {
                 }
             }
         }
+        .sheet(isPresented: $showSignatureField) {
+            NavigationStack {
+                signingImageOrCanvas
+                    .padding()
+                    .toolbar {
+                        Button("Save") {
+                            saveStudent()
+                            showSignatureField = false
+                        }
+                        .loadingIndicator(isLoading: $isSaving)
+                    }
+            }
+            .frame(minWidth: 600, minHeight: 300)
+            .presentationBackgroundInteraction(.disabled)
+            .presentationSizing(.fitted)
+            .interactiveDismissDisabled()
+        }
+    }
+
+    @ViewBuilder private var studentImage: some View {
+        ArtemisAsyncImage(imageURL: student.imageURL) {
+            VStack {
+                Image(systemName: "person.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(16)
+                    .frame(width: 100, height: 100)
+                Text("The image could not be loaded :(")
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
+            .frame(width: 200, height: 200)
+        }
+        .aspectRatio(contentMode: .fit)
+        .frame(width: 200, height: 200)
+        .cornerRadius(16)
     }
 
     @ViewBuilder private var signingImageOrCanvas: some View {
@@ -296,21 +315,6 @@ private struct PencilSideButtons: View {
                     .imageScale(.large)
                     .foregroundColor(.red)
             }
-        }
-    }
-}
-
-private struct StudentDetailCell: View {
-
-    var description: String
-    var value: String
-
-    var body: some View {
-        HStack {
-            Text("\(description): ")
-                .bold()
-            Spacer()
-            Text(value)
         }
     }
 }

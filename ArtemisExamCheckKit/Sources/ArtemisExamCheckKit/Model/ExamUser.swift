@@ -30,6 +30,9 @@ class ExamUser: Codable, Identifiable {
     let login: String
     let firstName: String?
     let lastName: String?
+    var displayName: String {
+        (firstName ?? "-") + " " + (lastName ?? "-")
+    }
     let registrationNumber: String
     let email: String?
 

@@ -35,7 +35,7 @@ extension StudentDetailView {
 
         // TODO: Reconfirm
         // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
-        let imageName = "\(examId)-\(student.id)-\(student.firstName ?? "")\(student.lastName ?? "")-\(student.registrationNumber).png"
+        let imageName = "\(examId)-\(student.id)-\(student.displayName)-\(student.registrationNumber).png"
         saveImageToDocuments(imageData: imageData, imageName: imageName)
 
         Task {

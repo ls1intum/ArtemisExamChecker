@@ -13,6 +13,10 @@ enum Sorting {
     case bottomToTop, topToBottom
 }
 
+enum StyleOption {
+    case list, room
+}
+
 @MainActor
 @Observable
 class StudentListViewModel: ObservableObject {
@@ -28,6 +32,11 @@ class StudentListViewModel: ObservableObject {
     var hideDoneStudents = false
     var sortingDirection = Sorting.bottomToTop
 
+    var preferredViewStyle = StyleOption.room
+    var useListStyle: Bool {
+        examRooms.isEmpty || preferredViewStyle == .list || selectedRoom == nil || selectedRoom?.seats == nil
+    }
+
     var examRooms: [ExamRoomForAttendanceCheckerDTO] {
         exam.value?.examRoomsUsedInExam ?? []
     }
@@ -40,7 +49,7 @@ class StudentListViewModel: ObservableObject {
         setSelectedStudents()
     }
 
-    var selectedStudent: ExamUser? = nil
+    var selectedStudent: ExamUser?
 
     var checkedInStudentsInSelectedRoom = 0
     var totalStudentsInSelectedRoom = 0

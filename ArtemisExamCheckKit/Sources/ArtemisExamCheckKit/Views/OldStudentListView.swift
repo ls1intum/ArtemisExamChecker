@@ -17,7 +17,7 @@ extension ExamView {
         return viewModel.exam.value?.examUsersWithExamRoomAndSeat.compactMap { examUser in
             // TODO: Re-confirm
             // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
-            let imageName = "\(viewModel.examId)-\(examUser.id)-\(examUser.firstName ?? "")\(examUser.lastName ?? "")-\(examUser.registrationNumber).png"
+            let imageName = "\(viewModel.examId)-\(examUser.id)-\(examUser.displayName)-\(examUser.registrationNumber).png"
             let fileURL = documentsDirectory
                 .appendingPathComponent("ExamAttendaceChecker")
                 .appendingPathComponent(imageName)
@@ -64,7 +64,7 @@ extension ExamView {
                     List(viewModel.selectedStudents, id: \.self, selection: $viewModel.selectedStudent) { student in
                         HStack {
                             VStack(alignment: .leading) {
-                                Text((student.firstName ?? "") + (student.lastName ?? ""))
+                                Text(student.displayName)
                                     .bold()
                                 Text("Seat: \(student.actualLocation?.seatName ?? student.plannedLocation.seatName ?? "not set")")
                             }
