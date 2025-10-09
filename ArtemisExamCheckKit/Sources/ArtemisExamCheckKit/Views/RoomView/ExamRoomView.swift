@@ -20,7 +20,7 @@ struct ExamRoomView: View {
             ExamRoomContentView(width: proxy.size.width - Self.roomPadding * 2,
                                 height: proxy.size.height - Self.roomPadding * 2,
                                 scale: $scale,
-                                seats: room.seats,
+                                seats: room.seats ?? [],
                                 viewModel: viewModel)
         }
     }

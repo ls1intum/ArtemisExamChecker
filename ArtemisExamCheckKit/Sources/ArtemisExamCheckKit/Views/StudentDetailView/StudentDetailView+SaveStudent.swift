@@ -33,8 +33,9 @@ extension StudentDetailView {
             actualSeat: actualSeat.isEmpty ? nil : actualSeat,
             signing: imageData)
 
+        // TODO: Reconfirm
         // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
-        let imageName = "\(examId)-\(student.id)-\(student.user.name)-\(student.user.visibleRegistrationNumber ?? "missing").png"
+        let imageName = "\(examId)-\(student.id)-\(student.firstName ?? "")\(student.lastName ?? "")-\(student.registrationNumber).png"
         saveImageToDocuments(imageData: imageData, imageName: imageName)
 
         Task {
@@ -60,8 +61,8 @@ extension StudentDetailView {
         didCheckLogin = newStudent.didCheckLogin ?? false
         didCheckRegistrationNumber = newStudent.didCheckRegistrationNumber ?? false
         showSigningImage = newStudent.signingImageURL != nil
-        actualRoom = newStudent.actualRoom ?? ""
-        actualSeat = newStudent.actualSeat ?? ""
+        actualRoom = newStudent.actualLocation?.roomNumber ?? ""
+        actualSeat = newStudent.actualLocation?.seatName ?? ""
     }
 }
 

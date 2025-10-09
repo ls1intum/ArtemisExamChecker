@@ -26,16 +26,16 @@ class StudentServiceImpl: StudentService {
     func saveStudent(student: ExamUser, examId: Int, courseId: Int) async -> DataState<ExamUser> {
         let request = MultipartFormDataRequest(path: "api/exam/courses/\(courseId)/exams/\(examId)/exam-users")
         if let signing = student.signing {
-            request.addDataField(named: "file", filename: "\(student.user.login).png", data: signing, mimeType: "image/png")
+            request.addDataField(named: "file", filename: "\(student.login).png", data: signing, mimeType: "image/png")
         }
         let encoder = JSONEncoder()
-        let examUserDTO = ExamUserDTO(login: student.user.login,
+        let examUserDTO = ExamUserDTO(login: student.login,
                                       didCheckImage: student.didCheckImage ?? false,
                                       didCheckLogin: student.didCheckLogin ?? false,
                                       didCheckName: student.didCheckName ?? false,
                                       didCheckRegistrationNumber: student.didCheckRegistrationNumber ?? false,
-                                      room: student.actualRoom,
-                                      seat: student.actualSeat)
+                                      room: student.actualLocation?.roomNumber,
+                                      seat: student.actualLocation?.seatName)
         if let studentData = try? encoder.encode(examUserDTO) {
             request.addDataField(named: "examUserDTO", filename: nil, data: studentData, mimeType: "application/json")
         }

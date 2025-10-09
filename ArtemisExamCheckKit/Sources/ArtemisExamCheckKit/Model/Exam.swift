@@ -17,11 +17,18 @@ struct Exam: Identifiable, Codable {
     var examRooms: [ExamRoomForAttendanceCheckerDTO]?
     var testExam: Bool
 }
-/// **Optionals**
-/// examUsers, examRooms.
-/// → Empty for `api/exam/exams/active`
-/// → Filled for `api/exam/courses/{courseId}/exams/{examId}?withStudents=true&withRooms=true`
-/// If no rooms available: examRooms = nil/null
+
+struct AttendanceCheckerAppExamInformationDTO: Codable {
+    var examId: Int
+    var examTitle: String
+    var startDate: Date
+    var endDate: Date
+    var isTestExam: Bool
+    var courseId: Int
+    var courseTitle: String
+    var examRoomsUsedInExam: [ExamRoomForAttendanceCheckerDTO]?
+    var examUsersWithExamRoomAndSeat: [ExamUser]
+}
 
 struct Course: Identifiable, Codable {
     var id: Int

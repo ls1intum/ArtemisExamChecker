@@ -10,7 +10,7 @@ import Common
 
 protocol ExamService {
     func getActiveExams() async -> DataState<[Exam]>
-    func getFullExam(for courseId: Int, and examId: Int) async -> DataState<Exam>
+    func getFullExam(for courseId: Int, and examId: Int) async -> DataState<AttendanceCheckerAppExamInformationDTO>
     func attendanceCheck(for courseId: Int, and examId: Int, with login: String) async -> DataState<ExamAttendanceCheckEventDTO>
 }
 

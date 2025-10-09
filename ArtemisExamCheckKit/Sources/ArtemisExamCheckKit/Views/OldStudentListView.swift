@@ -14,9 +14,10 @@ extension ExamView {
             return []
         }
 
-        return viewModel.exam.value?.examUsers?.compactMap { examUser in
+        return viewModel.exam.value?.examUsersWithExamRoomAndSeat.compactMap { examUser in
+            // TODO: Re-confirm
             // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
-            let imageName = "\(viewModel.examId)-\(examUser.id)-\(examUser.user.name)-\(examUser.user.visibleRegistrationNumber ?? "missing").png"
+            let imageName = "\(viewModel.examId)-\(examUser.id)-\(examUser.firstName ?? "")\(examUser.lastName ?? "")-\(examUser.registrationNumber).png"
             let fileURL = documentsDirectory
                 .appendingPathComponent("ExamAttendaceChecker")
                 .appendingPathComponent(imageName)
@@ -84,9 +85,9 @@ extension ExamView {
                     List(viewModel.selectedStudents, id: \.self, selection: $viewModel.selectedStudent) { student in
                         HStack {
                             VStack(alignment: .leading) {
-                                Text(student.user.name)
+                                Text((student.firstName ?? "") + (student.lastName ?? ""))
                                     .bold()
-                                Text("Seat: \(student.actualSeat ?? student.plannedSeat ?? "not set")")
+                                Text("Seat: \(student.actualLocation?.seatName ?? student.plannedLocation.seatName ?? "not set")")
                             }
                             Spacer()
                             if student.isStudentDone {
@@ -121,8 +122,8 @@ extension ExamView {
 
     @ViewBuilder var detail: some View {
         if let student = viewModel.selectedStudent,
-           let examId = viewModel.exam.value?.id,
-           let courseId = viewModel.exam.value?.course.id {
+           let examId = viewModel.exam.value?.examId,
+           let courseId = viewModel.exam.value?.courseId {
             StudentDetailView(
                 examId: examId,
                 courseId: courseId,

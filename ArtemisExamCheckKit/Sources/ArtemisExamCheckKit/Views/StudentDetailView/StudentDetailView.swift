@@ -67,8 +67,8 @@ struct StudentDetailView: View {
         _didCheckLogin = State(wrappedValue: student.didCheckLogin ?? false)
         _didCheckRegistrationNumber = State(wrappedValue: student.didCheckRegistrationNumber ?? false)
         _showSigningImage = State(wrappedValue: student.signingImagePath != nil)
-        _actualRoom = State(wrappedValue: student.actualRoom ?? "")
-        _actualSeat = State(wrappedValue: student.actualSeat ?? "")
+        _actualRoom = State(wrappedValue: student.actualLocation?.roomNumber ?? "")
+        _actualSeat = State(wrappedValue: student.actualLocation?.seatName ?? "")
     }
 
     var body: some View {
@@ -93,26 +93,26 @@ struct StudentDetailView: View {
                 VStack(spacing: 12) {
                     StudentDetailCell(
                         description: "Name",
-                        value: student.user.name)
+                        value: (student.firstName ?? "") + " " + (student.lastName ?? ""))
                     StudentDetailCell(
                         description: "Matriculation Nr.",
-                        value: student.user.visibleRegistrationNumber ?? "not available")
+                        value: student.registrationNumber ?? "not available")
                     StudentDetailCell(
                         description: "Artemis Username",
-                        value: student.user.login)
+                        value: student.login)
                     HStack {
                         // TODO: Edit mode
                         VStack(spacing: 12) {
                             StudentRoomDetailCell(
                                 description: "Room",
-                                value: student.plannedRoom,
+                                value: student.plannedLocation.roomNumber,
                                 actualValue: $actualRoom,
                                 actualOtherValue: $actualOtherRoom,
                                 showActualValue: $showSeatingEdit,
                                 allRooms: allRooms)
                             StudentSeatingDetailCell(
                                 description: "Seat",
-                                value: student.plannedSeat,
+                                value: student.plannedLocation.roomName,
                                 actualValue: $actualSeat,
                                 showActualValue: $showSeatingEdit)
                         }
@@ -131,7 +131,7 @@ struct StudentDetailView: View {
 
                 Button("Attendance Check") {
                     Task {
-                        _ = await ExamServiceFactory.shared.attendanceCheck(for: courseId, and: examId, with: student.user.login)
+                        _ = await ExamServiceFactory.shared.attendanceCheck(for: courseId, and: examId, with: student.login)
                     }
                 }
                 .buttonStyle(ArtemisButton())

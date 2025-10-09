@@ -20,7 +20,7 @@ class StudentListViewModel: ObservableObject {
 
     var selectedLectureHall: String = ""
     var selectedRoom: ExamRoomForAttendanceCheckerDTO? {
-        guard let rooms = exam.value?.examRooms else { return nil }
+        guard let rooms = exam.value?.examRoomsUsedInExam else { return nil }
         return rooms.first { $0.name == selectedLectureHall }
     }
     
@@ -28,8 +28,8 @@ class StudentListViewModel: ObservableObject {
     var sortingDirection = Sorting.bottomToTop
 
     var lectureHalls: [String] {
-        Array(Set((exam.value?.examUsers ?? []).map {
-            $0.actualRoom ?? $0.plannedRoom ?? "not set"
+        Array(Set((exam.value?.examUsersWithExamRoomAndSeat ?? []).map {
+            $0.actualLocation?.roomNumber ?? $0.plannedLocation.roomNumber ?? "not set"
         }))
     }
     var selectedStudents: [ExamUser] {
@@ -41,7 +41,7 @@ class StudentListViewModel: ObservableObject {
     var checkedInStudentsInSelectedRoom = 0
     var totalStudentsInSelectedRoom = 0
 
-    var exam: DataState<Exam> = .loading
+    var exam: DataState<AttendanceCheckerAppExamInformationDTO> = .loading
 
     var hasUnsavedChanges = false
 
@@ -59,7 +59,7 @@ class StudentListViewModel: ObservableObject {
 
     func selectStudent(at seat: ExamSeatDTO) {
         selectedStudent = selectedStudents.first(where: {
-            ($0.actualSeat ?? $0.plannedSeat) == seat.name
+            ($0.actualLocation?.seatName ?? $0.plannedLocation.seatName) == seat.name
         })
     }
 
@@ -72,20 +72,20 @@ class StudentListViewModel: ObservableObject {
 
     func updateStudent(newStudent: ExamUser) {
         guard var exam = exam.value,
-              let examUserIndex = exam.examUsers?.firstIndex(where: { newStudent.id == $0.id }) else { return }
+              let examUserIndex = exam.examUsersWithExamRoomAndSeat.firstIndex(where: { newStudent.id == $0.id }) else { return }
 
-        exam.examUsers?[examUserIndex] = newStudent
+        exam.examUsersWithExamRoomAndSeat[examUserIndex] = newStudent
         self.exam = .done(response: exam)
         hasUnsavedChanges = false
     }
 
     private func setSelectedStudents() -> [ExamUser] {
-        guard var selectedStudents = exam.value?.examUsers else { return [] }
+        guard var selectedStudents = exam.value?.examUsersWithExamRoomAndSeat else { return [] }
 
         // filter by selected Lecture Hall
         if !selectedLectureHall.isEmpty {
             selectedStudents = selectedStudents.filter {
-                ($0.actualRoom ?? $0.plannedRoom ?? "not set") == selectedLectureHall
+                ($0.actualLocation?.roomNumber ?? $0.plannedLocation.roomNumber ?? "not set") == selectedLectureHall
             }
         }
 
@@ -96,9 +96,10 @@ class StudentListViewModel: ObservableObject {
         if !searchText.isEmpty {
             let searchText = searchText.lowercased()
             selectedStudents = selectedStudents.filter {
-                $0.user.name.lowercased().contains(searchText) ||
-                $0.user.login.lowercased().contains(searchText) ||
-                ($0.user.visibleRegistrationNumber ?? "").lowercased().contains(searchText)
+                $0.firstName?.lowercased().contains(searchText) ?? false ||
+                $0.lastName?.lowercased().contains(searchText) ?? false ||
+                $0.login.lowercased().contains(searchText) ||
+                ($0.registrationNumber ?? "").lowercased().contains(searchText)
             }
         }
 
@@ -112,9 +113,9 @@ class StudentListViewModel: ObservableObject {
         return selectedStudents.sorted {
             switch sortingDirection {
             case .bottomToTop:
-                return $0.actualSeat ?? $0.plannedSeat ?? "" < $1.actualSeat ?? $1.plannedSeat ?? ""
+                return $0.actualLocation?.seatName ?? $0.plannedLocation.seatName ?? "" < $1.actualLocation?.seatName ?? $1.plannedLocation.seatName ?? ""
             case .topToBottom:
-                return $0.actualSeat ?? $0.plannedSeat ?? "" > $1.actualSeat ?? $1.plannedSeat ?? ""
+                return $0.actualLocation?.seatName ?? $0.plannedLocation.seatName ?? "" > $1.actualLocation?.seatName ?? $1.plannedLocation.seatName ?? ""
             }
         }
     }

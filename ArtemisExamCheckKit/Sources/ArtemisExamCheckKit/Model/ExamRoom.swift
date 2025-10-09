@@ -12,7 +12,7 @@ struct ExamRoomForAttendanceCheckerDTO: Codable {
     var name: String
     var alternativeName: String?
     var building: String
-    var seats: [ExamSeatDTO]
+    var seats: [ExamSeatDTO]?
 
     static let mock: Self = .init(id: 0, roomNumber: "01.01.001", name: "Raum", building: "MI", seats: [
         .init(name: "A1", xCoordinate: 1.0, yCoordinate: 1.0),

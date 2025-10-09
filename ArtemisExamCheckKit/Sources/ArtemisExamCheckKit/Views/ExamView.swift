@@ -24,7 +24,7 @@ struct ExamView: View {
                 DataStateView(data: $viewModel.exam) {
                     await viewModel.getExam()
                 } content: { _ in
-                    if let selectedRoom = viewModel.selectedRoom {
+                    if let selectedRoom = viewModel.selectedRoom, selectedRoom.seats != nil {
                         ExamRoomView(room: selectedRoom, viewModel: viewModel)
                     } else {
 //                        Picker(selection: $viewModel.selectedLectureHall) {
