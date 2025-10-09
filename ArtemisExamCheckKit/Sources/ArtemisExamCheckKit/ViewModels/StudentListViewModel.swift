@@ -13,7 +13,8 @@ enum Sorting {
     case bottomToTop, topToBottom
 }
 
-@MainActor @Observable
+@MainActor
+@Observable
 class StudentListViewModel: ObservableObject {
 
     var searchText = ""
@@ -21,15 +22,18 @@ class StudentListViewModel: ObservableObject {
     var selectedLectureHall: String = ""
     var selectedRoom: ExamRoomForAttendanceCheckerDTO? {
         guard let rooms = exam.value?.examRoomsUsedInExam else { return nil }
-        return rooms.first { $0.name == selectedLectureHall }
+        return rooms.first { $0.roomNumber == selectedLectureHall }
     }
-    
+
     var hideDoneStudents = false
     var sortingDirection = Sorting.bottomToTop
 
+    var examRooms: [ExamRoomForAttendanceCheckerDTO] {
+        exam.value?.examRoomsUsedInExam ?? []
+    }
     var lectureHalls: [String] {
         Array(Set((exam.value?.examUsersWithExamRoomAndSeat ?? []).map {
-            $0.actualLocation?.roomNumber ?? $0.plannedLocation.roomNumber ?? "not set"
+            $0.actualLocation?.roomNumber ?? $0.plannedLocation.roomNumber
         }))
     }
     var selectedStudents: [ExamUser] {

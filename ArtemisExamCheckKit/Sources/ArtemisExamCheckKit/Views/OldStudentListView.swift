@@ -54,27 +54,6 @@ extension ExamView {
     var sidebar: some View {
         VStack {
             Group {
-                HStack {
-                    Picker("Room", selection: $viewModel.selectedLectureHall) {
-                        Text("All Rooms").tag("")
-                        ForEach(viewModel.lectureHalls, id: \.self) { lectureHall in
-                            Text(lectureHall)
-                                .tag(lectureHall)
-                        }
-                    }
-                    Picker("Sorting", selection: $viewModel.sortingDirection) {
-                        Text("Bottom to Top")
-                            .tag(Sorting.bottomToTop)
-                        Text("Top to Bottom")
-                            .tag(Sorting.topToBottom)
-                    }
-                }
-                Toggle("Hide Checked-In Students: ", isOn: $viewModel.hideDoneStudents)
-                    .padding(.horizontal, 8)
-                Text("Progress: \(viewModel.checkedInStudentsInSelectedRoom) / \(viewModel.totalStudentsInSelectedRoom)")
-            }
-            .padding(.horizontal, 8)
-            Group {
                 if viewModel.selectedStudents.isEmpty {
                     List {
                         Text("There are no students. Maybe try removing some filters.")

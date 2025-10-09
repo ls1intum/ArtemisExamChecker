@@ -9,18 +9,6 @@ import Foundation
 import APIClient
 import UserStore
 
-/*
- ExamUserWithExamRoomAndSeatDTO (
-     @NotBlank String login,
-     @NotBlank String firstName,
-     @NotBlank String lastName,
-     @NotBlank String registrationNumber,
-     @Nullable String imageUrl,
-     @NotBlank String examRoomNumber,
-     @NotNull ExamSeatDTO examSeat
- )
- */
-
 struct ExamUserLocationDTO: Codable, Hashable {
     var roomId: Int?
     var roomNumber: String  // examUser.plannedRoom if legacy version

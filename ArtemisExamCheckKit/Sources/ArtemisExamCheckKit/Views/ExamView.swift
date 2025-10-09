@@ -24,18 +24,15 @@ struct ExamView: View {
                 DataStateView(data: $viewModel.exam) {
                     await viewModel.getExam()
                 } content: { _ in
-                    if let selectedRoom = viewModel.selectedRoom, selectedRoom.seats != nil {
-                        ExamRoomView(room: selectedRoom, viewModel: viewModel)
-                    } else {
-//                        Picker(selection: $viewModel.selectedLectureHall) {
-//                            ForEach(viewModel.lectureHalls, id: \.self) {
-//                                Text($0).tag($0)
-//                                Text("None").tag("")
-//                            }
-//                        } label: {
-//                            Text("Lecture Hall")
-//                        }
-                        sidebar
+                    Group {
+                        if let selectedRoom = viewModel.selectedRoom, selectedRoom.seats != nil {
+                            ExamRoomView(room: selectedRoom, viewModel: viewModel)
+                        } else {
+                            sidebar
+                        }
+                    }
+                    .safeAreaInset(edge: .top) {
+                        sidebarFilters
                     }
                 }
                 .toolbarVisibility(.hidden, for: .navigationBar)
@@ -45,6 +42,46 @@ struct ExamView: View {
                     .navigationTitle("Student")
                     .navigationBarTitleDisplayMode(.inline)
             }
+        }
+    }
+}
+
+extension ExamView {
+    @ViewBuilder var sidebarFilters: some View {
+        VStack {
+            HStack {
+                Picker("Room", selection: $viewModel.selectedLectureHall) {
+                    Text("All Rooms").tag("")
+                    if viewModel.examRooms.isEmpty {
+                        ForEach(viewModel.lectureHalls, id: \.self) { lectureHall in
+                            Text(lectureHall)
+                                .tag(lectureHall)
+                        }
+                    } else {
+                        ForEach(viewModel.examRooms, id: \.roomNumber) { examRoom in
+                            Button {
+                            } label: {
+                                Text(examRoom.name)
+                                Text(examRoom.roomNumber)
+                            }
+                            .tag(examRoom.roomNumber)
+                        }
+                    }
+                }
+                if viewModel.selectedRoom == nil {
+                    // Only makes sense in List View
+                    Picker("Sorting", selection: $viewModel.sortingDirection) {
+                        Text("Bottom to Top")
+                            .tag(Sorting.bottomToTop)
+                        Text("Top to Bottom")
+                            .tag(Sorting.topToBottom)
+                    }
+                    Spacer()
+                    Toggle("Hide Checked-In Students: ", isOn: $viewModel.hideDoneStudents)
+                        .padding(.horizontal)
+                }
+            }
+            Text("Progress: \(viewModel.checkedInStudentsInSelectedRoom) / \(viewModel.totalStudentsInSelectedRoom)")
         }
     }
 }

@@ -73,7 +73,7 @@ class ExamServiceImpl: ExamService {
                                               registrationNumber: "123",
                                               email: nil,
                                               plannedLocation: .init(roomId: 0,
-                                                                     roomNumber: "hs",
+                                                                     roomNumber: "01.01.001",
                                                                      roomAlternativeNumber: "bla",
                                                                      roomName: "room",
                                                                      roomAlternativeName: "alt",
