@@ -114,31 +114,39 @@ struct StudentDetailView: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
+                .frame(maxWidth: .infinity, alignment: .center)
 
-                Button("All good") {
-                    didCheckName = true
-                    didCheckImage = true
-                    didCheckLogin = true
-                    didCheckRegistrationNumber = true
-                    showSignatureField = true
+                DisclosureGroup {
+                    Toggle("Image correct:", isOn: $didCheckImage)
+                    Toggle("Name correct:", isOn: $didCheckName)
+                    Toggle("Matriculation Number correct:", isOn: $didCheckRegistrationNumber)
+                    Toggle("Artemis Username correct:", isOn: $didCheckLogin)
+                    Button("Proceed to signature") {
+                        showSignatureField = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                } label: {
+                    Button("All good") {
+                        didCheckName = true
+                        didCheckImage = true
+                        didCheckLogin = true
+                        didCheckRegistrationNumber = true
+                        showSignatureField = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.green)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.green)
-                // TODO: Button for not all good
-//                VStack {
-//                    Toggle("Image is correct:", isOn: $didCheckImage)
-//                    Toggle("Name is correct:", isOn: $didCheckName)
-//                    Toggle("Matriculation Number is correct:", isOn: $didCheckRegistrationNumber)
-//                    Toggle("Artemis Username is correct:", isOn: $didCheckLogin)
-//                }
+                .disclosureGroupStyle(ButtonDisclosureGroupStyle())
             }
+            .listRowSeparator(.hidden)
 
             Button("Save") {
                 saveStudent()
             }
             .disabled(!hasUnsavedChanges)
             .buttonStyle(ArtemisButton())
-            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .center)
             .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
                 Button("Yes, I want to continue.", role: .destructive) {
                     saveStudent(force: true)
@@ -198,7 +206,7 @@ struct StudentDetailView: View {
                         .loadingIndicator(isLoading: $isSaving)
                     }
             }
-            .frame(minWidth: 600, minHeight: 300)
+            .frame(minWidth: 650, minHeight: 350)
             .presentationBackgroundInteraction(.disabled)
             .presentationSizing(.fitted)
             .interactiveDismissDisabled()
@@ -315,6 +323,27 @@ private struct PencilSideButtons: View {
                     .imageScale(.large)
                     .foregroundColor(.red)
             }
+        }
+    }
+}
+
+private struct ButtonDisclosureGroupStyle: DisclosureGroupStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            configuration.label
+
+            Spacer()
+
+            Button("Not all good") {
+                withAnimation {
+                    configuration.isExpanded.toggle()
+                }
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.red)
+        }
+        if configuration.isExpanded {
+            configuration.content
         }
     }
 }
