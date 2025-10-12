@@ -51,7 +51,7 @@ class StudentListViewModel {
     }
     var lectureHalls: [String] {
         Array(Set((exam.value?.examUsersWithExamRoomAndSeat ?? []).map {
-            $0.actualLocation?.roomNumber ?? $0.plannedLocation.roomNumber
+            $0.location.roomNumber
         }))
     }
     var selectedStudents: [ExamUser] {
@@ -79,11 +79,11 @@ class StudentListViewModel {
             await getExam()
         }
     }
-    
+
     func getStudent(at seat: ExamSeatDTO) -> ExamUser? {
-        selectedStudents.first(where: {
-            ($0.actualLocation?.seatName ?? $0.plannedLocation.seatName) == seat.name
-        })
+        selectedStudents.first {
+            $0.location.seatName == seat.name
+        }
     }
 
     func selectStudent(at seat: ExamSeatDTO) {
@@ -122,7 +122,7 @@ class StudentListViewModel {
         // filter by selected Lecture Hall
         if !selectedLectureHall.isEmpty {
             selectedStudents = selectedStudents.filter {
-                ($0.actualLocation?.roomNumber ?? $0.plannedLocation.roomNumber ?? "not set") == selectedLectureHall
+                ($0.location.roomNumber ?? "not set") == selectedLectureHall
             }
         }
 
@@ -150,9 +150,9 @@ class StudentListViewModel {
         return selectedStudents.sorted {
             switch sortingDirection {
             case .bottomToTop:
-                return $0.actualLocation?.seatName ?? $0.plannedLocation.seatName ?? "" < $1.actualLocation?.seatName ?? $1.plannedLocation.seatName ?? ""
+                return $0.location.seatName ?? "" < $1.location.seatName ?? ""
             case .topToBottom:
-                return $0.actualLocation?.seatName ?? $0.plannedLocation.seatName ?? "" > $1.actualLocation?.seatName ?? $1.plannedLocation.seatName ?? ""
+                return $0.location.seatName ?? "" > $1.location.seatName ?? ""
             }
         }
     }

@@ -87,8 +87,8 @@ struct StudentDetailView: View {
             }
 
             Section {
-                Text("Room").badge((student.actualLocation ?? student.plannedLocation).roomNumber)
-                Text("Seat").badge((student.actualLocation ?? student.plannedLocation).seatName)
+                Text("Room").badge(student.location.roomNumber)
+                Text("Seat").badge(student.location.seatName)
                 if student.plannedLocation.roomId == nil {
                     Button("Edit", systemImage: "pencil") {
                         showSeatingEdit.toggle()
@@ -143,20 +143,20 @@ struct StudentDetailView: View {
             }
             .font(.title2)
             .listRowSeparator(.hidden)
-
-            Button("Save") {
-                saveStudent()
-            }
-            .disabled(!hasUnsavedChanges)
-            .buttonStyle(ArtemisButton())
-            .frame(maxWidth: .infinity, alignment: .center)
-            .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
-                Button("Yes, I want to continue.", role: .destructive) {
-                    saveStudent(force: true)
-                }
-            } message: {
-                Text("You did not fill out all requiered fields. Do you still want to proceed?")
-            }
+// TODO: Remove?
+//            Button("Save") {
+//                saveStudent()
+//            }
+//            .disabled(!hasUnsavedChanges)
+//            .buttonStyle(ArtemisButton())
+//            .frame(maxWidth: .infinity, alignment: .center)
+//            .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
+//                Button("Yes, I want to continue.", role: .destructive) {
+//                    saveStudent(force: true)
+//                }
+//            } message: {
+//                Text("You did not fill out all requiered fields. Do you still want to proceed?")
+//            }
             .alert(isPresented: $showErrorAlert, error: error, actions: {})
         }
         .scrollDisabled(!isScrollingEnabled)

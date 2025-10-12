@@ -38,9 +38,6 @@ class ExamUser: Codable, Identifiable {
     let login: String
     let firstName: String?
     let lastName: String?
-    var displayName: String {
-        (firstName ?? "-") + " " + (lastName ?? "-")
-    }
     let registrationNumber: String
     let email: String?
 
@@ -55,20 +52,6 @@ class ExamUser: Codable, Identifiable {
     var signing: Data?
     var signingImagePath: String?
     var imageUrl: String?
-
-    var signingImageURL: URL? {
-        guard let signingImagePath else { return nil }
-        return UserSessionFactory.shared.institution?.baseURL?
-            .appending(path: "api/core/files")
-            .appending(path: signingImagePath)
-    }
-
-    var imageURL: URL? {
-        guard let imageUrl else { return nil }
-        return UserSessionFactory.shared.institution?.baseURL?
-            .appending(path: "api/core/files")
-            .appending(path: imageUrl)
-    }
 
     var isStudentDone: Bool {
         didCheckImage ?? false &&
@@ -144,5 +127,27 @@ extension ExamUser: Equatable {
         lhs.actualLocation == rhs.actualLocation &&
         lhs.plannedLocation == rhs.plannedLocation &&
         lhs.signingImagePath == rhs.signingImagePath
+    }
+}
+
+extension ExamUser {
+    var location: ExamUserLocationDTO {
+        actualLocation ?? plannedLocation
+    }
+    var displayName: String {
+        (firstName ?? "-") + " " + (lastName ?? "-")
+    }
+
+    var signingImageURL: URL? {
+        guard let signingImagePath else { return nil }
+        return UserSessionFactory.shared.institution?.baseURL?
+            .appending(path: "api/core/files")
+            .appending(path: signingImagePath)
+    }
+    var imageURL: URL? {
+        guard let imageUrl else { return nil }
+        return UserSessionFactory.shared.institution?.baseURL?
+            .appending(path: "api/core/files")
+            .appending(path: imageUrl)
     }
 }
