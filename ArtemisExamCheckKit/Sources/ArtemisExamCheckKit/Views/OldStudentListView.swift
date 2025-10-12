@@ -115,6 +115,9 @@ extension ExamView {
         } else {
             Text("Select a student")
                 .font(.title)
+                .sheet(item: $viewModel.selectedSearch) { search in
+                    SearchStudentView(viewModel: viewModel, search: search)
+                }
         }
     }
 }

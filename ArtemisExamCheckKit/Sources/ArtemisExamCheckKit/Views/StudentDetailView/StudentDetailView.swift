@@ -89,8 +89,10 @@ struct StudentDetailView: View {
             Section {
                 Text("Room").badge((student.actualLocation ?? student.plannedLocation).roomNumber)
                 Text("Seat").badge((student.actualLocation ?? student.plannedLocation).seatName)
-                Button("Edit", systemImage: "pencil") {
-                    showSeatingEdit.toggle()
+                if student.plannedLocation.roomId == nil {
+                    Button("Edit", systemImage: "pencil") {
+                        showSeatingEdit.toggle()
+                    }
                 }
                 // TODO: Editing
 //                    StudentRoomDetailCell(

@@ -19,6 +19,14 @@ struct ExamUserLocationDTO: Codable, Hashable {
     var seatName: String  // examUser.plannedSeat if legacy version
 }
 
+extension ExamUserLocationDTO {
+    init(room: ExamRoomForAttendanceCheckerDTO, seat: ExamSeatDTO) {
+        roomId = room.id
+        roomNumber = room.roomNumber
+        seatName = seat.name
+    }
+}
+
 @Observable
 class ExamUser: Codable, Identifiable {
 
@@ -66,8 +74,9 @@ class ExamUser: Codable, Identifiable {
         didCheckImage ?? false &&
         didCheckName ?? false &&
         didCheckLogin ?? false &&
-        didCheckRegistrationNumber ?? false &&
-        signingImagePath != nil
+        didCheckRegistrationNumber ?? false /*&&
+        signingImagePath != nil*/
+        // TODO: Undo
     }
 
     // swiftlint:disable:next function_parameter_count
@@ -89,7 +98,8 @@ class ExamUser: Codable, Identifiable {
                         didCheckRegistrationNumber: checkedRegistrationNumber,
                         plannedLocation: plannedLocation,
                         actualLocation: actualLocation,
-                        signing: signing)
+                        signing: signing,
+                        imageUrl: imageUrl)
     }
 
     init(login: String, firstName: String?, lastName: String?, registrationNumber: String, email: String?, didCheckImage: Bool? = nil, didCheckName: Bool? = nil, didCheckLogin: Bool? = nil, didCheckRegistrationNumber: Bool? = nil, plannedLocation: ExamUserLocationDTO, actualLocation: ExamUserLocationDTO? = nil, signing: Data? = nil, signingImagePath: String? = nil, imageUrl: String? = nil) {

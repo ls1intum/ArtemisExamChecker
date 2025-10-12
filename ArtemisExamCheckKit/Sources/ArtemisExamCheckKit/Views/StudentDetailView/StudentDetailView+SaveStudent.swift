@@ -63,6 +63,7 @@ extension StudentDetailView {
         showSigningImage = newStudent.signingImageURL != nil
         actualRoom = newStudent.actualLocation?.roomNumber ?? ""
         actualSeat = newStudent.actualLocation?.seatName ?? ""
+        hasUnsavedChanges = false
     }
 }
 

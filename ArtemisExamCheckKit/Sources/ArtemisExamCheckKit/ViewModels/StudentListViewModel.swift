@@ -17,9 +17,18 @@ enum StyleOption {
     case list, room
 }
 
+struct StudentSeatSearch: Identifiable {
+    var id: String {
+        "\(room.roomNumber) \(seat.xCoordinate) \(seat.yCoordinate)"
+    }
+
+    let seat: ExamSeatDTO
+    let room: ExamRoomForAttendanceCheckerDTO
+}
+
 @MainActor
 @Observable
-class StudentListViewModel: ObservableObject {
+class StudentListViewModel {
 
     var searchText = ""
 
@@ -50,6 +59,7 @@ class StudentListViewModel: ObservableObject {
     }
 
     var selectedStudent: ExamUser?
+    var selectedSearch: StudentSeatSearch?
 
     var checkedInStudentsInSelectedRoom = 0
     var totalStudentsInSelectedRoom = 0
@@ -69,11 +79,25 @@ class StudentListViewModel: ObservableObject {
             await getExam()
         }
     }
-
-    func selectStudent(at seat: ExamSeatDTO) {
-        selectedStudent = selectedStudents.first(where: {
+    
+    func getStudent(at seat: ExamSeatDTO) -> ExamUser? {
+        selectedStudents.first(where: {
             ($0.actualLocation?.seatName ?? $0.plannedLocation.seatName) == seat.name
         })
+    }
+
+    func selectStudent(at seat: ExamSeatDTO) {
+        selectedStudent = getStudent(at: seat)
+        if selectedStudent == nil {
+            openSearch(seat: seat)
+        }
+    }
+
+    private func openSearch(seat: ExamSeatDTO) {
+        guard let room = selectedRoom else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.selectedSearch = StudentSeatSearch(seat: seat, room: room)
+        }
     }
 
     func getExam(showLoadingIndicator: Bool = true) async {
@@ -117,7 +141,7 @@ class StudentListViewModel: ObservableObject {
         }
 
         // filter by done students
-        if hideDoneStudents {
+        if hideDoneStudents && useListStyle {
             selectedStudents = selectedStudents.filter {
                 !$0.isStudentDone
             }

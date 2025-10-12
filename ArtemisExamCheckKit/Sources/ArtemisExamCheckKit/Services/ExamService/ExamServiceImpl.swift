@@ -78,7 +78,8 @@ class ExamServiceImpl: ExamService {
                                                                      roomName: "room",
                                                                      roomAlternativeName: "alt",
                                                                      roomBuilding: "buil",
-                                                                     seatName: "A2"))
+                                                                     seatName: "A2"),
+                                              imageUrl: "user/profile-pictures/18129/ProfilePicture_2025-03-05T16-13-58-545_46453d95.jpeg")
                                      ]
                                     )
         )

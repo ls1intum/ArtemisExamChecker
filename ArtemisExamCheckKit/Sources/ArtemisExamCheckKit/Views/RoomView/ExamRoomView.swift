@@ -13,7 +13,7 @@ struct ExamRoomView: View {
     let viewModel: StudentListViewModel
     @State var scale = 1.0
 
-    static let roomPadding: CGFloat = 40
+    static let roomPadding: CGFloat = 50
 
     var body: some View {
         GeometryReader { proxy in
@@ -132,10 +132,12 @@ private struct RoomLayout: View {
             Button {
                 viewModel.selectStudent(at: seat)
             } label: {
-                Text(seat.name)
-                    .padding()
+                if let student = viewModel.getStudent(at: seat) {
+                    StudentPreview(student: student)
+                } else {
+                    EmptySeatView(seatName: seat.name)
+                }
             }
-            .border(.black, width: 1)
             .position(position(for: seat))
         }
     }
