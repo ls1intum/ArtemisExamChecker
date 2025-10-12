@@ -141,6 +141,7 @@ struct StudentDetailView: View {
                 }
                 .disclosureGroupStyle(ButtonDisclosureGroupStyle())
             }
+            .font(.title2)
             .listRowSeparator(.hidden)
 
             Button("Save") {
@@ -202,7 +203,7 @@ struct StudentDetailView: View {
                     .padding()
                     .toolbar {
                         Button("Save") {
-                            saveStudent()
+                            saveStudent(force: true)
                             showSignatureField = false
                         }
                         .loadingIndicator(isLoading: $isSaving)
@@ -346,6 +347,7 @@ private struct ButtonDisclosureGroupStyle: DisclosureGroupStyle {
         }
         if configuration.isExpanded {
             configuration.content
+                .font(.body)
         }
     }
 }

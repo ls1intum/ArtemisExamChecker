@@ -25,12 +25,16 @@ struct SearchStudentView: View {
                         VStack(alignment: .leading) {
                             Text(student.displayName).bold()
                             Text(student.registrationNumber)
+                            if student.isStudentDone {
+                                Text("Already checked in")
+                            }
                         }
                     }
+                    .disabled(student.isStudentDone)
                 }
             }
             .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
-            .navigationTitle("Move student to seat")
+            .navigationTitle("Move student to seat \(search.seat.name)")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {

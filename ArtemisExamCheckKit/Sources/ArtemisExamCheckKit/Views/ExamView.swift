@@ -43,6 +43,14 @@ struct ExamView: View {
                     .navigationBarTitleDisplayMode(.inline)
             }
         }
+        .navigationTitle(title)
+        .toolbarTitleDisplayMode(.inline)
+    }
+
+    private var title: String {
+        let examTitle = viewModel.exam.value?.examTitle ?? ""
+        let courseTitle = viewModel.exam.value?.courseTitle ?? ""
+        return "\(examTitle) – \(courseTitle)"
     }
 }
 
@@ -68,7 +76,7 @@ extension ExamView {
                         }
                     }
                 }
-                if viewModel.selectedRoom == nil && viewModel.useListStyle {
+                if viewModel.useListStyle {
                     // Only makes sense in List View
                     Picker("Sorting", selection: $viewModel.sortingDirection) {
                         Text("Bottom to Top")
@@ -80,7 +88,7 @@ extension ExamView {
                     Toggle("Hide Checked-In Students: ", isOn: $viewModel.hideDoneStudents)
                         .padding(.horizontal)
                 }
-                if !viewModel.examRooms.isEmpty && viewModel.selectedLectureHall != "" {
+                if !viewModel.examRooms.isEmpty && !viewModel.selectedLectureHall.isEmpty {
                     Picker("View", selection: $viewModel.preferredViewStyle) {
                         Text("List View")
                             .tag(StyleOption.list)
