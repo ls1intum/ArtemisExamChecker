@@ -110,12 +110,12 @@ struct StudentDetailView: View {
             }
 
             Section {
-                Button("Attendance Check") {
+                Button("Verify\nStudent Session", systemImage: "list.bullet.rectangle") {
                     Task {
                         _ = await ExamServiceFactory.shared.attendanceCheck(for: courseId, and: examId, with: student.login)
                     }
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(RectButtonStyle(color: .blue, fillSpace: false))
                 .frame(maxWidth: .infinity, alignment: .center)
 
                 DisclosureGroup {
@@ -123,25 +123,23 @@ struct StudentDetailView: View {
                     Toggle("Name correct:", isOn: $didCheckName)
                     Toggle("Matriculation Number correct:", isOn: $didCheckRegistrationNumber)
                     Toggle("Artemis Username correct:", isOn: $didCheckLogin)
-                    Button("Proceed to signature") {
+                    Button("Proceed to signature", systemImage: "pencil.and.scribble") {
                         showSignatureField = true
                     }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(RectButtonStyle(color: .blue))
                     .frame(maxWidth: .infinity, alignment: .center)
                 } label: {
-                    Button("Complete check", systemImage: "checkmark") {
+                    Button("Complete Check", systemImage: "checkmark") {
                         didCheckName = true
                         didCheckImage = true
                         didCheckLogin = true
                         didCheckRegistrationNumber = true
                         showSignatureField = true
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.green)
+                    .buttonStyle(RectButtonStyle(color: .green))
                 }
                 .disclosureGroupStyle(ButtonDisclosureGroupStyle())
             }
-            .font(.title2)
             .listRowSeparator(.hidden)
 // TODO: Remove?
 //            Button("Save") {
@@ -346,17 +344,31 @@ private struct ButtonDisclosureGroupStyle: DisclosureGroupStyle {
 
             Spacer()
 
-            Button("Something's wrong") {
+            Button("Incorrect Details", systemImage: "wrench") {
                 withAnimation {
                     configuration.isExpanded.toggle()
                 }
             }
-            .buttonStyle(.borderedProminent)
-            .tint(.red)
+            .buttonStyle(RectButtonStyle(color: .red))
         }
         if configuration.isExpanded {
             configuration.content
-                .font(.body)
         }
+    }
+}
+
+private struct RectButtonStyle: ButtonStyle {
+    let color: Color
+    var fillSpace = true
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .multilineTextAlignment(.leading)
+            .font(.title2)
+            .padding(.vertical, .m)
+            .padding(.horizontal, .l)
+            .frame(maxWidth: fillSpace ? .infinity : nil)
+            .background(color, in: .rect(cornerRadius: 20, style: .continuous))
+            .foregroundStyle(.white)
     }
 }

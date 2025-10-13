@@ -30,7 +30,7 @@ struct EmptySeatView: View {
 
     var body: some View {
         Text(seatName)
-            .frame(width: 80, height: 80, alignment: .center)
+            .frame(width: 50, height: 50, alignment: .center)
             .background(Color.gray, in: .rect(cornerRadius: 10, style: .continuous))
             .foregroundStyle(.white)
     }
