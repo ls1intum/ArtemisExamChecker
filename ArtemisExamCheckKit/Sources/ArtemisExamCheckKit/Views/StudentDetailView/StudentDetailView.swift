@@ -129,7 +129,7 @@ struct StudentDetailView: View {
                     .buttonStyle(.borderedProminent)
                     .frame(maxWidth: .infinity, alignment: .center)
                 } label: {
-                    Button("All good") {
+                    Button("Complete check", systemImage: "checkmark") {
                         didCheckName = true
                         didCheckImage = true
                         didCheckLogin = true
@@ -201,12 +201,21 @@ struct StudentDetailView: View {
             NavigationStack {
                 signingImageOrCanvas
                     .padding()
+                    .navigationTitle("Signature: \(student.displayName)")
+                    .toolbarTitleDisplayMode(.inline)
                     .toolbar {
-                        Button("Save") {
-                            saveStudent(force: true)
-                            showSignatureField = false
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Save") {
+                                saveStudent(force: true)
+                                showSignatureField = false
+                            }
+                            .loadingIndicator(isLoading: $isSaving)
                         }
-                        .loadingIndicator(isLoading: $isSaving)
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Cancel") {
+                                showSignatureField = false
+                            }
+                        }
                     }
             }
             .frame(minWidth: 650, minHeight: 350)
@@ -337,7 +346,7 @@ private struct ButtonDisclosureGroupStyle: DisclosureGroupStyle {
 
             Spacer()
 
-            Button("Not all good") {
+            Button("Something's wrong") {
                 withAnimation {
                     configuration.isExpanded.toggle()
                 }
