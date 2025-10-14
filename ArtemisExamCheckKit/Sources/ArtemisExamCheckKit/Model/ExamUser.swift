@@ -29,9 +29,8 @@ extension ExamUserLocationDTO {
 
 @Observable
 class ExamUser: Codable, Identifiable {
-
     var id: String {
-        login ?? "\(Int.random(in: 0...10000))"
+        login ?? "\(Int.random(in: 0...10_000))"
     }
 
     let login: String?
@@ -61,29 +60,30 @@ class ExamUser: Codable, Identifiable {
         // TODO: Undo
     }
 
-    // swiftlint:disable:next function_parameter_count
-    func copy(checkedImage: Bool,
-              checkedName: Bool,
-              checkedLogin: Bool,
-              checkedRegistrationNumber: Bool,
-              actualRoom: String?,
-              actualSeat: String?,
-              signing: Data?) -> ExamUser {
-        return ExamUser(login: login,
-                        firstName: firstName,
-                        lastName: lastName,
-                        registrationNumber: registrationNumber,
-                        email: email,
-                        didCheckImage: checkedImage,
-                        didCheckName: checkedName,
-                        didCheckLogin: checkedLogin,
-                        didCheckRegistrationNumber: checkedRegistrationNumber,
-                        plannedLocation: plannedLocation,
-                        actualLocation: actualLocation,
-                        signing: signing,
-                        imageUrl: imageUrl)
+    var isStudentTouched: Bool {
+        didCheckImage ?? false ||
+        didCheckName ?? false ||
+        didCheckLogin ?? false ||
+        didCheckRegistrationNumber ?? false
     }
 
+    func asExamUserDTO(checkedImage: Bool,
+                       checkedName: Bool,
+                       checkedLogin: Bool,
+                       checkedRegistrationNumber: Bool,
+                       signing: Data?) -> ExamUserDTO {
+        .init(login: login,
+              didCheckImage: checkedImage,
+              didCheckLogin: checkedLogin,
+              didCheckName: checkedName,
+              didCheckRegistrationNumber: checkedRegistrationNumber,
+              room: actualLocation?.roomNumber,
+              seat: actualLocation?.seatName,
+              signing: signing,
+              signingImagePath: nil)
+    }
+
+    // TODO: Only for debugging
     init(login: String?, firstName: String?, lastName: String?, registrationNumber: String?, email: String?, didCheckImage: Bool? = nil, didCheckName: Bool? = nil, didCheckLogin: Bool? = nil, didCheckRegistrationNumber: Bool? = nil, plannedLocation: ExamUserLocationDTO, actualLocation: ExamUserLocationDTO? = nil, signing: Data? = nil, signingImagePath: String? = nil, imageUrl: String? = nil) {
         self.login = login
         self.firstName = firstName
@@ -100,13 +100,6 @@ class ExamUser: Codable, Identifiable {
         self.signingImagePath = signingImagePath
         self.imageUrl = imageUrl
     }
-}
-
-struct User: Codable, Equatable, Identifiable {
-    let id: Int
-    let login: String
-    let name: String
-    let visibleRegistrationNumber: String?
 }
 
 extension ExamUser: Hashable {
@@ -149,4 +142,64 @@ extension ExamUser {
             .appending(path: "api/core/files")
             .appending(path: imageUrl)
     }
+}
+
+extension ExamUser {
+    // swiftlint:disable identifier_name
+    enum CodingKeys: String, CodingKey {
+        case login
+        case firstName
+        case lastName
+        case registrationNumber
+        case email
+        case _didCheckImage = "didCheckImage"
+        case _didCheckName = "didCheckName"
+        case _didCheckLogin = "didCheckLogin"
+        case _didCheckRegistrationNumber = "didCheckRegistrationNumber"
+        case _plannedLocation = "plannedLocation"
+        case _actualLocation = "actualLocation"
+        case _signing = "signing"
+        case _signingImagePath = "signingImagePath"
+        case _imageUrl = "imageUrl"
+    }
+
+    func update(with dto: ExamUserDTO) {
+        didCheckImage = dto.didCheckImage
+        didCheckLogin = dto.didCheckLogin
+        didCheckName = dto.didCheckName
+        didCheckRegistrationNumber = dto.didCheckRegistrationNumber
+        signingImagePath = dto.signingImagePath
+    }
+}
+
+//extension ExamUser: Codable {
+//    convenience init(from decoder: any Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        self.login = try container.decodeIfPresent(String.self, forKey: .login)
+//        self.firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
+//        self.lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
+//        self.registrationNumber = try container.decodeIfPresent(String.self, forKey: .registrationNumber)
+//        self.email = try container.decodeIfPresent(String.self, forKey: .email)
+//        self.didCheckImage = try container.decodeIfPresent(Bool.self, forKey: .didCheckImage)
+//        self.didCheckName = try container.decodeIfPresent(Bool.self, forKey: .didCheckName)
+//        self.didCheckLogin = try container.decodeIfPresent(Bool.self, forKey: .didCheckLogin)
+//        self.didCheckRegistrationNumber = try container.decodeIfPresent(Bool.self, forKey: .didCheckRegistrationNumber)
+//        self.plannedLocation = try container.decode(ExamUserLocationDTO.self, forKey: .plannedLocation)
+//        self.actualLocation = try container.decodeIfPresent(ExamUserLocationDTO.self, forKey: .actualLocation)
+//        self.signing = try container.decodeIfPresent(Data.self, forKey: .signing)
+//        self.signingImagePath = try container.decodeIfPresent(String.self, forKey: .signingImagePath)
+//        self.imageUrl = try container.decodeIfPresent(String.self, forKey: .imageUrl)
+//    }
+//}
+
+struct ExamUserDTO: Codable {
+    let login: String?
+    let didCheckImage: Bool?
+    let didCheckLogin: Bool?
+    let didCheckName: Bool?
+    let didCheckRegistrationNumber: Bool?
+    let room: String?
+    let seat: String?
+    let signing: Data?
+    let signingImagePath: String?
 }

@@ -109,7 +109,7 @@ extension ExamView {
                 student: student,
                 hasUnsavedChanges: $viewModel.hasUnsavedChanges,
                 allRooms: viewModel.lectureHalls,
-                successfullySavedCompletion: viewModel.updateStudent
+                successfullySavedCompletion: viewModel.onStudentSave
             )
             .navigationTitle(student.displayName)
             .id(viewModel.selectedStudent?.id)

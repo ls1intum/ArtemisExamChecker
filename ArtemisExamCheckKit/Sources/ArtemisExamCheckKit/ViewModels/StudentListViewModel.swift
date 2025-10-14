@@ -103,12 +103,16 @@ class StudentListViewModel {
         exam = await ExamServiceFactory.shared.getFullExam(for: courseId, and: examId)
     }
 
-    func updateStudent(newStudent: ExamUser) {
-        guard var exam = exam.value,
-              let examUserIndex = exam.examUsersWithExamRoomAndSeat.firstIndex(where: { newStudent.id == $0.id }) else { return }
-
-        exam.examUsersWithExamRoomAndSeat[examUserIndex] = newStudent
-        self.exam = .done(response: exam)
+    /// Call this after a student was saved to move to the next one
+    func onStudentSave(student: ExamUser) {
+//        // TODO: Remove -> Exam observable?
+//        guard var exam = exam.value,
+//              let examUserIndex = exam.examUsersWithExamRoomAndSeat.firstIndex(where: { newStudent.id == $0.id }) else { return }
+//
+//        exam.examUsersWithExamRoomAndSeat[examUserIndex] = newStudent
+//        self.exam = .done(response: exam)
+        selectedStudent = nil
+        // TODO: Select next student
         hasUnsavedChanges = false
     }
 

@@ -12,8 +12,13 @@ struct StudentPreview: View {
     let student: ExamUser
 
     var shadowColor: UIColor {
-        student.isStudentDone ? .green : .darkGray
-        // TODO: orange for half-finished
+        if student.isStudentDone {
+            .green
+        } else if student.isStudentTouched {
+            .yellow
+        } else {
+            .darkGray
+        }
     }
 
     var body: some View {

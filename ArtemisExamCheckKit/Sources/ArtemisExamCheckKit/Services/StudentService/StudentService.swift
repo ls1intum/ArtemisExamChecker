@@ -9,7 +9,7 @@ import Foundation
 import Common
 
 protocol StudentService {
-    func saveStudent(student: ExamUser, examId: Int, courseId: Int) async -> DataState<ExamUser>
+    func saveStudent(student: ExamUserDTO, examId: Int, courseId: Int) async -> DataState<ExamUserDTO>
 }
 
 enum StudentServiceFactory {

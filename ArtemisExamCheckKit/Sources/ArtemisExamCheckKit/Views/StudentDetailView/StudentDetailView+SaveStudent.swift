@@ -8,7 +8,6 @@
 import SwiftUI
 
 extension StudentDetailView {
-    // TODO: Reset selection or open next student afterwards
     func saveStudent(force: Bool = false, isNavigationBarButton: Bool = false) {
         if !force && (!didCheckName || !didCheckLogin || !didCheckImage || !didCheckRegistrationNumber || (canvasView.drawing.bounds.isEmpty && student.signingImageURL == nil)) {
             if isNavigationBarButton {
@@ -25,13 +24,11 @@ extension StudentDetailView {
             imageData = signingImage.pngData()
         }
 
-        let newStudent = student.copy(
+        let newStudent = student.asExamUserDTO(
             checkedImage: didCheckImage,
             checkedName: didCheckName,
             checkedLogin: didCheckLogin,
             checkedRegistrationNumber: didCheckRegistrationNumber,
-            actualRoom: nil,
-            actualSeat: nil,
             signing: imageData)
 
         // TODO: Reconfirm
@@ -51,19 +48,21 @@ extension StudentDetailView {
             case .done(let newStudent):
                 isSaving = false
                 updateDetailViewStates(newStudent: newStudent)
-                await successfullySavedCompletion(newStudent)
+                student.update(with: newStudent)
+                $hasUnsavedChanges.wrappedValue = false
+                successfullySavedCompletion(student)
             }
         }
     }
 
-    private func updateDetailViewStates(newStudent: ExamUser) {
+    private func updateDetailViewStates(newStudent: ExamUserDTO) {
         didCheckImage = newStudent.didCheckImage ?? false
         didCheckName = newStudent.didCheckName ?? false
         didCheckLogin = newStudent.didCheckLogin ?? false
         didCheckRegistrationNumber = newStudent.didCheckRegistrationNumber ?? false
-        showSigningImage = newStudent.signingImageURL != nil
-        actualRoom = newStudent.actualLocation?.roomNumber ?? ""
-        actualSeat = newStudent.actualLocation?.seatName ?? ""
+        showSigningImage = newStudent.signingImagePath != nil
+//        actualRoom = newStudent.actualLocation?.roomNumber ?? ""
+//        actualSeat = newStudent.actualLocation?.seatName ?? ""
         hasUnsavedChanges = false
     }
 }
