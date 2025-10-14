@@ -34,7 +34,7 @@ struct StudentDetailView: View {
             showErrorAlert = error != nil
         }
     }
-    @State var isScrollingEnabled = true
+    @State var hasVerifiedSession = false
     @State var isDisclosureOpen = false
 
     @State var imageLoadingError = false
@@ -125,46 +125,49 @@ struct StudentDetailView: View {
         .listSectionSpacing(.compact)
         .safeAreaInset(edge: .bottom) {
             VStack {
-                // TODO: Disable other button
                 Button("Verify Student Session", systemImage: "list.bullet.rectangle") {
                     Task {
                         _ = await ExamServiceFactory.shared.attendanceCheck(for: courseId, and: examId, with: student.login ?? "")
+                    }
+                    withAnimation {
+                        hasVerifiedSession = true
                     }
                 }
                 .buttonStyle(RectButtonStyle(color: .blue))
                 .frame(maxWidth: .infinity, alignment: .center)
 
-                DisclosureGroup(isExpanded: $isDisclosureOpen) {
-                    Toggle("Image correct:", isOn: $didCheckImage)
-                    Toggle("Name correct:", isOn: $didCheckName)
-                    Toggle("Matriculation Number correct:", isOn: $didCheckRegistrationNumber)
-                    Toggle("Artemis Username correct:", isOn: $didCheckLogin)
-                } label: {
-                    Button("Incorrect Details", systemImage: "wrench") {
-                        withAnimation {
-                            isDisclosureOpen = true
+                if hasVerifiedSession {
+                    DisclosureGroup(isExpanded: $isDisclosureOpen) {
+                        Toggle("Image correct:", isOn: $didCheckImage)
+                        Toggle("Name correct:", isOn: $didCheckName)
+                        Toggle("Matriculation Number correct:", isOn: $didCheckRegistrationNumber)
+                        Toggle("Artemis Username correct:", isOn: $didCheckLogin)
+                    } label: {
+                        Button("Incorrect Details", systemImage: "wrench") {
+                            withAnimation {
+                                isDisclosureOpen = true
+                            }
                         }
+                        .buttonStyle(RectButtonStyle(color: .red))
                     }
-                    .buttonStyle(RectButtonStyle(color: .red))
-                }
-                .disclosureGroupStyle(ButtonDisclosureGroupStyle())
-
-                Button("Proceed to Signature", systemImage: !isDisclosureOpen ? "checkmark" : "pencil.and.scribble") {
-                    if !isDisclosureOpen {
-                        didCheckName = true
-                        didCheckImage = true
-                        didCheckLogin = true
-                        didCheckRegistrationNumber = true
+                    .disclosureGroupStyle(ButtonDisclosureGroupStyle())
+                    
+                    Button("Proceed to Signature", systemImage: !isDisclosureOpen ? "checkmark" : "pencil.and.scribble") {
+                        if !isDisclosureOpen {
+                            didCheckName = true
+                            didCheckImage = true
+                            didCheckLogin = true
+                            didCheckRegistrationNumber = true
+                        }
+                        showSignatureField = true
                     }
-                    showSignatureField = true
+                    .buttonStyle(RectButtonStyle(color: isDisclosureOpen ? .blue : .green))
                 }
-                .buttonStyle(RectButtonStyle(color: isDisclosureOpen ? .blue : .green))
             }
             .padding([.horizontal, .top])
             .frame(maxWidth: .infinity)
             .background(.ultraThinMaterial)
         }
-        .scrollDisabled(!isScrollingEnabled)
 //        .scrollEdgeEffectStyle(.hard, for: .top)
         .loadingIndicator(isLoading: $isSaving)
         .onChange(of: canvasView.drawing) {
@@ -280,7 +283,6 @@ struct StudentDetailView: View {
                     EmptyView()
                 case .success, .failure:
                     PencilSideButtons(
-                        isScrollingEnabled: $isScrollingEnabled,
                         student: student,
                         showSigningImage: $showSigningImage,
                         canvasView: $canvasView)
@@ -292,13 +294,6 @@ struct StudentDetailView: View {
                     .frame(minHeight: 200)
                     .border(Color(UIColor.label))
                 VStack(spacing: 32) {
-                    Button {
-                        isScrollingEnabled.toggle()
-                    } label: {
-                        Image(systemName: "hand.draw.fill")
-                            .imageScale(.large)
-                            .foregroundColor(isScrollingEnabled ? Color.gray : Color.blue)
-                    }
                     Button {
                         canvasView.drawing = PKDrawing()
                     } label: {
@@ -316,20 +311,12 @@ struct StudentDetailView: View {
 
 private struct PencilSideButtons: View {
 
-    @Binding var isScrollingEnabled: Bool
     var student: ExamUser
     @Binding var showSigningImage: Bool
     @Binding var canvasView: PKCanvasView
 
     var body: some View {
         VStack(spacing: 32) {
-            Button {
-                isScrollingEnabled.toggle()
-            } label: {
-                Image(systemName: "hand.draw.fill")
-                    .imageScale(.large)
-                    .foregroundColor(isScrollingEnabled ? Color.gray : Color.blue)
-            }
             Button {
                 if student.signingImageURL != nil {
                     student.signingImagePath = nil
