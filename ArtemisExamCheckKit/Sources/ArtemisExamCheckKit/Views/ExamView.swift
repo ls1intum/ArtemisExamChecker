@@ -61,15 +61,16 @@ extension ExamView {
 
                 Spacer()
 
-                Text("Progress: \(viewModel.checkedInStudentsInSelectedRoom) / \(viewModel.totalStudentsInSelectedRoom)")
-            }
-            .padding([.horizontal, .top])
-
-            HStack {
                 if !viewModel.examRooms.isEmpty && !viewModel.selectedLectureHall.isEmpty {
                     Toggle("Room View", isOn: $viewModel.perfersRoomView)
                         .frame(maxWidth: 170)
                 }
+            }
+            .padding([.horizontal, .top])
+
+            HStack {
+                Text("Progress: \(viewModel.checkedInStudentsInSelectedRoom) / \(viewModel.totalStudentsInSelectedRoom)")
+                    .padding(.horizontal)
                 if viewModel.useListStyle {
                     Spacer()
                     // Only makes sense in List View
