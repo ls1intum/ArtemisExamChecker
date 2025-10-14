@@ -12,14 +12,23 @@ struct StudentPreview: View {
     let student: ExamUser
 
     var shadowColor: UIColor {
-        student.isStudentDone ? .green : .black
+        student.isStudentDone ? .green : .darkGray
     }
 
     var body: some View {
         ArtemisAsyncImage(imageURL: student.imageURL) {
-            EmptySeatView(seatName: (student.actualLocation ?? student.plannedLocation).seatName)
+            EmptySeatView(seatName: student.location.seatName)
         }
         .frame(width: 80, height: 80)
+        .overlay(alignment: .bottomTrailing) {
+            Text(student.location.seatName)
+                .padding(.vertical, .s)
+                .padding(.horizontal, .m)
+                .font(.caption)
+                .background(.thinMaterial, in: .rect(cornerRadii: .init(topLeading: 10)))
+                .foregroundStyle(.white)
+                .colorScheme(.dark)
+        }
         .clipShape(.rect(cornerRadius: 10, style: .continuous))
         .shadow(color: .init(uiColor: shadowColor), radius: 10)
     }
