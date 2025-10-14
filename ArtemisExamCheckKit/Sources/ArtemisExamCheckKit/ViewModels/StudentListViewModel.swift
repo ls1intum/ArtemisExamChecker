@@ -13,10 +13,6 @@ enum Sorting {
     case bottomToTop, topToBottom
 }
 
-enum StyleOption {
-    case list, room
-}
-
 struct StudentSeatSearch: Identifiable {
     var id: String {
         "\(room.roomNumber) \(seat.xCoordinate) \(seat.yCoordinate)"
@@ -41,9 +37,9 @@ class StudentListViewModel {
     var hideDoneStudents = false
     var sortingDirection = Sorting.bottomToTop
 
-    var preferredViewStyle = StyleOption.room
+    var perfersRoomView = true
     var useListStyle: Bool {
-        examRooms.isEmpty || preferredViewStyle == .list || selectedRoom == nil || selectedRoom?.seats == nil
+        examRooms.isEmpty || !perfersRoomView || selectedRoom == nil || selectedRoom?.seats == nil
     }
 
     var examRooms: [ExamRoomForAttendanceCheckerDTO] {
@@ -135,7 +131,7 @@ class StudentListViewModel {
             selectedStudents = selectedStudents.filter {
                 $0.firstName?.lowercased().contains(searchText) ?? false ||
                 $0.lastName?.lowercased().contains(searchText) ?? false ||
-                $0.login.lowercased().contains(searchText) ||
+                $0.login?.lowercased().contains(searchText) ?? false ||
                 ($0.registrationNumber ?? "").lowercased().contains(searchText)
             }
         }

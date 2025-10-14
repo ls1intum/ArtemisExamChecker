@@ -81,12 +81,6 @@ struct StudentDetailView: View {
             }
 
             Section {
-                Text("Name").badge(student.displayName)
-                Text("Matriculation No.").badge(student.registrationNumber)
-                Text("Artemis Username").badge(student.login)
-            }
-
-            Section {
                 Text("Room").badge(student.location.roomNumber)
                 Text("Seat").badge(student.location.seatName)
                 if student.plannedLocation.roomId == nil {
@@ -110,9 +104,10 @@ struct StudentDetailView: View {
             }
 
             Section {
+                // TODO: Disable other button
                 Button("Verify\nStudent Session", systemImage: "list.bullet.rectangle") {
                     Task {
-                        _ = await ExamServiceFactory.shared.attendanceCheck(for: courseId, and: examId, with: student.login)
+                        _ = await ExamServiceFactory.shared.attendanceCheck(for: courseId, and: examId, with: student.login ?? "")
                     }
                 }
                 .buttonStyle(RectButtonStyle(color: .blue, fillSpace: false))
@@ -158,6 +153,7 @@ struct StudentDetailView: View {
             .alert(isPresented: $showErrorAlert, error: error, actions: {})
         }
         .scrollDisabled(!isScrollingEnabled)
+//        .scrollEdgeEffectStyle(.hard, for: .top)
         .loadingIndicator(isLoading: $isSaving)
         .onChange(of: canvasView.drawing) {
             hasUnsavedChanges = true

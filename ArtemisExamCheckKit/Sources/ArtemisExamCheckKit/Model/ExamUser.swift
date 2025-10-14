@@ -30,15 +30,14 @@ extension ExamUserLocationDTO {
 @Observable
 class ExamUser: Codable, Identifiable {
 
-//    let id: Int
     var id: String {
-        login
+        login ?? "\(Int.random(in: 0...10000))"
     }
 
-    let login: String
+    let login: String?
     let firstName: String?
     let lastName: String?
-    let registrationNumber: String
+    let registrationNumber: String?
     let email: String?
 
     var didCheckImage: Bool?
@@ -85,7 +84,7 @@ class ExamUser: Codable, Identifiable {
                         imageUrl: imageUrl)
     }
 
-    init(login: String, firstName: String?, lastName: String?, registrationNumber: String, email: String?, didCheckImage: Bool? = nil, didCheckName: Bool? = nil, didCheckLogin: Bool? = nil, didCheckRegistrationNumber: Bool? = nil, plannedLocation: ExamUserLocationDTO, actualLocation: ExamUserLocationDTO? = nil, signing: Data? = nil, signingImagePath: String? = nil, imageUrl: String? = nil) {
+    init(login: String?, firstName: String?, lastName: String?, registrationNumber: String?, email: String?, didCheckImage: Bool? = nil, didCheckName: Bool? = nil, didCheckLogin: Bool? = nil, didCheckRegistrationNumber: Bool? = nil, plannedLocation: ExamUserLocationDTO, actualLocation: ExamUserLocationDTO? = nil, signing: Data? = nil, signingImagePath: String? = nil, imageUrl: String? = nil) {
         self.login = login
         self.firstName = firstName
         self.lastName = lastName

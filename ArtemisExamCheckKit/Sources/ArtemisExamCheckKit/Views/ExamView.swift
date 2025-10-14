@@ -36,10 +36,9 @@ struct ExamView: View {
                     }
                 }
                 .toolbarVisibility(.hidden, for: .navigationBar)
-                .navigationSplitViewColumnWidth(proxy.size.width * 0.64)
+                .navigationSplitViewColumnWidth(proxy.size.width * 0.6)
             } detail: {
                 detail
-                    .navigationTitle("Student")
                     .navigationBarTitleDisplayMode(.inline)
             }
         }
@@ -58,25 +57,21 @@ extension ExamView {
     @ViewBuilder var sidebarFilters: some View {
         VStack {
             HStack {
-                Picker("Room", selection: $viewModel.selectedLectureHall) {
-                    Text("All Rooms").tag("")
-                    if viewModel.examRooms.isEmpty {
-                        ForEach(viewModel.lectureHalls, id: \.self) { lectureHall in
-                            Text(lectureHall)
-                                .tag(lectureHall)
-                        }
-                    } else {
-                        ForEach(viewModel.examRooms, id: \.roomNumber) { examRoom in
-                            Button {
-                            } label: {
-                                Text(examRoom.name)
-                                Text(examRoom.roomNumber)
-                            }
-                            .tag(examRoom.roomNumber)
-                        }
-                    }
+                lectureHallPicker
+
+                Spacer()
+
+                Text("Progress: \(viewModel.checkedInStudentsInSelectedRoom) / \(viewModel.totalStudentsInSelectedRoom)")
+            }
+            .padding([.horizontal, .top])
+
+            HStack {
+                if !viewModel.examRooms.isEmpty && !viewModel.selectedLectureHall.isEmpty {
+                    Toggle("Room View", isOn: $viewModel.perfersRoomView)
+                        .frame(maxWidth: 170)
                 }
                 if viewModel.useListStyle {
+                    Spacer()
                     // Only makes sense in List View
                     Picker("Sorting", selection: $viewModel.sortingDirection) {
                         Text("Bottom to Top")
@@ -86,18 +81,43 @@ extension ExamView {
                     }
                     Spacer()
                     Toggle("Hide Checked-In Students: ", isOn: $viewModel.hideDoneStudents)
+                        .frame(maxWidth: 300)
                         .padding(.horizontal)
                 }
-                if !viewModel.examRooms.isEmpty && !viewModel.selectedLectureHall.isEmpty {
-                    Picker("View", selection: $viewModel.preferredViewStyle) {
-                        Text("List View")
-                            .tag(StyleOption.list)
-                        Text("Room View")
-                            .tag(StyleOption.room)
+            }
+            .padding(.bottom)
+        }
+        .background(.ultraThinMaterial)
+    }
+
+    private var lectureHallPicker: some View {
+        Menu {
+            Picker("Room", selection: $viewModel.selectedLectureHall) {
+                Text("All Rooms").tag("")
+                if viewModel.examRooms.isEmpty {
+                    ForEach(viewModel.lectureHalls, id: \.self) { lectureHall in
+                        Text(lectureHall)
+                            .tag(lectureHall)
+                    }
+                } else {
+                    ForEach(viewModel.examRooms, id: \.roomNumber) { examRoom in
+                        Button {
+                        } label: {
+                            Text(examRoom.name)
+                            Text(examRoom.roomNumber)
+                        }
+                        .tag(examRoom.roomNumber)
                     }
                 }
             }
-            Text("Progress: \(viewModel.checkedInStudentsInSelectedRoom) / \(viewModel.totalStudentsInSelectedRoom)")
+        } label: {
+            let name = viewModel.selectedRoom?.name ?? viewModel.selectedLectureHall
+            HStack {
+                Text(name.isEmpty ? "All rooms" : name)
+                    .font(.title)
+                Image(systemName: "chevron.up.chevron.down")
+                    .fontWeight(.medium)
+            }
         }
     }
 }

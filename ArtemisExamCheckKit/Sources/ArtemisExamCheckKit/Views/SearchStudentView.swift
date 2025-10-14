@@ -24,7 +24,7 @@ struct SearchStudentView: View {
                     } label: {
                         VStack(alignment: .leading) {
                             Text(student.displayName).bold()
-                            Text(student.registrationNumber)
+                            Text(student.registrationNumber ?? "-")
                             if student.isStudentDone {
                                 Text("Already checked in")
                             }

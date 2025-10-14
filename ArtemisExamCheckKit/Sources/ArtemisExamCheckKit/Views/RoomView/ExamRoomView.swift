@@ -50,8 +50,8 @@ private struct ExamRoomContentView: View {
         let xMin = seats.map(\.xCoordinate).min() ?? 0.0
         let xMax = seats.map(\.xCoordinate).max() ?? .infinity
         xTotal = xMax - xMin
-        let yMin = seats.map(\.yCoordinate).min() ?? 0.0
-        let yMax = seats.map(\.yCoordinate).max() ?? .infinity
+        let yMin = seats.map(\.yCoordinate).map { -$0 }.min() ?? 0.0
+        let yMax = seats.map(\.yCoordinate).map { -$0 }.max() ?? .infinity
         yTotal = yMax - yMin
 
         minScale = Self.getScale(width: width, xTotal: xTotal, height: height, yTotal: yTotal)
@@ -78,6 +78,7 @@ private struct ExamRoomContentView: View {
                 Spacer()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 RoomLayout(seats: seats, scale: scale, xOffset: xOffset, yOffset: yOffset, viewModel: viewModel)
+//                    .id("layout")
             }
             .frame(width: xTotal * scale, height: yTotal * scale, alignment: .center)
             .frame(minWidth: width, minHeight: height, alignment: .center)
@@ -104,6 +105,23 @@ private struct ExamRoomContentView: View {
         .onChange(of: currentZoom) {
             scale = getScale(zoom: totalZoom + currentZoom)
         }
+        .onAppear {
+            // TODO: Make default scale useful
+            scale = minScale
+            totalZoom = getSensibleDefaultScaleFactor()
+        }
+    }
+
+    func getSensibleDefaultScaleFactor() -> Double {
+        if seats.count > 1 {
+            let seat = seats[0]
+            let neighbor = seats[1]
+            let distance = sqrt(pow(seat.xCoordinate - neighbor.xCoordinate, 2) + pow(seat.yCoordinate - neighbor.yCoordinate, 2)) // * scale
+            let scaleFactor = width / (distance * 5)
+            let factor = scaleFactor / minScale
+            return sqrt(factor)
+        }
+        return 1
     }
 
     func getScale(zoom: Double) -> Double {
@@ -145,7 +163,7 @@ private struct RoomLayout: View {
     func position(for seat: ExamSeatDTO) -> CGPoint {
         // swiftlint:disable identifier_name
         let x = (seat.xCoordinate - xOffset) * scale
-        let y = (seat.yCoordinate - yOffset) * scale
+        let y = (seat.yCoordinate * -1 - yOffset) * scale
         return CGPoint(x: x, y: y)
         // swiftlint:enable identifier_name
     }

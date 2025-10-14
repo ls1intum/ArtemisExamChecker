@@ -29,8 +29,8 @@ extension StudentDetailView {
             checkedName: didCheckName,
             checkedLogin: didCheckLogin,
             checkedRegistrationNumber: didCheckRegistrationNumber,
-            actualRoom: actualOtherRoom.isEmpty ? (actualRoom.isEmpty ? nil : actualRoom) : actualOtherRoom,
-            actualSeat: actualSeat.isEmpty ? nil : actualSeat,
+            actualRoom: nil,
+            actualSeat: nil,
             signing: imageData)
 
         // TODO: Reconfirm

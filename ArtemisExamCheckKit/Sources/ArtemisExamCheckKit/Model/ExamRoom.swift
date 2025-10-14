@@ -29,4 +29,10 @@ struct ExamSeatDTO: Hashable, Codable {
     //SeatCondition seatCondition,
     var xCoordinate: Double
     var yCoordinate: Double
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+        case xCoordinate = "x"
+        case yCoordinate = "y"
+    }
 }

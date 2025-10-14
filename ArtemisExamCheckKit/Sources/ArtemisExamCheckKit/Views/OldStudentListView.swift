@@ -111,6 +111,7 @@ extension ExamView {
                 allRooms: viewModel.lectureHalls,
                 successfullySavedCompletion: viewModel.updateStudent
             )
+            .navigationTitle(student.displayName)
             .id(viewModel.selectedStudent?.id)
         } else {
             Text("Select a student")
