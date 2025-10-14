@@ -106,7 +106,25 @@ struct StudentDetailView: View {
 //                        showActualValue: $showSeatingEdit)
             }
 
-            Section {
+// TODO: Remove?
+//            Button("Save") {
+//                saveStudent()
+//            }
+//            .disabled(!hasUnsavedChanges)
+//            .buttonStyle(ArtemisButton())
+//            .frame(maxWidth: .infinity, alignment: .center)
+//            .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
+//                Button("Yes, I want to continue.", role: .destructive) {
+//                    saveStudent(force: true)
+//                }
+//            } message: {
+//                Text("You did not fill out all requiered fields. Do you still want to proceed?")
+//            }
+            .alert(isPresented: $showErrorAlert, error: error, actions: {})
+        }
+        .listSectionSpacing(.compact)
+        .safeAreaInset(edge: .bottom) {
+            VStack {
                 // TODO: Disable other button
                 Button("Verify Student Session", systemImage: "list.bullet.rectangle") {
                     Task {
@@ -124,14 +142,14 @@ struct StudentDetailView: View {
                 } label: {
                     Button("Incorrect Details", systemImage: "wrench") {
                         withAnimation {
-                            isDisclosureOpen.toggle()
+                            isDisclosureOpen = true
                         }
                     }
                     .buttonStyle(RectButtonStyle(color: .red))
                 }
                 .disclosureGroupStyle(ButtonDisclosureGroupStyle())
 
-                Button("Proceed to signature", systemImage: "checkmark") {
+                Button("Proceed to Signature", systemImage: !isDisclosureOpen ? "checkmark" : "pencil.and.scribble") {
                     if !isDisclosureOpen {
                         didCheckName = true
                         didCheckImage = true
@@ -142,22 +160,9 @@ struct StudentDetailView: View {
                 }
                 .buttonStyle(RectButtonStyle(color: isDisclosureOpen ? .blue : .green))
             }
-            .listRowSeparator(.hidden)
-// TODO: Remove?
-//            Button("Save") {
-//                saveStudent()
-//            }
-//            .disabled(!hasUnsavedChanges)
-//            .buttonStyle(ArtemisButton())
-//            .frame(maxWidth: .infinity, alignment: .center)
-//            .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
-//                Button("Yes, I want to continue.", role: .destructive) {
-//                    saveStudent(force: true)
-//                }
-//            } message: {
-//                Text("You did not fill out all requiered fields. Do you still want to proceed?")
-//            }
-            .alert(isPresented: $showErrorAlert, error: error, actions: {})
+            .padding([.horizontal, .top])
+            .frame(maxWidth: .infinity)
+            .background(.ultraThinMaterial)
         }
         .scrollDisabled(!isScrollingEnabled)
 //        .scrollEdgeEffectStyle(.hard, for: .top)
@@ -344,7 +349,10 @@ private struct ButtonDisclosureGroupStyle: DisclosureGroupStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
         if configuration.isExpanded {
-            configuration.content
+            VStack {
+                configuration.content
+            }
+            .padding()
         }
     }
 }
@@ -358,6 +366,7 @@ private struct RectButtonStyle: ButtonStyle {
             .font(.title2)
             .padding(.vertical, .m)
             .padding(.horizontal, .l)
+            .frame(minHeight: 35)
             .frame(maxWidth: .infinity)
             .background(color, in: .rect(cornerRadius: 20, style: .continuous))
             .foregroundStyle(.white)

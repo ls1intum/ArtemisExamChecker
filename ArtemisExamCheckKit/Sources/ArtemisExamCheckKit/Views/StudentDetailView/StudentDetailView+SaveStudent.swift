@@ -8,6 +8,7 @@
 import SwiftUI
 
 extension StudentDetailView {
+    // TODO: Reset selection or open next student afterwards
     func saveStudent(force: Bool = false, isNavigationBarButton: Bool = false) {
         if !force && (!didCheckName || !didCheckLogin || !didCheckImage || !didCheckRegistrationNumber || (canvasView.drawing.bounds.isEmpty && student.signingImageURL == nil)) {
             if isNavigationBarButton {
