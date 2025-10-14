@@ -35,6 +35,7 @@ struct StudentDetailView: View {
         }
     }
     @State var isScrollingEnabled = true
+    @State var isDisclosureOpen = false
 
     @State var imageLoadingError = false
     @State var signingImageLoadingStatus = NetworkResponse.loading
@@ -81,6 +82,8 @@ struct StudentDetailView: View {
             }
 
             Section {
+                Text("Matriculation No.").badge(student.registrationNumber ?? "-")
+                Text("Artemis username").badge(student.login ?? "-")
                 Text("Room").badge(student.location.roomNumber)
                 Text("Seat").badge(student.location.seatName)
                 if student.plannedLocation.roomId == nil {
@@ -105,35 +108,39 @@ struct StudentDetailView: View {
 
             Section {
                 // TODO: Disable other button
-                Button("Verify\nStudent Session", systemImage: "list.bullet.rectangle") {
+                Button("Verify Student Session", systemImage: "list.bullet.rectangle") {
                     Task {
                         _ = await ExamServiceFactory.shared.attendanceCheck(for: courseId, and: examId, with: student.login ?? "")
                     }
                 }
-                .buttonStyle(RectButtonStyle(color: .blue, fillSpace: false))
+                .buttonStyle(RectButtonStyle(color: .blue))
                 .frame(maxWidth: .infinity, alignment: .center)
 
-                DisclosureGroup {
+                DisclosureGroup(isExpanded: $isDisclosureOpen) {
                     Toggle("Image correct:", isOn: $didCheckImage)
                     Toggle("Name correct:", isOn: $didCheckName)
                     Toggle("Matriculation Number correct:", isOn: $didCheckRegistrationNumber)
                     Toggle("Artemis Username correct:", isOn: $didCheckLogin)
-                    Button("Proceed to signature", systemImage: "pencil.and.scribble") {
-                        showSignatureField = true
-                    }
-                    .buttonStyle(RectButtonStyle(color: .blue))
-                    .frame(maxWidth: .infinity, alignment: .center)
                 } label: {
-                    Button("Complete Check", systemImage: "checkmark") {
+                    Button("Incorrect Details", systemImage: "wrench") {
+                        withAnimation {
+                            isDisclosureOpen.toggle()
+                        }
+                    }
+                    .buttonStyle(RectButtonStyle(color: .red))
+                }
+                .disclosureGroupStyle(ButtonDisclosureGroupStyle())
+
+                Button("Proceed to signature", systemImage: "checkmark") {
+                    if !isDisclosureOpen {
                         didCheckName = true
                         didCheckImage = true
                         didCheckLogin = true
                         didCheckRegistrationNumber = true
-                        showSignatureField = true
                     }
-                    .buttonStyle(RectButtonStyle(color: .green))
+                    showSignatureField = true
                 }
-                .disclosureGroupStyle(ButtonDisclosureGroupStyle())
+                .buttonStyle(RectButtonStyle(color: isDisclosureOpen ? .blue : .green))
             }
             .listRowSeparator(.hidden)
 // TODO: Remove?
@@ -335,18 +342,7 @@ private struct PencilSideButtons: View {
 
 private struct ButtonDisclosureGroupStyle: DisclosureGroupStyle {
     func makeBody(configuration: Configuration) -> some View {
-        HStack {
-            configuration.label
-
-            Spacer()
-
-            Button("Incorrect Details", systemImage: "wrench") {
-                withAnimation {
-                    configuration.isExpanded.toggle()
-                }
-            }
-            .buttonStyle(RectButtonStyle(color: .red))
-        }
+        configuration.label
         if configuration.isExpanded {
             configuration.content
         }
@@ -355,7 +351,6 @@ private struct ButtonDisclosureGroupStyle: DisclosureGroupStyle {
 
 private struct RectButtonStyle: ButtonStyle {
     let color: Color
-    var fillSpace = true
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -363,7 +358,7 @@ private struct RectButtonStyle: ButtonStyle {
             .font(.title2)
             .padding(.vertical, .m)
             .padding(.horizontal, .l)
-            .frame(maxWidth: fillSpace ? .infinity : nil)
+            .frame(maxWidth: .infinity)
             .background(color, in: .rect(cornerRadius: 20, style: .continuous))
             .foregroundStyle(.white)
     }
