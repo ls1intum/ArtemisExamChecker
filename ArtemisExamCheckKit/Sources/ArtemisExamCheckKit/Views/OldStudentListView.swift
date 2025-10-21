@@ -66,7 +66,7 @@ extension ExamView {
                             VStack(alignment: .leading) {
                                 Text(student.displayName)
                                     .bold()
-                                Text("Seat: \(student.actualLocation?.seatName ?? student.plannedLocation.seatName ?? "not set")")
+                                Text("Room: \(student.location.roomNumber) – Seat: \(student.location.seatName)")
                             }
                             Spacer()
                             if student.isStudentDone {
