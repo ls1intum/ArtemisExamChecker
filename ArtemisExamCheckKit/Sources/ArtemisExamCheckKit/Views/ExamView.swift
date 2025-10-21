@@ -18,6 +18,14 @@ struct ExamView: View {
         self._viewModel = State(initialValue: StudentListViewModel(courseId: exam.course.id, examId: exam.id))
     }
 
+    var widthPercentage: Double {
+        if viewModel.useListStyle {
+            0.5
+        } else {
+            0.6
+        }
+    }
+
     var body: some View {
         GeometryReader { proxy in
             NavigationSplitView(columnVisibility: .constant(.doubleColumn)) {
@@ -36,11 +44,12 @@ struct ExamView: View {
                     }
                 }
                 .toolbarVisibility(.hidden, for: .navigationBar)
-                .navigationSplitViewColumnWidth(proxy.size.width * 0.6)
+                .navigationSplitViewColumnWidth(proxy.size.width * widthPercentage)
             } detail: {
                 detail
                     .navigationBarTitleDisplayMode(.inline)
             }
+            .animation(.default, value: viewModel.useListStyle)
         }
         .navigationTitle(title)
         .toolbarTitleDisplayMode(.inline)
