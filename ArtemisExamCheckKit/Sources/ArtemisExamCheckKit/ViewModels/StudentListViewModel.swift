@@ -120,9 +120,10 @@ class StudentListViewModel {
         guard var selectedStudents = exam.value?.examUsersWithExamRoomAndSeat else { return [] }
 
         // filter by selected Lecture Hall
-        if !selectedLectureHall.isEmpty {
+        // Do not filter when using search to re-seat student
+        if !selectedLectureHall.isEmpty && selectedSearch == nil {
             selectedStudents = selectedStudents.filter {
-                ($0.location.roomNumber ?? "not set") == selectedLectureHall
+                $0.location.roomNumber == selectedLectureHall
             }
         }
 

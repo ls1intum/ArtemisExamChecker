@@ -27,6 +27,8 @@ struct SearchStudentView: View {
                             Text(student.registrationNumber ?? "-")
                             if student.isStudentDone {
                                 Text("Already checked in")
+                            } else {
+                                Text("Room: \(student.location.roomNumber) – Seat: \(student.location.seatName)")
                             }
                         }
                     }
