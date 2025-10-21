@@ -5,6 +5,7 @@
 //  Created by Anian Schleyer on 22.10.25.
 //
 
+import DesignLibrary
 import SwiftUI
 
 struct StudentListRow: View {
@@ -12,8 +13,18 @@ struct StudentListRow: View {
     let showMatriculationNumber: Bool
     let showDoneStatus: Bool
 
+    @State private var isVisible = false
+
     var body: some View {
-        HStack {
+        HStack(spacing: .l) {
+            if isVisible {
+                ArtemisAsyncImage(imageURL: student.imageURL) {
+                    Image(systemName: "person.fill").resizable()
+                }
+                .frame(width: 40, height: 40)
+                .clipped()
+            }
+
             VStack(alignment: .leading) {
                 Text(student.displayName)
                     .bold()
@@ -31,6 +42,11 @@ struct StudentListRow: View {
                     .foregroundColor(.green)
                     .imageScale(.large)
             }
+        }
+        .onAppear {
+            // Make sure to only load images in the list that the user can see,
+            // otherwise we might load all 2000 images when the exam is opened
+            isVisible = true
         }
     }
 }
