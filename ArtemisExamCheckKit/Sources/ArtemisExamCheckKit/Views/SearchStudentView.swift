@@ -22,15 +22,7 @@ struct SearchStudentView: View {
                             viewModel.selectedStudent = student
                         }
                     } label: {
-                        VStack(alignment: .leading) {
-                            Text(student.displayName).bold()
-                            Text(student.registrationNumber ?? "-")
-                            if student.isStudentDone {
-                                Text("Already checked in")
-                            } else {
-                                Text("Room: \(student.location.roomNumber) – Seat: \(student.location.seatName)")
-                            }
-                        }
+                        StudentListRow(student: student, showMatriculationNumber: true, showDoneStatus: false)
                     }
                     .disabled(student.isStudentDone)
                 }

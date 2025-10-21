@@ -62,19 +62,7 @@ extension ExamView {
                     // ID allows users to select a single row.
                     // List renders every row content on selection, if we do not pass it an ID.
                     List(viewModel.selectedStudents, id: \.self, selection: $viewModel.selectedStudent) { student in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(student.displayName)
-                                    .bold()
-                                Text("Room: \(student.location.roomNumber) – Seat: \(student.location.seatName)")
-                            }
-                            Spacer()
-                            if student.isStudentDone {
-                                Image(systemName: "checkmark.seal.fill")
-                                    .foregroundColor(.green)
-                                    .imageScale(.large)
-                            }
-                        }
+                        StudentListRow(student: student, showMatriculationNumber: false, showDoneStatus: true)
                         // TODO: Button interferes with selection.
                         // Button {
                         //     if viewModel.hasUnsavedChanges {
