@@ -9,13 +9,13 @@ import DesignLibrary
 import SwiftUI
 
 struct ExamView: View {
-    @State var viewModel: StudentListViewModel
+    @State var viewModel: ExamViewModel
 
     @State private var unsavedUserAlert = false
     @State private var nextSelectedStudent: ExamUser?
 
     init(exam: Exam) {
-        self._viewModel = State(initialValue: StudentListViewModel(courseId: exam.course.id, examId: exam.id))
+        self._viewModel = State(initialValue: ExamViewModel(courseId: exam.course.id, examId: exam.id))
     }
 
     var widthPercentage: Double {
@@ -49,8 +49,10 @@ struct ExamView: View {
                 detail
                     .navigationBarTitleDisplayMode(.inline)
             }
-            .animation(.default, value: viewModel.useListStyle)
+            .animation(.default, value: viewModel.perfersRoomView)
         }
+        .blur(radius: viewModel.showSignatureField ? 20 : 0)
+        .animation(.default, value: viewModel.showSignatureField)
         .navigationTitle(title)
         .toolbarTitleDisplayMode(.inline)
     }
@@ -71,8 +73,14 @@ extension ExamView {
                 Spacer()
 
                 if !viewModel.examRooms.isEmpty && !viewModel.selectedLectureHall.isEmpty {
-                    Toggle("Room View", isOn: $viewModel.perfersRoomView)
-                        .frame(maxWidth: 170)
+                    Picker("View style", selection: $viewModel.perfersRoomView) {
+                        Text("List View")
+                            .tag(false)
+                        Text("Room View")
+                            .tag(true)
+                    }
+                    .pickerStyle(.segmented)
+                    .frame(maxWidth: 200)
                 }
             }
             .padding([.horizontal, .top])

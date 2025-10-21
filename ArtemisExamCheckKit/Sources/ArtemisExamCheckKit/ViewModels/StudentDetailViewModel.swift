@@ -1,15 +1,78 @@
 //
-//  StudentDetailView+SaveStudent.swift
+//  StudentDetailViewModel.swift
+//  ArtemisExamCheckKit
 //
-//
-//  Created by Nityananda Zbil on 11.11.23.
+//  Created by Anian Schleyer on 22.10.25.
 //
 
+import Common
+import PencilKit
 import SwiftUI
 
-extension StudentDetailView {
-    func saveStudent(force: Bool = false, isNavigationBarButton: Bool = false) {
-        if !force && (!didCheckName || !didCheckLogin || !didCheckImage || !didCheckRegistrationNumber || (canvasView.drawing.bounds.isEmpty && student.signingImageURL == nil)) {
+@Observable
+class StudentDetailViewModel {
+    var didCheckImage: Bool
+    var didCheckName: Bool
+    var didCheckLogin: Bool
+    var didCheckRegistrationNumber: Bool
+    var showSigningImage: Bool
+    var actualSeat: String?
+    var actualRoom: String?
+
+    var showSeatingEdit = false
+    var showDidNotCompleteDialog = false
+    var showDidNotCompleteDialogNavigationBar = false
+    var isSaving = false
+    var showErrorAlert = false
+    var error: UserFacingError? {
+        didSet {
+            showErrorAlert = error != nil
+        }
+    }
+    var hasVerifiedSession = false
+    var isDisclosureOpen = false
+
+    var imageLoadingError = false
+    var signingImageLoadingStatus = NetworkResponse.loading
+
+    var student: ExamUser
+    var allRooms: [String]
+
+    var examViewModel: ExamViewModel
+
+    let examId: Int
+    let courseId: Int
+
+    init(
+        examId: Int,
+        courseId: Int,
+        student: ExamUser,
+        allRooms: [String],
+        examViewModel: ExamViewModel
+    ) {
+        self.examId = examId
+        self.courseId = courseId
+        self.examViewModel = examViewModel
+        self.student = student
+        self.allRooms = allRooms
+
+        didCheckImage = student.didCheckImage ?? false
+        didCheckName = student.didCheckName ?? false
+        didCheckLogin = student.didCheckLogin ?? false
+        didCheckRegistrationNumber = student.didCheckRegistrationNumber ?? false
+        showSigningImage = student.signingImagePath != nil
+        actualRoom = student.actualLocation?.roomNumber
+        actualSeat = student.actualLocation?.seatName
+        
+        if student.isStudentTouched {
+            hasVerifiedSession = true
+        }
+    }
+}
+
+extension StudentDetailViewModel {
+    func saveStudent(force: Bool = false, isNavigationBarButton: Bool = false, canvas: PKCanvasView) {
+        if !force && (!didCheckName || !didCheckLogin || !didCheckImage || !didCheckRegistrationNumber || (canvas.drawing.bounds.isEmpty && student.signingImageURL == nil)) {
             if isNavigationBarButton {
                 showDidNotCompleteDialogNavigationBar = true
             } else {
@@ -19,8 +82,8 @@ extension StudentDetailView {
         }
 
         var imageData: Data?
-        if !canvasView.drawing.bounds.isEmpty {
-            let signingImage = canvasView.drawing.image(from: canvasView.bounds, scale: UIScreen.main.scale)
+        if !canvas.drawing.bounds.isEmpty {
+            let signingImage = canvas.drawing.image(from: canvas.bounds, scale: UIScreen.main.scale)
             imageData = signingImage.pngData()
         }
 
@@ -33,7 +96,7 @@ extension StudentDetailView {
 
         // TODO: Reconfirm
         // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
-        let imageName = "\(examId)-\(student.id)-\(student.displayName)-\(student.registrationNumber).png"
+        let imageName = "\(examId)-\(student.id)-\(student.displayName)-\(student.registrationNumber ?? "missing").png"
         saveImageToDocuments(imageData: imageData, imageName: imageName)
 
         Task {
@@ -49,8 +112,10 @@ extension StudentDetailView {
                 isSaving = false
                 updateDetailViewStates(newStudent: newStudent)
                 student.update(with: newStudent)
-                $hasUnsavedChanges.wrappedValue = false
-                successfullySavedCompletion(student)
+                await MainActor.run {
+                    examViewModel.hasUnsavedChanges = false
+                    examViewModel.onStudentSave(student: student)
+                }
             }
         }
     }
@@ -61,15 +126,14 @@ extension StudentDetailView {
         didCheckLogin = newStudent.didCheckLogin ?? false
         didCheckRegistrationNumber = newStudent.didCheckRegistrationNumber ?? false
         showSigningImage = newStudent.signingImagePath != nil
-//        actualRoom = newStudent.actualLocation?.roomNumber ?? ""
-//        actualSeat = newStudent.actualLocation?.seatName ?? ""
-        hasUnsavedChanges = false
+//        actualRoom = newStudent.actualLocation?.roomNumber
+//        actualSeat = newStudent.actualLocation?.seatName
     }
 }
 
 // MARK: - File Manager
 
-private extension StudentDetailView {
+private extension StudentDetailViewModel {
 
     func saveImageToDocuments(imageData: Data?, imageName: String) {
         guard let data = imageData,

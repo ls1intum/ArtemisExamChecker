@@ -1,5 +1,5 @@
 //
-//  StudentListViewModel.swift
+//  ExamViewModel.swift
 //  Artemis Exam Check
 //
 //  Created by Sven Andabaka on 16.01.23.
@@ -24,7 +24,9 @@ struct StudentSeatSearch: Identifiable {
 
 @MainActor
 @Observable
-class StudentListViewModel {
+class ExamViewModel {
+
+    var showSignatureField = false
 
     var searchText = ""
 
@@ -57,8 +59,12 @@ class StudentListViewModel {
     var selectedStudent: ExamUser?
     var selectedSearch: StudentSeatSearch?
 
-    var checkedInStudentsInSelectedRoom = 0
-    var totalStudentsInSelectedRoom = 0
+    var checkedInStudentsInSelectedRoom: Int {
+        selectedStudents.count { $0.isStudentDone }
+    }
+    var totalStudentsInSelectedRoom: Int {
+        selectedStudents.count
+    }
 
     var exam: DataState<AttendanceCheckerAppExamInformationDTO> = .loading
 
@@ -127,9 +133,6 @@ class StudentListViewModel {
             }
         }
 
-        totalStudentsInSelectedRoom = selectedStudents.count
-        checkedInStudentsInSelectedRoom = selectedStudents.filter { $0.isStudentDone }.count
-
         // filter by search Text
         if !searchText.isEmpty {
             let searchText = searchText.lowercased()
@@ -151,9 +154,9 @@ class StudentListViewModel {
         return selectedStudents.sorted {
             switch sortingDirection {
             case .bottomToTop:
-                return $0.location.seatName ?? "" < $1.location.seatName ?? ""
+                return $0.location.seatName < $1.location.seatName
             case .topToBottom:
-                return $0.location.seatName ?? "" > $1.location.seatName ?? ""
+                return $0.location.seatName > $1.location.seatName
             }
         }
     }

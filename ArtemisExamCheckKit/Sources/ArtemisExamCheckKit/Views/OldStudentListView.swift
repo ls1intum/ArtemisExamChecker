@@ -17,7 +17,7 @@ extension ExamView {
         return viewModel.exam.value?.examUsersWithExamRoomAndSeat.compactMap { examUser in
             // TODO: Re-confirm
             // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
-            let imageName = "\(viewModel.examId)-\(examUser.id)-\(examUser.displayName)-\(examUser.registrationNumber).png"
+            let imageName = "\(viewModel.examId)-\(examUser.id)-\(examUser.displayName)-\(examUser.registrationNumber ?? "missing").png"
             let fileURL = documentsDirectory
                 .appendingPathComponent("ExamAttendaceChecker")
                 .appendingPathComponent(imageName)
@@ -107,9 +107,8 @@ extension ExamView {
                 examId: examId,
                 courseId: courseId,
                 student: student,
-                hasUnsavedChanges: $viewModel.hasUnsavedChanges,
                 allRooms: viewModel.lectureHalls,
-                successfullySavedCompletion: viewModel.onStudentSave
+                examViewModel: viewModel
             )
             .navigationTitle(student.displayName)
             .id(viewModel.selectedStudent?.id)

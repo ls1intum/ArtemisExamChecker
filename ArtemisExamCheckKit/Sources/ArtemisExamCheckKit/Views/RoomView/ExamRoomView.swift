@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ExamRoomView: View {
     let room: ExamRoomForAttendanceCheckerDTO
-    let viewModel: StudentListViewModel
+    let viewModel: ExamViewModel
     @State var scale = 1.0
 
     static let roomPadding: CGFloat = 50
@@ -38,9 +38,9 @@ private struct ExamRoomContentView: View {
     let yOffset: Double
     let xTotal: Double
     let yTotal: Double
-    let viewModel: StudentListViewModel
+    let viewModel: ExamViewModel
 
-    init(width: Double, height: Double, scale: Binding<Double>, seats: [ExamSeatDTO], viewModel: StudentListViewModel) {
+    init(width: Double, height: Double, scale: Binding<Double>, seats: [ExamSeatDTO], viewModel: ExamViewModel) {
         self.viewModel = viewModel
         self.seats = seats
         self.width = width
@@ -143,7 +143,7 @@ private struct RoomLayout: View {
     let scale: Double
     let xOffset: Double
     let yOffset: Double
-    let viewModel: StudentListViewModel
+    let viewModel: ExamViewModel
 
     var body: some View {
         ForEach(seats, id: \.self) { seat in

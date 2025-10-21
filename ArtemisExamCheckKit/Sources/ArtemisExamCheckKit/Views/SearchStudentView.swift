@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchStudentView: View {
-    @Bindable var viewModel: StudentListViewModel
+    @Bindable var viewModel: ExamViewModel
     let search: StudentSeatSearch
 
     var body: some View {
