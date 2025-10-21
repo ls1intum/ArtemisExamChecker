@@ -125,7 +125,7 @@ struct StudentDetailView: View {
         .listSectionSpacing(.compact)
         .safeAreaInset(edge: .bottom) {
             VStack {
-                Button("Verify Student Session", systemImage: "list.bullet.rectangle") {
+                Button("Verify Artemis Session", systemImage: "list.bullet.rectangle") {
                     Task {
                         _ = await ExamServiceFactory.shared.attendanceCheck(for: courseId, and: examId, with: student.login ?? "")
                     }

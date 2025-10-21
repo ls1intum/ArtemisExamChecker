@@ -117,7 +117,7 @@ private struct ExamRoomContentView: View {
             let seat = seats[0]
             let neighbor = seats[1]
             let distance = sqrt(pow(seat.xCoordinate - neighbor.xCoordinate, 2) + pow(seat.yCoordinate - neighbor.yCoordinate, 2)) // * scale
-            let scaleFactor = width / (distance * 5)
+            let scaleFactor = width / (distance * 6)
             let factor = scaleFactor / minScale
             return sqrt(factor)
         }
