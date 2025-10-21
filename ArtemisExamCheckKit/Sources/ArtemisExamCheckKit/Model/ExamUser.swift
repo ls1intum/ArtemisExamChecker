@@ -12,10 +12,6 @@ import UserStore
 struct ExamUserLocationDTO: Codable, Hashable {
     var roomId: Int?
     var roomNumber: String  // examUser.plannedRoom if legacy version
-    var roomAlternativeNumber: String?
-    var roomName: String?
-    var roomAlternativeName: String?
-    var roomBuilding: String?
     var seatName: String  // examUser.plannedSeat if legacy version
 }
 
