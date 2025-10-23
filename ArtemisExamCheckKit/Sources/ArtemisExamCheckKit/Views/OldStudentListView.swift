@@ -9,25 +9,6 @@ import SwiftUI
 import DesignLibrary
 
 extension ExamView {
-    var images: [URL] {
-        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            return []
-        }
-
-        return viewModel.exam.value?.examUsersWithExamRoomAndSeat.compactMap { examUser in
-            // TODO: Re-confirm
-            // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
-            let imageName = "\(viewModel.examId)-\(examUser.id)-\(examUser.displayName)-\(examUser.registrationNumber ?? "missing").png"
-            let fileURL = documentsDirectory
-                .appendingPathComponent("ExamAttendaceChecker")
-                .appendingPathComponent(imageName)
-            if FileManager.default.fileExists(atPath: fileURL.path) {
-                return fileURL
-            }
-            return nil
-        } ?? []
-    }
-
 //    var body: some View {
 //        NavigationSplitView {
 //            sidebar
@@ -81,9 +62,6 @@ extension ExamView {
             .refreshable {
                 await viewModel.getExam(showLoadingIndicator: false)
             }
-            if !images.isEmpty {
-                ShareLink("Export Signatures", items: images)
-            }
         }
     }
 
@@ -101,11 +79,7 @@ extension ExamView {
             .navigationTitle(student.displayName)
             .id(viewModel.selectedStudent?.id)
         } else {
-            Text("Select a student")
-                .font(.title)
-                .sheet(item: $viewModel.selectedSearch) { search in
-                    SearchStudentView(viewModel: viewModel, search: search)
-                }
+            ExamDetailsView(viewModel: viewModel)
         }
     }
 }

@@ -83,14 +83,11 @@ extension ExamView {
                     .frame(maxWidth: 200)
                 }
             }
-            .padding([.horizontal, .top])
 
-            HStack {
-                Text("Progress: \(viewModel.checkedInStudentsInSelectedRoom) / \(viewModel.totalStudentsInSelectedRoom)")
-                    .padding(.horizontal)
-                if viewModel.useListStyle {
+            if viewModel.useListStyle {
+                HStack {
+                    Text("Progress: \(viewModel.signedStudentsInSelectedRoom) / \(viewModel.totalStudentsInSelectedRoom)")
                     Spacer()
-                    // Only makes sense in List View
                     Picker("Sorting", selection: $viewModel.sortingDirection) {
                         Text("Bottom to Top")
                             .tag(Sorting.bottomToTop)
@@ -99,12 +96,11 @@ extension ExamView {
                     }
                     Spacer()
                     Toggle("Hide Checked-In Students: ", isOn: $viewModel.hideDoneStudents)
-                        .frame(maxWidth: 300)
-                        .padding(.horizontal)
+                        .frame(maxWidth: 290)
                 }
             }
-            .padding(.bottom)
         }
+        .padding()
         .background(.ultraThinMaterial)
     }
 

@@ -16,13 +16,13 @@ struct StudentListRow: View {
     @State private var isVisible = false
 
     var body: some View {
-        HStack(spacing: .l) {
+        HStack(alignment: .center, spacing: .l) {
             if isVisible {
                 ArtemisAsyncImage(imageURL: student.imageURL) {
                     Image(systemName: "person.fill").resizable()
                 }
-                .frame(width: 40, height: 40)
-                .clipped()
+                .frame(width: 50, height: 50)
+                .clipShape(.rect(cornerRadius: 10))
             }
 
             VStack(alignment: .leading) {

@@ -59,6 +59,9 @@ class ExamViewModel {
     var selectedStudent: ExamUser?
     var selectedSearch: StudentSeatSearch?
 
+    var signedStudentsInSelectedRoom: Int {
+        selectedStudents.count { $0.signingImagePath != nil }
+    }
     var checkedInStudentsInSelectedRoom: Int {
         selectedStudents.count { $0.isStudentDone }
     }
