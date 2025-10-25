@@ -40,6 +40,11 @@ private struct ExamRoomContentView: View {
     let yTotal: Double
     let viewModel: ExamViewModel
 
+    var useMinimalUI: Bool {
+        // TODO: Add UI hint to zoom in
+        width / scale > 10
+    }
+
     init(width: Double, height: Double, scale: Binding<Double>, seats: [ExamSeatDTO], viewModel: ExamViewModel) {
         self.viewModel = viewModel
         self.seats = seats
@@ -50,8 +55,8 @@ private struct ExamRoomContentView: View {
         let xMin = seats.map(\.xCoordinate).min() ?? 0.0
         let xMax = seats.map(\.xCoordinate).max() ?? .infinity
         xTotal = xMax - xMin
-        let yMin = seats.map(\.yCoordinate).map { -$0 }.min() ?? 0.0
-        let yMax = seats.map(\.yCoordinate).map { -$0 }.max() ?? .infinity
+        let yMin = seats.map(\.yCoordinate).map { -1.5 * $0 }.min() ?? 0.0
+        let yMax = seats.map(\.yCoordinate).map { -1.5 * $0 }.max() ?? .infinity
         yTotal = yMax - yMin
 
         minScale = Self.getScale(width: width, xTotal: xTotal, height: height, yTotal: yTotal)
@@ -77,7 +82,12 @@ private struct ExamRoomContentView: View {
             ZStack {
                 Spacer()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                RoomLayout(seats: seats, scale: scale, xOffset: xOffset, yOffset: yOffset, viewModel: viewModel)
+                RoomLayout(seats: seats,
+                           scale: scale,
+                           xOffset: xOffset,
+                           yOffset: yOffset,
+                           viewModel: viewModel,
+                           useMinimalUI: useMinimalUI)
 //                    .id("layout")
             }
             .frame(width: xTotal * scale, height: yTotal * scale, alignment: .center)
@@ -106,9 +116,9 @@ private struct ExamRoomContentView: View {
             scale = getScale(zoom: totalZoom + currentZoom)
         }
         .onAppear {
-            // TODO: Make default scale useful
             scale = minScale
-            totalZoom = getSensibleDefaultScaleFactor()
+            // TODO: Check if we want to re-enable it
+//            totalZoom = getSensibleDefaultScaleFactor()
         }
     }
 
@@ -144,16 +154,22 @@ private struct RoomLayout: View {
     let xOffset: Double
     let yOffset: Double
     let viewModel: ExamViewModel
+    let useMinimalUI: Bool
 
     var body: some View {
         ForEach(seats, id: \.self) { seat in
             Button {
                 viewModel.selectStudent(at: seat)
             } label: {
-                if let student = viewModel.getStudent(at: seat) {
-                    StudentPreview(student: student)
+                if useMinimalUI {
+                    Circle()
+                        .frame(width: 15, height: 15)
                 } else {
-                    EmptySeatView(seatName: seat.name)
+                    if let student = viewModel.getStudent(at: seat) {
+                        StudentPreview(student: student)
+                    } else {
+                        EmptySeatView(seatName: seat.name)
+                    }
                 }
             }
             .position(position(for: seat))
@@ -163,7 +179,7 @@ private struct RoomLayout: View {
     func position(for seat: ExamSeatDTO) -> CGPoint {
         // swiftlint:disable identifier_name
         let x = (seat.xCoordinate - xOffset) * scale
-        let y = (seat.yCoordinate * -1 - yOffset) * scale
+        let y = (seat.yCoordinate * -1.5 - yOffset) * scale
         return CGPoint(x: x, y: y)
         // swiftlint:enable identifier_name
     }
