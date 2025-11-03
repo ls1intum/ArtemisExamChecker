@@ -88,7 +88,6 @@ private struct ExamRoomContentView: View {
                            yOffset: yOffset,
                            viewModel: viewModel,
                            useMinimalUI: useMinimalUI)
-//                    .id("layout")
             }
             .frame(width: xTotal * scale, height: yTotal * scale, alignment: .center)
             .frame(minWidth: width, minHeight: height, alignment: .center)
@@ -96,6 +95,11 @@ private struct ExamRoomContentView: View {
         .contentMargins(ExamRoomView.roomPadding, for: .scrollContent)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .scrollClipDisabled()
+        .safeAreaInset(edge: .bottom) {
+            if useMinimalUI {
+                Text("Please zoom in to see students and seat names")
+            }
+        }
         .simultaneousGesture(
             MagnifyGesture()
                 .onChanged { value in
