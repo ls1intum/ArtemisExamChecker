@@ -11,13 +11,13 @@ import SwiftUI
 struct StudentPreview: View {
     let student: ExamUser
 
-    var shadowColor: UIColor {
+    var checkColor: UIColor? {
         if student.isStudentDone {
             .green
         } else if student.isStudentTouched {
             .yellow
         } else {
-            .darkGray
+            nil
         }
     }
 
@@ -36,7 +36,15 @@ struct StudentPreview: View {
                 .colorScheme(.dark)
         }
         .clipShape(.rect(cornerRadius: 10, style: .continuous))
-        .shadow(color: .init(uiColor: shadowColor), radius: 10)
+        .overlay(alignment: .topTrailing) {
+            if let checkColor {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.title)
+                    .tint(Color(uiColor: checkColor))
+                    .background(.white, in: .circle)
+                    .offset(x: .m, y: .m * -1)
+            }
+        }
     }
 }
 
