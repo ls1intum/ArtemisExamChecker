@@ -56,17 +56,23 @@ class StudentDetailViewModel {
         self.student = student
         self.allRooms = allRooms
 
-        didCheckImage = student.didCheckImage ?? false
-        didCheckName = student.didCheckName ?? false
-        didCheckLogin = student.didCheckLogin ?? false
-        didCheckRegistrationNumber = student.didCheckRegistrationNumber ?? false
+        if student.isStudentTouched {
+            didCheckImage = student.didCheckImage ?? false
+            didCheckName = student.didCheckName ?? false
+            didCheckLogin = student.didCheckLogin ?? false
+            didCheckRegistrationNumber = student.didCheckRegistrationNumber ?? false
+
+            hasVerifiedSession = true
+        } else {
+            didCheckImage = true
+            didCheckName = true
+            didCheckLogin = true
+            didCheckRegistrationNumber = true
+        }
+
         showSigningImage = student.signingImagePath != nil
         actualRoom = student.actualLocation?.roomNumber
         actualSeat = student.actualLocation?.seatName
-        
-        if student.isStudentTouched {
-            hasVerifiedSession = true
-        }
     }
 }
 
