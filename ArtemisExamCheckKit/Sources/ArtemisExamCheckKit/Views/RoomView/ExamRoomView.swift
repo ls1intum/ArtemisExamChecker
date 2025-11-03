@@ -41,7 +41,6 @@ private struct ExamRoomContentView: View {
     let viewModel: ExamViewModel
 
     var useMinimalUI: Bool {
-        // TODO: Add UI hint to zoom in
         width / scale > 10
     }
 
@@ -96,8 +95,15 @@ private struct ExamRoomContentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .scrollClipDisabled()
         .safeAreaInset(edge: .bottom) {
-            if useMinimalUI {
-                Text("Please zoom in to see students and seat names")
+            HStack(alignment: .bottom) {
+                zoomButtons
+
+                Spacer()
+
+                if useMinimalUI {
+                    Text("Please zoom in to see students and seat names.")
+                        .font(.footnote)
+                }
             }
         }
         .simultaneousGesture(
@@ -124,6 +130,33 @@ private struct ExamRoomContentView: View {
             // TODO: Check if we want to re-enable it
 //            totalZoom = getSensibleDefaultScaleFactor()
         }
+    }
+
+    var zoomButtons: some View {
+        HStack(spacing: 0) {
+            Button {
+                totalZoom = max(1, totalZoom * 0.8)
+            } label: {
+                Text("-")
+                    .padding(.vertical, .m)
+                    .padding(.horizontal, .l)
+            }
+            .disabled(totalZoom <= 1)
+            Divider()
+                .frame(height: 25)
+            Button {
+                totalZoom *= 1.2
+            } label: {
+                Text("+")
+                    .padding(.vertical, .m)
+                    .padding(.horizontal, .l)
+            }
+        }
+        .font(.title3)
+        .background(.regularMaterial, in: .rect(cornerRadius: .m))
+        .clipShape(.rect(cornerRadius: .m))
+        .shadow(radius: 0.5)
+        .padding(.leading, .m * 1.5)
     }
 
     func getSensibleDefaultScaleFactor() -> Double {
