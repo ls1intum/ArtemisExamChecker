@@ -72,7 +72,7 @@ extension ExamView {
 
                 Spacer()
 
-                if !viewModel.examRooms.isEmpty && !viewModel.selectedLectureHall.isEmpty {
+                if viewModel.selectedRoom != nil {
                     Picker("View style", selection: $viewModel.perfersRoomView) {
                         Text("List View")
                             .tag(false)
