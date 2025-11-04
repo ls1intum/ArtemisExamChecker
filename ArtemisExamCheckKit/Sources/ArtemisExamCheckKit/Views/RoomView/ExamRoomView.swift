@@ -34,6 +34,7 @@ private struct ExamRoomContentView: View {
     let width: Double
     let height: Double
     let minScale: Double
+    let maxScaleFactor: Double
     let xOffset: Double
     let yOffset: Double
     let xTotal: Double
@@ -59,6 +60,7 @@ private struct ExamRoomContentView: View {
         yTotal = yMax - yMin
 
         minScale = Self.getScale(width: width, xTotal: xTotal, height: height, yTotal: yTotal)
+        maxScaleFactor = Self.getMaxScaleFactor(seats: seats, size: min(height * 0.6, width), minScale: minScale)
 
         xOffset = xMin
         yOffset = yMin
@@ -127,8 +129,6 @@ private struct ExamRoomContentView: View {
         }
         .onAppear {
             scale = minScale
-            // TODO: Check if we want to re-enable it
-//            totalZoom = getSensibleDefaultScaleFactor()
         }
     }
 
@@ -151,6 +151,7 @@ private struct ExamRoomContentView: View {
                     .padding(.vertical, .m)
                     .padding(.horizontal, .l)
             }
+            .disabled(totalZoom >= maxScaleFactor)
         }
         .font(.title3)
         .background(.regularMaterial, in: .rect(cornerRadius: .m))
@@ -159,20 +160,24 @@ private struct ExamRoomContentView: View {
         .padding(.leading, .m * 1.5)
     }
 
-    func getSensibleDefaultScaleFactor() -> Double {
+    static func getMaxScaleFactor(seats: [ExamSeatDTO], size: Double, minScale: Double) -> Double {
         if seats.count > 1 {
             let seat = seats[0]
             let neighbor = seats[1]
-            let distance = sqrt(pow(seat.xCoordinate - neighbor.xCoordinate, 2) + pow(seat.yCoordinate - neighbor.yCoordinate, 2)) // * scale
-            let scaleFactor = width / (distance * 6)
+            let distance = sqrt(pow(seat.xCoordinate - neighbor.xCoordinate, 2) + pow(seat.yCoordinate - neighbor.yCoordinate, 2))
+            let scaleFactor = size / distance
             let factor = scaleFactor / minScale
             return sqrt(factor)
         }
-        return 1
+        return 10
     }
 
     func getScale(zoom: Double) -> Double {
-        max(minScale, Self.getScale(width: width * zoom, xTotal: xTotal, height: height * zoom, yTotal: yTotal, zoom: zoom))
+        if zoom > maxScaleFactor {
+            totalZoom = maxScaleFactor
+            currentZoom = 0
+        }
+        return max(minScale, Self.getScale(width: width * zoom, xTotal: xTotal, height: height * zoom, yTotal: yTotal, zoom: zoom))
     }
 
     static func getScale(width: Double, xTotal: Double, height: Double, yTotal: Double, zoom: Double = 1.0) -> Double {
