@@ -122,6 +122,13 @@ extension ExamView {
                         }
                         .tag(examRoom.roomNumber)
                     }
+                    // Rooms used, but without layout
+                    ForEach(viewModel.lectureHalls.filter({ room in
+                        !viewModel.examRooms.map(\.roomNumber).contains(room)
+                    }), id: \.self) { lectureHall in
+                        Text(lectureHall)
+                            .tag(lectureHall)
+                    }
                 }
             }
         } label: {
