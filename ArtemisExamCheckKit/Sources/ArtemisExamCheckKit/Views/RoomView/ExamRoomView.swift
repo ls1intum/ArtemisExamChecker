@@ -211,11 +211,8 @@ private struct RoomLayout: View {
                     Circle()
                         .frame(width: 15, height: 15)
                 } else {
-                    if let student = viewModel.getStudent(at: seat) {
-                        StudentPreview(student: student)
-                    } else {
-                        EmptySeatView(seatName: seat.name)
-                    }
+                    SeatView(viewModel: viewModel, seat: seat)
+                        .id(seat)
                 }
             }
             .position(position(for: seat))
@@ -228,5 +225,18 @@ private struct RoomLayout: View {
         let y = (seat.yCoordinate * -1.5 - yOffset) * scale
         return CGPoint(x: x, y: y)
         // swiftlint:enable identifier_name
+    }
+}
+
+private struct SeatView: View {
+    let viewModel: ExamViewModel
+    let seat: ExamSeatDTO
+
+    var body: some View {
+        if let student = viewModel.getStudent(at: seat) {
+            StudentPreview(student: student)
+        } else {
+            EmptySeatView(seatName: seat.name)
+        }
     }
 }
