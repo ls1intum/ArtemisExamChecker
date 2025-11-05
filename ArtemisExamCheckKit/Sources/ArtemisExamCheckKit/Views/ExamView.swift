@@ -139,6 +139,9 @@ extension ExamView {
                 Image(systemName: "chevron.up.chevron.down")
                     .fontWeight(.medium)
             }
+            .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
+                min(200, width - 300)
+            }
         }
     }
 }
