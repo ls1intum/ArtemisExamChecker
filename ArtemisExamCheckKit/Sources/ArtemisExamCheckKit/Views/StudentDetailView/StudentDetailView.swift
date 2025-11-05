@@ -50,23 +50,11 @@ struct StudentDetailView: View {
                 Text("Room").badge(student.location.roomNumber)
                 Text("Seat").badge(student.location.seatName)
                 if student.plannedLocation.roomId == nil {
-                    Button("Edit", systemImage: "pencil") {
+                    Button("Edit Room/Seat (todo)", systemImage: "pencil") {
                         viewModel.showSeatingEdit.toggle()
                     }
                 }
                 // TODO: Editing
-//                    StudentRoomDetailCell(
-//                        description: "Room",
-//                        value: student.plannedLocation.roomNumber,
-//                        actualValue: $actualRoom,
-//                        actualOtherValue: $actualOtherRoom,
-//                        showActualValue: $showSeatingEdit,
-//                        allRooms: allRooms)
-//                    StudentSeatingDetailCell(
-//                        description: "Seat",
-//                        value: student.plannedLocation.roomName,
-//                        actualValue: $actualSeat,
-//                        showActualValue: $showSeatingEdit)
             }
 
 // TODO: Remove?
@@ -131,7 +119,6 @@ struct StudentDetailView: View {
             .frame(maxWidth: .infinity)
             .background(.ultraThinMaterial)
         }
-//        .scrollEdgeEffectStyle(.hard, for: .top)
         .loadingIndicator(isLoading: $viewModel.isSaving)
         .onChange(of: canvasView.drawing) {
             examViewModel.hasUnsavedChanges = true
