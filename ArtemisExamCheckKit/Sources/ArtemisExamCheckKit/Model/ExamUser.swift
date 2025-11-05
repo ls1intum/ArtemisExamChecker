@@ -48,7 +48,10 @@ class ExamUser: Codable, Identifiable {
     var imageUrl: String?
 
     var isStudentDone: Bool {
-        isStudentTouched &&
+        didCheckImage ?? false &&
+        didCheckName ?? false &&
+        didCheckLogin ?? false &&
+        didCheckRegistrationNumber ?? false &&
         signingImagePath != nil
     }
 
