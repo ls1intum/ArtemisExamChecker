@@ -140,7 +140,7 @@ extension ExamView {
                     .fontWeight(.medium)
             }
             .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
-                min(200, width - 300)
+                max(200, width - 300)
             }
         }
     }
