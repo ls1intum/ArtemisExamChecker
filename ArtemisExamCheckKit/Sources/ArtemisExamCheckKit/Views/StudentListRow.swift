@@ -37,9 +37,9 @@ struct StudentListRow: View {
                 Text("Room: \(student.location.roomNumber) – Seat: \(student.location.seatName)")
             }
             Spacer()
-            if showDoneStatus && student.isStudentDone {
+            if showDoneStatus && student.isStudentTouched {
                 Image(systemName: "checkmark.seal.fill")
-                    .foregroundColor(.green)
+                    .foregroundColor(student.isStudentDone ? .green : .orange)
                     .imageScale(.large)
             }
         }

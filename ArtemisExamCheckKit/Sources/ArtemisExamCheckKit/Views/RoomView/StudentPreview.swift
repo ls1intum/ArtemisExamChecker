@@ -15,7 +15,7 @@ struct StudentPreview: View {
         if student.isStudentDone {
             .green
         } else if student.isStudentTouched {
-            .yellow
+            .orange
         } else {
             nil
         }

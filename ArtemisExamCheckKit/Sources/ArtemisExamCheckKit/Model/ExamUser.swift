@@ -48,12 +48,8 @@ class ExamUser: Codable, Identifiable {
     var imageUrl: String?
 
     var isStudentDone: Bool {
-        didCheckImage ?? false &&
-        didCheckName ?? false &&
-        didCheckLogin ?? false &&
-        didCheckRegistrationNumber ?? false /*&&
-        signingImagePath != nil*/
-        // TODO: Undo
+        isStudentTouched &&
+        signingImagePath != nil
     }
 
     var isStudentTouched: Bool {
@@ -158,6 +154,7 @@ extension ExamUser {
         case _signingImagePath = "signingImagePath"
         case _imageUrl = "imageUrl"
     }
+    // swiftlint:enable identifier_name
 
     func update(with dto: ExamUserDTO) {
         didCheckImage = dto.didCheckImage
