@@ -188,6 +188,19 @@ struct StudentDetailView: View {
             .presentationSizing(.fitted)
             .interactiveDismissDisabled()
         }
+        .alert("You have not saved your changes.", isPresented: $examViewModel.showUnsavedChangesAlert) {
+            Button("Save") {
+                viewModel.saveStudent(force: true, canvas: canvasView)
+            }
+            Button("Discard") {
+                examViewModel.selectedStudent = nil
+                examViewModel.hasUnsavedChanges = false
+                if viewModel.actualSeat != nil && !student.isStudentTouched {
+                    student.actualLocation = nil
+                }
+            }
+            Button("Cancel") {}
+        }
     }
 
     @ViewBuilder private var studentImage: some View {

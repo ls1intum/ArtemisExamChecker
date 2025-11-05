@@ -27,6 +27,7 @@ struct StudentSeatSearch: Identifiable {
 class ExamViewModel {
 
     var showSignatureField = false
+    var showUnsavedChangesAlert = false
 
     var searchText = ""
 
@@ -112,7 +113,12 @@ class ExamViewModel {
     }
 
     func selectStudent(at seat: ExamSeatDTO) {
-        selectedStudent = studentsInSelectedRoom[seat]
+        let student = studentsInSelectedRoom[seat]
+        if hasUnsavedChanges && student != selectedStudent {
+            showUnsavedChangesAlert = true
+            return
+        }
+        selectedStudent = student
         if selectedStudent == nil {
             openSearch(seat: seat)
         }

@@ -18,6 +18,7 @@ struct SearchStudentView: View {
                     Button {
                         student.actualLocation = ExamUserLocationDTO(room: search.room, seat: search.seat)
                         viewModel.selectedSearch = nil
+                        viewModel.hasUnsavedChanges = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                             viewModel.selectedStudent = student
                         }
