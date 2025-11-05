@@ -40,6 +40,7 @@ private struct ExamRoomContentView: View {
     let xTotal: Double
     let yTotal: Double
     let viewModel: ExamViewModel
+    let studentAssignments: [ExamSeatDTO: ExamUser]
 
     var useMinimalUI: Bool {
         width / scale > 10
@@ -64,6 +65,7 @@ private struct ExamRoomContentView: View {
 
         xOffset = xMin
         yOffset = yMin
+        studentAssignments = viewModel.studentsInSelectedRoom
     }
 
     var scrollAxis: Axis.Set {
@@ -88,7 +90,8 @@ private struct ExamRoomContentView: View {
                            xOffset: xOffset,
                            yOffset: yOffset,
                            viewModel: viewModel,
-                           useMinimalUI: useMinimalUI)
+                           useMinimalUI: useMinimalUI,
+                           studentAssignments: studentAssignments)
             }
             .frame(width: xTotal * scale, height: yTotal * scale, alignment: .center)
             .frame(minWidth: width, minHeight: height, alignment: .center)
@@ -203,6 +206,7 @@ private struct RoomLayout: View {
     let yOffset: Double
     let viewModel: ExamViewModel
     let useMinimalUI: Bool
+    let studentAssignments: [ExamSeatDTO: ExamUser]
 
     var body: some View {
         ForEach(seats, id: \.self) { seat in
@@ -211,13 +215,8 @@ private struct RoomLayout: View {
                     viewModel.selectStudent(at: seat)
                 }
             } label: {
-                if useMinimalUI {
-                    Circle()
-                        .frame(width: 15, height: 15)
-                } else {
-                    SeatView(viewModel: viewModel, seat: seat)
-                        .id(seat)
-                }
+                SeatView(viewModel: viewModel, seat: seat, useMinimalUI: useMinimalUI, student: studentAssignments[seat])
+                    .id(seat)
             }
             .position(position(for: seat))
         }
@@ -229,18 +228,5 @@ private struct RoomLayout: View {
         let y = (seat.yCoordinate * -1.5 - yOffset) * scale
         return CGPoint(x: x, y: y)
         // swiftlint:enable identifier_name
-    }
-}
-
-private struct SeatView: View {
-    let viewModel: ExamViewModel
-    let seat: ExamSeatDTO
-
-    var body: some View {
-        if let student = viewModel.getStudent(at: seat) {
-            StudentPreview(student: student)
-        } else {
-            EmptySeatView(seatName: seat.name)
-        }
     }
 }

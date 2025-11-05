@@ -40,7 +40,6 @@ struct ExamListView: View {
             }
             .navigationTitle("Exams")
             .toolbarBackground(Color.blue, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .accountMenu(error: $viewModel.error)
         }

@@ -35,6 +35,21 @@ class ExamViewModel {
         guard let rooms = exam.value?.examRoomsUsedInExam else { return nil }
         return rooms.first { $0.roomNumber == selectedLectureHall }
     }
+    var selectedRoomWithSeatAssignments: ExamRoomForAttendanceCheckerDTO? {
+        guard var room = selectedRoom else { return nil }
+        let students = studentsInSelectedRoom
+
+        if let seats = room.seats {
+            room.seats = seats.map { seat in
+                ExamSeatDTO(name: seat.name,
+                            xCoordinate: seat.xCoordinate,
+                            yCoordinate: seat.yCoordinate,
+                            student: students[seat])
+            }
+        }
+
+        return room
+    }
 
     var hideDoneStudents = false
     var sortingDirection = Sorting.bottomToTop
@@ -54,6 +69,17 @@ class ExamViewModel {
     }
     var selectedStudents: [ExamUser] {
         setSelectedStudents()
+    }
+    var studentsInSelectedRoom: [ExamSeatDTO: ExamUser] {
+        guard let room = selectedRoom, !useListStyle else { return [:] }
+        var students: [ExamSeatDTO: ExamUser] = [:]
+        selectedStudents.forEach { student in
+            let seatName = student.location.seatName
+            if let seat = room.seats?.first(where: { seatName == $0.name }) {
+                students[seat] = student
+            }
+        }
+        return students
     }
 
     var selectedStudent: ExamUser?
@@ -85,14 +111,8 @@ class ExamViewModel {
         }
     }
 
-    func getStudent(at seat: ExamSeatDTO) -> ExamUser? {
-        selectedStudents.first {
-            $0.location.seatName == seat.name
-        }
-    }
-
     func selectStudent(at seat: ExamSeatDTO) {
-        selectedStudent = getStudent(at: seat)
+        selectedStudent = studentsInSelectedRoom[seat]
         if selectedStudent == nil {
             openSearch(seat: seat)
         }
@@ -114,14 +134,7 @@ class ExamViewModel {
 
     /// Call this after a student was saved to move to the next one
     func onStudentSave(student: ExamUser) {
-//        // TODO: Remove -> Exam observable?
-//        guard var exam = exam.value,
-//              let examUserIndex = exam.examUsersWithExamRoomAndSeat.firstIndex(where: { newStudent.id == $0.id }) else { return }
-//
-//        exam.examUsersWithExamRoomAndSeat[examUserIndex] = newStudent
-//        self.exam = .done(response: exam)
         selectedStudent = nil
-        // TODO: Select next student
         hasUnsavedChanges = false
     }
 
