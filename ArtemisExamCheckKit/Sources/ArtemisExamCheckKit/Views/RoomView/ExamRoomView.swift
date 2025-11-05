@@ -105,6 +105,7 @@ private struct ExamRoomContentView: View {
                 if useMinimalUI {
                     Text("Please zoom in to see students and seat names.")
                         .font(.footnote)
+                        .padding(.trailing)
                 }
             }
         }
@@ -126,6 +127,9 @@ private struct ExamRoomContentView: View {
         }
         .onChange(of: currentZoom) {
             scale = getScale(zoom: totalZoom + currentZoom)
+        }
+        .onChange(of: viewModel.selectedLectureHall) {
+            totalZoom = 1
         }
         .onAppear {
             scale = minScale
