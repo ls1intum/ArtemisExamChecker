@@ -16,8 +16,8 @@ class StudentDetailViewModel {
     var didCheckLogin: Bool
     var didCheckRegistrationNumber: Bool
     var showSigningImage: Bool
-    var actualSeat: String?
-    var actualRoom: String?
+    var actualSeat: String
+    var actualRoom: String
 
     var showSeatingEdit = false
     var showDidNotCompleteDialog = false
@@ -71,8 +71,8 @@ class StudentDetailViewModel {
         }
 
         showSigningImage = student.signingImagePath != nil
-        actualRoom = student.actualLocation?.roomNumber
-        actualSeat = student.actualLocation?.seatName
+        actualRoom = student.location.roomNumber
+        actualSeat = student.location.seatName
     }
 }
 

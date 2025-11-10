@@ -49,8 +49,8 @@ struct StudentDetailView: View {
                 Text("Artemis username").badge(student.login ?? "-")
                 Text("Room").badge(student.location.roomNumber)
                 Text("Seat").badge(student.location.seatName)
-                if student.plannedLocation.roomId == nil {
-                    Button("Edit Room/Seat (todo)", systemImage: "pencil") {
+                if examViewModel.useListStyle {
+                    Button("Edit Room/Seat", systemImage: "pencil") {
                         viewModel.showSeatingEdit.toggle()
                     }
                 }
@@ -187,6 +187,9 @@ struct StudentDetailView: View {
             .presentationBackgroundInteraction(.disabled)
             .presentationSizing(.fitted)
             .interactiveDismissDisabled()
+        }
+        .sheet(isPresented: $viewModel.showSeatingEdit) {
+            EditSeatView(viewModel: viewModel, examViewModel: examViewModel)
         }
         .alert("You have not saved your changes.", isPresented: $examViewModel.showUnsavedChangesAlert) {
             Button("Save") {
