@@ -9,17 +9,7 @@ import SwiftUI
 import DesignLibrary
 
 extension ExamView {
-//    var body: some View {
-//        NavigationSplitView {
-//            sidebar
-//        } detail: {
-//            detail
-//        }
-//        .navigationBarTitle(viewModel.exam.value?.title ?? "Loading...")
-//        .navigationBarTitleDisplayMode(.inline)
-//        .toolbarBackground(Color.blue, for: .navigationBar)
-//        .toolbarColorScheme(.dark, for: .navigationBar)
-//        .toolbarBackground(.visible, for: .navigationBar)
+// TODO: Reconsider nextSelectedStudent
 //        .alert("Unsaved Changes", isPresented: $unsavedUserAlert) {
 //            Button(role: .destructive) {
 //                selectedStudent = nextSelectedStudent
@@ -30,7 +20,6 @@ extension ExamView {
 //        } message: {
 //            Text("You have unsaved changes. Changes are lost if you switch the student. Are you sure you want to continue?")
 //        }
-//    }
 
     var sidebar: some View {
         VStack {
