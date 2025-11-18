@@ -151,26 +151,6 @@ extension ExamUser {
     }
 }
 
-//extension ExamUser: Codable {
-//    convenience init(from decoder: any Decoder) throws {
-//        let container = try decoder.container(keyedBy: CodingKeys.self)
-//        self.login = try container.decodeIfPresent(String.self, forKey: .login)
-//        self.firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
-//        self.lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
-//        self.registrationNumber = try container.decodeIfPresent(String.self, forKey: .registrationNumber)
-//        self.email = try container.decodeIfPresent(String.self, forKey: .email)
-//        self.didCheckImage = try container.decodeIfPresent(Bool.self, forKey: .didCheckImage)
-//        self.didCheckName = try container.decodeIfPresent(Bool.self, forKey: .didCheckName)
-//        self.didCheckLogin = try container.decodeIfPresent(Bool.self, forKey: .didCheckLogin)
-//        self.didCheckRegistrationNumber = try container.decodeIfPresent(Bool.self, forKey: .didCheckRegistrationNumber)
-//        self.plannedLocation = try container.decode(ExamUserLocationDTO.self, forKey: .plannedLocation)
-//        self.actualLocation = try container.decodeIfPresent(ExamUserLocationDTO.self, forKey: .actualLocation)
-//        self.signing = try container.decodeIfPresent(Data.self, forKey: .signing)
-//        self.signingImagePath = try container.decodeIfPresent(String.self, forKey: .signingImagePath)
-//        self.imageUrl = try container.decodeIfPresent(String.self, forKey: .imageUrl)
-//    }
-//}
-
 struct ExamUserDTO: Codable {
     let login: String?
     let didCheckImage: Bool?
