@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ExamDetailsView.swift
 //  ArtemisExamCheckKit
 //
 //  Created by Anian Schleyer on 22.10.25.
