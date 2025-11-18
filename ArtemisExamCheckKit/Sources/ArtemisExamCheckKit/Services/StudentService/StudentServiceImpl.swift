@@ -16,13 +16,13 @@ class StudentServiceImpl: StudentService {
     func saveStudent(student: ExamUserDTO, examId: Int, courseId: Int) async -> DataState<ExamUserDTO> {
         let request = MultipartFormDataRequest(path: "api/exam/courses/\(courseId)/exams/\(examId)/exam-users")
         if let signing = student.signing {
-            request.addDataField(named: "file", filename: "\(student.login).png", data: signing, mimeType: "image/png")
+            request.addDataField(named: "file", filename: "\(student.login ?? "missing").png", data: signing, mimeType: "image/png")
         }
         let encoder = JSONEncoder()
         if let studentData = try? encoder.encode(student) {
             request.addDataField(named: "examUserDTO", filename: nil, data: studentData, mimeType: "application/json")
         }
-        return .done(response: student)
+//        return .done(response: student)
         let result: Result<(ExamUserDTO, Int), APIClientError> = await client.sendRequest(request)
 
         switch result {

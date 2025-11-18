@@ -26,12 +26,6 @@ class ExamServiceImpl: ExamService {
     }
 
     func getActiveExams() async -> DataState<[Exam]> {
-        return .done(response: [.init(id: 0,
-                                      title: "Test",
-                                      startDate: .now,
-                                      endDate: .now,
-                                      course: .init(id: 0, title: "test course"),
-                                      testExam: false)])
         let result = await client.sendRequest(GetAllExamsRequest())
 
         switch result {
@@ -53,36 +47,11 @@ class ExamServiceImpl: ExamService {
         }
 
         var resourceName: String {
-            "api/exam/courses/\(courseId)/exams/\(examId)?withStudents=true"
+            "api/exam/courses/\(courseId)/exams/\(examId)/attendance-checker-information"
         }
     }
 
     func getFullExam(for courseId: Int, and examId: Int) async -> DataState<AttendanceCheckerAppExamInformationDTO> {
-        return .done(response: .init(examId: 0,
-                                     examTitle: "Test",
-                                     startDate: .now,
-                                     endDate: .now,
-                                     isTestExam: false,
-                                     courseId: 0,
-                                     courseTitle: "test course",
-                                     examRoomsUsedInExam: [.mock],
-                                     examUsersWithExamRoomAndSeat: [
-                                        .init(login: "ge47xow",
-                                              firstName: "Anian",
-                                              lastName: "Schleyer",
-                                              registrationNumber: "123",
-                                              email: nil,
-                                              plannedLocation: .init(roomId: 0,
-                                                                     roomNumber: "01.01.001",
-                                                                     roomAlternativeNumber: "bla",
-                                                                     roomName: "room",
-                                                                     roomAlternativeName: "alt",
-                                                                     roomBuilding: "buil",
-                                                                     seatName: "A2"),
-                                              imageUrl: "user/profile-pictures/18129/ProfilePicture_2025-03-05T16-13-58-545_46453d95.jpeg")
-                                     ]
-                                    )
-        )
         let result = await client.sendRequest(GetFullExamRequest(courseId: courseId, examId: examId))
 
         switch result {

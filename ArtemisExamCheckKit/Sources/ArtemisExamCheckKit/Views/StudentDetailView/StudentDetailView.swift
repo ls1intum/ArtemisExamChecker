@@ -54,7 +54,6 @@ struct StudentDetailView: View {
                         viewModel.showSeatingEdit.toggle()
                     }
                 }
-                // TODO: Editing
             }
 
 // TODO: Remove?

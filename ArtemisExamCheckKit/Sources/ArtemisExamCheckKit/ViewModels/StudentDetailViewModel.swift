@@ -100,7 +100,6 @@ extension StudentDetailViewModel {
             checkedRegistrationNumber: didCheckRegistrationNumber,
             signing: imageData)
 
-        // TODO: Reconfirm
         // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
         let imageName = "\(examId)-\(student.id)-\(student.displayName)-\(student.registrationNumber ?? "missing").png"
         saveImageToDocuments(imageData: imageData, imageName: imageName)

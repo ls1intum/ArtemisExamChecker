@@ -77,24 +77,6 @@ class ExamUser: Codable, Identifiable {
               signing: signing,
               signingImagePath: nil)
     }
-
-    // TODO: Only for debugging
-    init(login: String?, firstName: String?, lastName: String?, registrationNumber: String?, email: String?, didCheckImage: Bool? = nil, didCheckName: Bool? = nil, didCheckLogin: Bool? = nil, didCheckRegistrationNumber: Bool? = nil, plannedLocation: ExamUserLocationDTO, actualLocation: ExamUserLocationDTO? = nil, signing: Data? = nil, signingImagePath: String? = nil, imageUrl: String? = nil) {
-        self.login = login
-        self.firstName = firstName
-        self.lastName = lastName
-        self.registrationNumber = registrationNumber
-        self.email = email
-        self.didCheckImage = didCheckImage
-        self.didCheckName = didCheckName
-        self.didCheckLogin = didCheckLogin
-        self.didCheckRegistrationNumber = didCheckRegistrationNumber
-        self.plannedLocation = plannedLocation
-        self.actualLocation = actualLocation
-        self.signing = signing
-        self.signingImagePath = signingImagePath
-        self.imageUrl = imageUrl
-    }
 }
 
 extension ExamUser: Hashable {

@@ -51,7 +51,6 @@ struct ExamDetailsView: View {
         }
 
         return viewModel.exam.value?.examUsersWithExamRoomAndSeat.compactMap { examUser in
-            // TODO: Re-confirm
             // format for name <examId>-<examUserId>-<examUserName>-<registrationNumber>.png
             let imageName = "\(viewModel.examId)-\(examUser.id)-\(examUser.displayName)-\(examUser.registrationNumber ?? "missing").png"
             let fileURL = documentsDirectory
