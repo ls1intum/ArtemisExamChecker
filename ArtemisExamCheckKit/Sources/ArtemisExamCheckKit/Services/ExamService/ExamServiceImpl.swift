@@ -37,7 +37,7 @@ class ExamServiceImpl: ExamService {
     }
 
     struct GetFullExamRequest: APIRequest {
-        typealias Response = Exam
+        typealias Response = AttendanceCheckerAppExamInformationDTO
 
         var courseId: Int
         var examId: Int
@@ -47,11 +47,11 @@ class ExamServiceImpl: ExamService {
         }
 
         var resourceName: String {
-            "api/exam/courses/\(courseId)/exams/\(examId)?withStudents=true"
+            "api/exam/courses/\(courseId)/exams/\(examId)/attendance-checker-information"
         }
     }
 
-    func getFullExam(for courseId: Int, and examId: Int) async -> DataState<Exam> {
+    func getFullExam(for courseId: Int, and examId: Int) async -> DataState<AttendanceCheckerAppExamInformationDTO> {
         let result = await client.sendRequest(GetFullExamRequest(courseId: courseId, examId: examId))
 
         switch result {

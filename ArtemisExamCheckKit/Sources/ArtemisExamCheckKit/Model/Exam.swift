@@ -14,7 +14,20 @@ struct Exam: Identifiable, Codable {
     var endDate: Date
     var course: Course
     var examUsers: [ExamUser]?
+    var examRooms: [ExamRoomForAttendanceCheckerDTO]?
     var testExam: Bool
+}
+
+struct AttendanceCheckerAppExamInformationDTO: Codable {
+    var examId: Int
+    var examTitle: String
+    var startDate: Date
+    var endDate: Date
+    var isTestExam: Bool
+    var courseId: Int
+    var courseTitle: String
+    var examRoomsUsedInExam: [ExamRoomForAttendanceCheckerDTO]?
+    var examUsersWithExamRoomAndSeat: [ExamUser]
 }
 
 struct Course: Identifiable, Codable {
