@@ -193,8 +193,6 @@ private struct ExamRoomContentView: View {
         let widthScale = (width * zoom) / xTotal
         let heightScale = (height * zoom) / yTotal
         let fit = min(widthScale, heightScale)
-//        let fill = max(widthScale, heightScale)
-//        let avg = (widthScale + heightScale) / 2
         return fit
     }
 }
