@@ -131,8 +131,8 @@ extension StudentDetailViewModel {
         didCheckLogin = newStudent.didCheckLogin ?? false
         didCheckRegistrationNumber = newStudent.didCheckRegistrationNumber ?? false
         showSigningImage = newStudent.signingImagePath != nil
-//        actualRoom = newStudent.actualLocation?.roomNumber
-//        actualSeat = newStudent.actualLocation?.seatName
+        actualRoom = newStudent.room ?? ""
+        actualSeat = newStudent.seat ?? ""
     }
 }
 
