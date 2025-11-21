@@ -186,8 +186,8 @@ class ExamViewModel {
         }
     }
 
-    func computeStudentSeatsInRoom() {
-        guard let room = selectedRoom, !useListStyle else {
+    private func computeStudentSeatsInRoom() {
+        guard let room = selectedRoom else {
             studentsInSelectedRoom = .done(response: [:])
             return
         }
