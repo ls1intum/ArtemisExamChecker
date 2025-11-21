@@ -89,7 +89,7 @@ extension ExamUser: Equatable {
     static func == (lhs: ExamUser, rhs: ExamUser) -> Bool {
         return lhs.id == rhs.id &&
         lhs.login == rhs.login &&
-        lhs.registrationNumber == rhs.registrationNumber
+        lhs.registrationNumber == rhs.registrationNumber &&
         lhs.didCheckImage == rhs.didCheckImage &&
         lhs.didCheckName == rhs.didCheckName &&
         lhs.didCheckLogin == rhs.didCheckLogin &&

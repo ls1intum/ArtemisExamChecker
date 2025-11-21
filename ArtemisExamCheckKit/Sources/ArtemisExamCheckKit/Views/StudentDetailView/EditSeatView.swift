@@ -86,6 +86,7 @@ struct EditSeatView: View {
             let location = ExamUserLocationDTO(roomNumber: viewModel.actualRoom,
                                                seatName: viewModel.actualSeat)
             examViewModel.selectedStudent?.actualLocation = location
+            examViewModel.hasUnsavedChanges = true
             dismiss()
         }
         .disabled(viewModel.actualRoom.isEmpty || viewModel.actualSeat.isEmpty)
