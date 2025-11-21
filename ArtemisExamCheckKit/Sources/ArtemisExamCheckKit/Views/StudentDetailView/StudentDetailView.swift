@@ -118,6 +118,11 @@ struct StudentDetailView: View {
             .frame(maxWidth: .infinity)
             .background(.ultraThinMaterial)
         }
+        .onChange(of: viewModel.showSeatingEdit, initial: true) { _, newValue in
+            if !newValue && examViewModel.hasUnsavedChanges && examViewModel.selectedStudent?.actualLocation != nil {
+                viewModel.saveStudent(force: true, canvas: nil, saveAllData: false)
+            }
+        }
         .loadingIndicator(isLoading: $viewModel.isSaving)
         .onChange(of: canvasView.drawing) {
             examViewModel.hasUnsavedChanges = true
@@ -197,9 +202,6 @@ struct StudentDetailView: View {
             Button("Discard") {
                 examViewModel.selectedStudent = nil
                 examViewModel.hasUnsavedChanges = false
-                if viewModel.actualSeat != nil && !student.isStudentTouched {
-                    student.actualLocation = nil
-                }
             }
             Button("Cancel") {}
         }

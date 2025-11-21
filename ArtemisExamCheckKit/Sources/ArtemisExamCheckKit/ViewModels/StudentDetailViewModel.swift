@@ -77,8 +77,8 @@ class StudentDetailViewModel {
 }
 
 extension StudentDetailViewModel {
-    func saveStudent(force: Bool = false, isNavigationBarButton: Bool = false, canvas: PKCanvasView) {
-        if !force && (!didCheckName || !didCheckLogin || !didCheckImage || !didCheckRegistrationNumber || (canvas.drawing.bounds.isEmpty && student.signingImageURL == nil)) {
+    func saveStudent(force: Bool = false, isNavigationBarButton: Bool = false, canvas: PKCanvasView?, closeOnSave: Bool = true) {
+        if !force && (!didCheckName || !didCheckLogin || !didCheckImage || !didCheckRegistrationNumber || (canvas?.drawing.bounds.isEmpty ?? true && student.signingImageURL == nil)) {
             if isNavigationBarButton {
                 showDidNotCompleteDialogNavigationBar = true
             } else {
@@ -88,7 +88,7 @@ extension StudentDetailViewModel {
         }
 
         var imageData: Data?
-        if !canvas.drawing.bounds.isEmpty {
+        if let canvas, !canvas.drawing.bounds.isEmpty {
             let signingImage = canvas.drawing.image(from: canvas.bounds, scale: UIScreen.main.scale)
             imageData = signingImage.pngData()
         }
@@ -119,7 +119,9 @@ extension StudentDetailViewModel {
                 student.update(with: newStudent)
                 await MainActor.run {
                     examViewModel.hasUnsavedChanges = false
-                    examViewModel.onStudentSave(student: student)
+                    if closeOnSave {
+                        examViewModel.onStudentSave(student: student)
+                    }
                 }
             }
         }
