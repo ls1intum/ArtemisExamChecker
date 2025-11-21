@@ -16,7 +16,7 @@ struct SearchStudentView: View {
             List {
                 ForEach(viewModel.selectedStudents) { student in
                     Button {
-                        student.actualLocation = ExamUserLocationDTO(room: search.room, seat: search.seat)
+                        viewModel.moveStudent(student, to: ExamUserLocationDTO(room: search.room, seat: search.seat))
                         viewModel.selectedSearch = nil
                         viewModel.hasUnsavedChanges = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {

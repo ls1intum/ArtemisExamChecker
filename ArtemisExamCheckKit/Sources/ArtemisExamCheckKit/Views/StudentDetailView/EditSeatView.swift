@@ -85,7 +85,7 @@ struct EditSeatView: View {
         Button("Save") {
             let location = ExamUserLocationDTO(roomNumber: viewModel.actualRoom,
                                                seatName: viewModel.actualSeat)
-            examViewModel.selectedStudent?.actualLocation = location
+            examViewModel.moveStudent(viewModel.student, to: location)
             examViewModel.hasUnsavedChanges = true
             dismiss()
         }
