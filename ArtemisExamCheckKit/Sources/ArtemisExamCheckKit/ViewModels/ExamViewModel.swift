@@ -31,25 +31,14 @@ class ExamViewModel {
 
     var searchText = ""
 
-    var selectedLectureHall: String = ""
+    var selectedLectureHall: String = "" {
+        didSet {
+            computeStudentSeatsInRoom()
+        }
+    }
     var selectedRoom: ExamRoomForAttendanceCheckerDTO? {
         guard let rooms = exam.value?.examRoomsUsedInExam else { return nil }
         return rooms.first { $0.roomNumber == selectedLectureHall }
-    }
-    var selectedRoomWithSeatAssignments: ExamRoomForAttendanceCheckerDTO? {
-        guard var room = selectedRoom else { return nil }
-        let students = studentsInSelectedRoom
-
-        if let seats = room.seats {
-            room.seats = seats.map { seat in
-                ExamSeatDTO(name: seat.name,
-                            xCoordinate: seat.xCoordinate,
-                            yCoordinate: seat.yCoordinate,
-                            student: students[seat])
-            }
-        }
-
-        return room
     }
 
     var hideDoneStudents = false
@@ -71,17 +60,7 @@ class ExamViewModel {
     var selectedStudents: [ExamUser] {
         setSelectedStudents()
     }
-    var studentsInSelectedRoom: [ExamSeatDTO: ExamUser] {
-        guard let room = selectedRoom, !useListStyle else { return [:] }
-        var students: [ExamSeatDTO: ExamUser] = [:]
-        selectedStudents.forEach { student in
-            let seatName = student.location.seatName
-            if let seat = room.seats?.first(where: { seatName == $0.name }) {
-                students[seat] = student
-            }
-        }
-        return students
-    }
+    var studentsInSelectedRoom: DataState<[ExamSeatDTO: ExamUser]> = .loading
 
     var selectedStudent: ExamUser?
     var selectedSearch: StudentSeatSearch?
@@ -113,7 +92,7 @@ class ExamViewModel {
     }
 
     func selectStudent(at seat: ExamSeatDTO) {
-        let student = studentsInSelectedRoom[seat]
+        let student = studentsInSelectedRoom.value?[seat]
         if hasUnsavedChanges && student != selectedStudent {
             showUnsavedChangesAlert = true
             return
@@ -121,6 +100,30 @@ class ExamViewModel {
         selectedStudent = student
         if selectedStudent == nil {
             openSearch(seat: seat)
+        }
+    }
+
+    func moveStudent(_ student: ExamUser, to location: ExamUserLocationDTO) {
+        let oldLocation = student.location
+        student.actualLocation = location
+        var studentsInRoom = studentsInSelectedRoom.value
+
+        if selectedLectureHall == oldLocation.roomNumber, let students = studentsInRoom {
+            // If student was in selected room, remove him from seat
+            if let oldSeat = students.keys.first(where: { $0.name == oldLocation.seatName }) {
+                studentsInRoom?.removeValue(forKey: oldSeat)
+            }
+        }
+
+        if selectedLectureHall == location.roomNumber {
+            // If student now is in selected room, add him to seat
+            if let newSeat = selectedRoom?.seats?.first(where: { $0.name == location.seatName }) {
+                studentsInRoom?[newSeat] = student
+            }
+        }
+
+        if let studentsInRoom {
+            studentsInSelectedRoom = .done(response: studentsInRoom)
         }
     }
 
@@ -181,5 +184,20 @@ class ExamViewModel {
                 return $0.location.seatName > $1.location.seatName
             }
         }
+    }
+
+    func computeStudentSeatsInRoom() {
+        guard let room = selectedRoom, !useListStyle else {
+            studentsInSelectedRoom = .done(response: [:])
+            return
+        }
+        var students: [ExamSeatDTO: ExamUser] = [:]
+        selectedStudents.forEach { student in
+            let seatName = student.location.seatName
+            if let seat = room.seats?.first(where: { seatName == $0.name }) {
+                students[seat] = student
+            }
+        }
+        studentsInSelectedRoom = .done(response: students)
     }
 }

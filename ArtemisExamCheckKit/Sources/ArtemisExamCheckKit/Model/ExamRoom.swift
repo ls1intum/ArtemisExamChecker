@@ -21,8 +21,6 @@ struct ExamSeatDTO: Hashable, Codable {
     var xCoordinate: Double
     var yCoordinate: Double
 
-    var student: ExamUser?
-
     enum CodingKeys: String, CodingKey {
         case name
         case xCoordinate = "x"

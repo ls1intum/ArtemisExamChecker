@@ -40,7 +40,6 @@ private struct ExamRoomContentView: View {
     let xTotal: Double
     let yTotal: Double
     let viewModel: ExamViewModel
-    let studentAssignments: [ExamSeatDTO: ExamUser]
 
     var useMinimalUI: Bool {
         width / scale > 10
@@ -65,7 +64,6 @@ private struct ExamRoomContentView: View {
 
         xOffset = xMin
         yOffset = yMin
-        studentAssignments = viewModel.studentsInSelectedRoom
     }
 
     var scrollAxis: Axis.Set {
@@ -91,7 +89,7 @@ private struct ExamRoomContentView: View {
                            yOffset: yOffset,
                            viewModel: viewModel,
                            useMinimalUI: useMinimalUI,
-                           studentAssignments: studentAssignments)
+                           studentAssignments: viewModel.studentsInSelectedRoom.value ?? [:])
             }
             .frame(width: xTotal * scale, height: yTotal * scale, alignment: .center)
             .frame(minWidth: width, minHeight: height, alignment: .center)

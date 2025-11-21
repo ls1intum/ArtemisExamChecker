@@ -120,7 +120,7 @@ struct StudentDetailView: View {
         }
         .onChange(of: viewModel.showSeatingEdit, initial: true) { _, newValue in
             if !newValue && examViewModel.hasUnsavedChanges && examViewModel.selectedStudent?.actualLocation != nil {
-                viewModel.saveStudent(force: true, canvas: nil, saveAllData: false)
+                viewModel.saveStudent(force: true, canvas: nil, closeOnSave: false)
             }
         }
         .loadingIndicator(isLoading: $viewModel.isSaving)
