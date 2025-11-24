@@ -137,6 +137,10 @@ private struct ExamRoomContentView: View {
         }
         .animation(currentZoom != 0 ? nil : .default, value: totalZoom)
         .animation(currentZoom != 0 ? nil : .default, value: scrollAxis)
+        .onChange(of: viewModel.selectedLectureHall) {
+            scale = minScale
+            totalZoom = 1
+        }
     }
 
     var zoomButtons: some View {
