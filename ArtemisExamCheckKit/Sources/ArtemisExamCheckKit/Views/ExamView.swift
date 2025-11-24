@@ -124,6 +124,7 @@ extension ExamView {
                 }
             Button("Close", systemImage: "xmark.circle.fill") {
                 withAnimation {
+                    viewModel.searchText = ""
                     viewModel.showSearch = false
                 }
             }
