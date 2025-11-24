@@ -41,6 +41,7 @@ class ExamViewModel {
         return rooms.first { $0.roomNumber == selectedLectureHall }
     }
 
+    var showSearch = false
     var hideDoneStudents = false
     var sortingDirection = Sorting.bottomToTop
 
