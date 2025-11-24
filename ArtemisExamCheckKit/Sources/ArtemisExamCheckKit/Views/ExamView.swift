@@ -86,6 +86,14 @@ extension ExamView {
 
             if viewModel.useListStyle {
                 HStack {
+                    Button("Search", systemImage: "magnifyingglass.circle.fill") {
+                        withAnimation {
+                            viewModel.showSearch.toggle()
+                        }
+                    }
+                    .labelStyle(.iconOnly)
+                    .font(.title)
+                    Spacer()
                     Text("Progress: \(viewModel.signedStudentsInSelectedRoom) / \(viewModel.totalStudentsInSelectedRoom)")
                     Spacer()
                     Picker("Sorting", selection: $viewModel.sortingDirection) {
@@ -96,12 +104,33 @@ extension ExamView {
                     }
                     Spacer()
                     Toggle("Hide Checked-In Students: ", isOn: $viewModel.hideDoneStudents)
-                        .frame(maxWidth: 290)
+                        .frame(maxWidth: 210)
+                }
+                if viewModel.showSearch {
+                    searchField
                 }
             }
         }
         .padding()
         .background(.ultraThinMaterial)
+    }
+
+    private var searchField: some View {
+        HStack {
+            TextField("Search", text: $viewModel.searchText)
+                .textFieldStyle(.roundedBorder)
+                .onDisappear {
+                    viewModel.searchText = ""
+                }
+            Button("Close", systemImage: "xmark.circle.fill") {
+                withAnimation {
+                    viewModel.showSearch = false
+                }
+            }
+            .labelStyle(.iconOnly)
+            .foregroundStyle(.secondary)
+            .font(.title)
+        }
     }
 
     private var lectureHallPicker: some View {
