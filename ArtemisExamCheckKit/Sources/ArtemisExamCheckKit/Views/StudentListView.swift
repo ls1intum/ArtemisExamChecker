@@ -47,7 +47,6 @@ extension ExamView {
                     }
                 }
             }
-            .searchable(text: $viewModel.searchText)
             .refreshable {
                 await viewModel.getExam(showLoadingIndicator: false)
             }

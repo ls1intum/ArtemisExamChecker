@@ -13,8 +13,6 @@ struct Exam: Identifiable, Codable {
     var startDate: Date
     var endDate: Date
     var course: Course
-    var examUsers: [ExamUser]?
-    var examRooms: [ExamRoomForAttendanceCheckerDTO]?
     var testExam: Bool
 }
 
