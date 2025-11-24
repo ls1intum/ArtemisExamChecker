@@ -29,10 +29,8 @@ struct ExamDetailsView: View {
                 }
             }
 
-            Section {
-                ContentUnavailableView("Tips (TODO)",
-                                       systemImage: "lightbulb",
-                                       description: Text("E.g. how to re-seat students, context specific to whether a room is selected or not."))
+            Section("Tips") {
+                HintsView(isListView: viewModel.useListStyle)
             }
         }
         .refreshable {
@@ -70,5 +68,50 @@ struct ExamDetailsView: View {
                 .frame(minWidth: .xl)
             Text("\(label)")
         }
+    }
+}
+
+private struct HintsView: View {
+    let isListView: Bool
+
+    var body: some View {
+        if !isListView {
+            hintRow(title: "Legend") {
+                Group {
+                    let circle = Text(Image(systemName: "circle.fill"))
+                    circle.foregroundStyle(.green) + Text(" Complete check-in")
+                    circle.foregroundStyle(.orange) + Text(" Incomplete/incorrect check-in")
+                    circle.foregroundStyle(.blue) + Text(" Occupied seat, no attendance checked")
+                    circle.foregroundStyle(.gray) + Text(" Empty seat")
+                }
+            }
+        }
+        hintRow(title: "Correct check-ins") {
+            Text("Check-in are considered correct if all checks are positive (name, picture, etc.), and the student has signed.")
+        }
+        hintRow(title: "Check-ins with incorrect details") {
+            Text("Check-in are considered incorrect/incomplete if at least one check is negative (wrong name, picture, etc.), or the student has not signed.")
+        }
+        if isListView {
+            hintRow(title: "Moving students to different seats") {
+                Text("To move a student in the list view, open the student view (e.g. via search), then tap on \"Edit Room/Seat\".")
+            }
+        } else {
+            hintRow(title: "Moving students to different seats") {
+                Text("To move a student in the room view, tap on the seat you want to move the student to, then use search to place them.")
+            }
+        }
+    }
+
+    func hintRow<T: View>(title: String, body: () -> T) -> some View {
+        VStack(alignment: .leading) {
+            Text(title)
+                .bold()
+            body()
+                .padding(.leading)
+                .foregroundStyle(.secondary)
+        }
+        .multilineTextAlignment(.leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
