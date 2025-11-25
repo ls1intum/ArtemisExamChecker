@@ -43,6 +43,15 @@ struct ExamListView: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .accountMenu(error: $viewModel.error)
         }
+        .safeAreaInset(edge: .bottom, alignment: .center) {
+            if #unavailable(iOS 26.0) {
+                ArtemisHintBox(text: "You are using Artemis Exam Supervision on iOS 18. We recommend using iOS 26 or later for the most seamless experience.", hintType: .info)
+                    .containerRelativeFrame(.horizontal) { width, _ in
+                        width * 0.5
+                    }
+                    .padding()
+            }
+        }
     }
 }
 
