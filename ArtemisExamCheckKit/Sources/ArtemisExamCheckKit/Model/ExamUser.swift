@@ -9,7 +9,33 @@ import Foundation
 import APIClient
 import UserStore
 
-struct ExamUserLocationDTO: Codable, Hashable {
+struct ExamUserLocationDTO: Codable, Hashable, Comparable {
+    static func < (lhs: ExamUserLocationDTO, rhs: ExamUserLocationDTO) -> Bool {
+        if lhs.roomNumber != rhs.roomNumber {
+            return lhs.roomNumber < rhs.roomNumber
+        }
+
+        let separator = lhs.seatName.contains(", ") ? ", " : ","
+
+        let lhsComps = lhs.seatName.split(separator: separator)
+        let rhsComps = rhs.seatName.split(separator: separator)
+
+        if let lhsRow = lhsComps.first, let rhsRow = rhsComps.first, lhsRow != rhsRow {
+            if let lRowInt = Int(lhsRow), let rRowInt = Int(rhsRow) {
+                return lRowInt < rRowInt
+            }
+            return lhsRow < rhsRow
+        }
+        if let lhsSeat = lhsComps.last, let rhsSeat = rhsComps.last, lhsSeat != rhsSeat {
+            if let lSeatInt = Int(lhsSeat), let rSeatInt = Int(rhsSeat) {
+                return lSeatInt < rSeatInt
+            }
+            return lhsSeat < rhsSeat
+        }
+
+        return lhs.seatName < rhs.seatName
+    }
+
     var roomId: Int?
     var roomNumber: String  // examUser.plannedRoom if legacy version
     var seatName: String  // examUser.plannedSeat if legacy version
