@@ -18,7 +18,14 @@ struct EditSeatView: View {
                 Section {
                     Picker("Room", selection: $viewModel.actualRoom) {
                         ForEach(viewModel.allRooms, id: \.self) { room in
-                            Text(room).tag(room)
+                            Button {} label: {
+                                let displayName = examViewModel.getRoomDisplayName(for: room)
+                                Text(displayName)
+                                if displayName != room {
+                                    Text(room)
+                                }
+                            }
+                            .tag(room)
                         }
                         Text("Other").tag(hasSelectedCustomRoom ? viewModel.actualRoom : "")
                     }
