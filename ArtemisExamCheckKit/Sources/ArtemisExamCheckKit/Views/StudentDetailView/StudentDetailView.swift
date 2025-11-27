@@ -14,206 +14,226 @@ struct StudentDetailView: View {
 
     @State var canvasView = PKCanvasView()
 
-    @State var didCheckImage: Bool
-    @State var didCheckName: Bool
-    @State var didCheckLogin: Bool
-    @State var didCheckRegistrationNumber: Bool
-    @State var showSigningImage: Bool
-    @State var actualSeat: String
-    @State var actualRoom: String
-    @State var actualOtherRoom: String = ""
+    @State var viewModel: StudentDetailViewModel
+    @Bindable var examViewModel: ExamViewModel
 
-    @State var showSeatingEdit = false
-    @State var showDidNotCompleteDialog = false
-    @State var showDidNotCompleteDialogNavigationBar = false
-    @State var isSaving = false
-    @State var showErrorAlert = false
-    @State var error: UserFacingError? {
-        didSet {
-            showErrorAlert = error != nil
-        }
+    var student: ExamUser {
+        viewModel.student
     }
-    @State var isScrollingEnabled = true
-
-    @State var imageLoadingError = false
-    @State var signingImageLoadingStatus = NetworkResponse.loading
-
-    @Binding var student: ExamUser
-    @Binding var hasUnsavedChanges: Bool
-    @Binding var allRooms: [String]
-
-    var successfullySavedCompletion: @MainActor (ExamUser) -> Void
-
-    let examId: Int
-    let courseId: Int
 
     init(
         examId: Int,
         courseId: Int,
-        student: Binding<ExamUser>,
-        hasUnsavedChanges: Binding<Bool>,
-        allRooms: Binding<[String]>,
-        successfullySavedCompletion: @MainActor @escaping (ExamUser) -> Void
+        student: ExamUser,
+        allRooms: [String],
+        examViewModel: ExamViewModel
     ) {
-        self.examId = examId
-        self.courseId = courseId
-        self.successfullySavedCompletion = successfullySavedCompletion
-        self._student = student
-        self._hasUnsavedChanges = hasUnsavedChanges
-        self._allRooms = allRooms
-
-        _didCheckImage = State(wrappedValue: student.wrappedValue.didCheckImage ?? false)
-        _didCheckName = State(wrappedValue: student.wrappedValue.didCheckName ?? false)
-        _didCheckLogin = State(wrappedValue: student.wrappedValue.didCheckLogin ?? false)
-        _didCheckRegistrationNumber = State(wrappedValue: student.wrappedValue.didCheckRegistrationNumber ?? false)
-        _showSigningImage = State(wrappedValue: student.wrappedValue.signingImagePath != nil)
-        _actualRoom = State(wrappedValue: student.wrappedValue.actualRoom ?? "")
-        _actualSeat = State(wrappedValue: student.wrappedValue.actualSeat ?? "")
+        self.examViewModel = examViewModel
+        self._viewModel = State(initialValue: StudentDetailViewModel(examId: examId,
+                                                                     courseId: courseId,
+                                                                     student: student,
+                                                                     allRooms: allRooms,
+                                                                     examViewModel: examViewModel))
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 8) {
-                HStack {
-                    ArtemisAsyncImage(imageURL: student.imageURL) {
-                        VStack {
-                            Image(systemName: "person.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .cornerRadius(16)
-                                .frame(width: 100, height: 100)
-                            Text("The image could not be loaded :(")
-                                .font(.caption)
-                                .foregroundColor(.red)
-                        }
-                        .frame(width: 200, height: 200)
-                    }
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 200, height: 200)
-                    .cornerRadius(16)
-                    VStack(spacing: 12) {
-                        StudentDetailCell(
-                            description: "Name",
-                            value: student.user.name)
-                        StudentDetailCell(
-                            description: "Matriculation Nr.",
-                            value: student.user.visibleRegistrationNumber ?? "not available")
-                        StudentDetailCell(
-                            description: "Artemis Username",
-                            value: student.user.login)
-                        HStack {
-                            VStack(spacing: 12) {
-                                StudentRoomDetailCell(
-                                    description: "Room",
-                                    value: student.plannedRoom,
-                                    actualValue: $actualRoom,
-                                    actualOtherValue: $actualOtherRoom,
-                                    showActualValue: $showSeatingEdit,
-                                    allRooms: $allRooms)
-                                StudentSeatingDetailCell(
-                                    description: "Seat",
-                                    value: student.plannedSeat,
-                                    actualValue: $actualSeat,
-                                    showActualValue: $showSeatingEdit)
-                            }
-                            Button {
-                                showSeatingEdit.toggle()
-                            } label: {
-                                Image(systemName: "pencil")
-                                    .imageScale(.large)
-                            }
-                            .padding(.leading, 8)
-                        }
-                        .padding(.top, 12)
-                    }
-                    .padding(.leading, 32)
-                    .animation(.easeInOut, value: showSeatingEdit)
-                }
-
-                Button("Attendance Check") {
-                    Task {
-                        _ = await ExamServiceFactory.shared.attendanceCheck(for: courseId, and: examId, with: student.user.login)
-                    }
-                }
-                .buttonStyle(ArtemisButton())
-
-                VStack {
-                    Toggle("Image is correct:", isOn: $didCheckImage)
-                    Toggle("Name is correct:", isOn: $didCheckName)
-                    Toggle("Matriculation Number is correct:", isOn: $didCheckRegistrationNumber)
-                    Toggle("Artemis Username is correct:", isOn: $didCheckLogin)
-                }
-                .padding(.vertical, 16)
-
-                signingImageOrCanvas
-
-                Button("Save") {
-                    saveStudent()
-                }
-                .disabled(!hasUnsavedChanges)
-                .buttonStyle(ArtemisButton())
-                .padding(16)
-                .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
-                    Button("Yes, I want to continue.", role: .destructive) {
-                        saveStudent(force: true)
-                    }
-                } message: {
-                    Text("You did not fill out all requiered fields. Do you still want to proceed?")
-                }
-                .alert(isPresented: $showErrorAlert, error: error, actions: {})
+        Form {
+            Section {
+                studentImage
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .listRowBackground(Color.clear)
             }
-            .padding(.horizontal, 32)
-            .padding(.top, 8)
-            .padding(.bottom, 32)
+
+            Section {
+                Text("Matriculation No.").badge(student.registrationNumber ?? "-")
+                Text("Artemis username").badge(student.login ?? "-")
+                Text("Room").badge(student.location.roomNumber)
+                Text("Seat").badge(student.location.seatName)
+                if examViewModel.useListStyle {
+                    Button("Edit Room/Seat", systemImage: "pencil") {
+                        viewModel.showSeatingEdit.toggle()
+                    }
+                }
+            }
+
+// TODO: Remove?
+//            Button("Save") {
+//                saveStudent()
+//            }
+//            .disabled(!hasUnsavedChanges)
+//            .buttonStyle(ArtemisButton())
+//            .frame(maxWidth: .infinity, alignment: .center)
+//            .confirmationDialog("", isPresented: $showDidNotCompleteDialog) {
+//                Button("Yes, I want to continue.", role: .destructive) {
+//                    saveStudent(force: true)
+//                }
+//            } message: {
+//                Text("You did not fill out all requiered fields. Do you still want to proceed?")
+//            }
+            .alert(isPresented: $viewModel.showErrorAlert, error: viewModel.error, actions: {})
         }
-        .scrollDisabled(!isScrollingEnabled)
-        .loadingIndicator(isLoading: $isSaving)
+        .listSectionSpacing(.compact)
+        .safeAreaInset(edge: .bottom) {
+            VStack {
+                Button("Verify Artemis Session", systemImage: "list.bullet.rectangle") {
+                    Task {
+                        _ = await ExamServiceFactory.shared.attendanceCheck(for: viewModel.courseId, and: viewModel.examId, with: student.login ?? "")
+                    }
+                    withAnimation {
+                        viewModel.hasVerifiedSession = true
+                    }
+                }
+                .buttonStyle(RectButtonStyle(color: .blue))
+                .frame(maxWidth: .infinity, alignment: .center)
+
+                if viewModel.hasVerifiedSession {
+                    DisclosureGroup(isExpanded: $viewModel.isDisclosureOpen) {
+                        Toggle("Image correct:", isOn: $viewModel.didCheckImage)
+                        Toggle("Name correct:", isOn: $viewModel.didCheckName)
+                        Toggle("Matriculation Number correct:", isOn: $viewModel.didCheckRegistrationNumber)
+                        Toggle("Artemis Username correct:", isOn: $viewModel.didCheckLogin)
+                    } label: {
+                        Button("Incorrect Details", systemImage: "wrench") {
+                            withAnimation {
+                                viewModel.isDisclosureOpen = true
+                            }
+                        }
+                        .buttonStyle(RectButtonStyle(color: .red))
+                    }
+                    .disclosureGroupStyle(ButtonDisclosureGroupStyle())
+
+                    Button("Proceed to Signature", systemImage: !viewModel.isDisclosureOpen ? "checkmark" : "pencil.and.scribble") {
+                        if !viewModel.isDisclosureOpen {
+                            viewModel.didCheckName = true
+                            viewModel.didCheckImage = true
+                            viewModel.didCheckLogin = true
+                            viewModel.didCheckRegistrationNumber = true
+                        }
+                        examViewModel.showSignatureField = true
+                    }
+                    .buttonStyle(RectButtonStyle(color: viewModel.isDisclosureOpen ? .blue : .green))
+                }
+            }
+            .padding([.horizontal, .top])
+            .frame(maxWidth: .infinity)
+            .background(.ultraThinMaterial)
+        }
+        .onChange(of: viewModel.showSeatingEdit, initial: true) { _, newValue in
+            if !newValue && examViewModel.hasUnsavedChanges && examViewModel.selectedStudent?.actualLocation != nil {
+                viewModel.saveStudent(force: true, canvas: nil, closeOnSave: false)
+            }
+        }
+        .loadingIndicator(isLoading: $viewModel.isSaving)
         .onChange(of: canvasView.drawing) {
-            hasUnsavedChanges = true
+            examViewModel.hasUnsavedChanges = true
         }
-        .onChange(of: didCheckImage) {
-            hasUnsavedChanges = true
+        .onChange(of: viewModel.didCheckImage) {
+            examViewModel.hasUnsavedChanges = true
         }
-        .onChange(of: didCheckName) {
-            hasUnsavedChanges = true
+        .onChange(of: viewModel.didCheckName) {
+            examViewModel.hasUnsavedChanges = true
         }
-        .onChange(of: didCheckLogin) {
-            hasUnsavedChanges = true
+        .onChange(of: viewModel.didCheckLogin) {
+            examViewModel.hasUnsavedChanges = true
         }
-        .onChange(of: didCheckRegistrationNumber) {
-            hasUnsavedChanges = true
+        .onChange(of: viewModel.didCheckRegistrationNumber) {
+            examViewModel.hasUnsavedChanges = true
         }
-        .onChange(of: actualRoom) {
-            hasUnsavedChanges = true
+        .onChange(of: viewModel.actualRoom) {
+            examViewModel.hasUnsavedChanges = true
         }
-        .onChange(of: actualSeat) {
-            hasUnsavedChanges = true
+        .onChange(of: viewModel.actualSeat) {
+            examViewModel.hasUnsavedChanges = true
         }
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button("Save") {
-                    saveStudent(isNavigationBarButton: true)
+                    viewModel.saveStudent(isNavigationBarButton: true, canvas: canvasView)
                 }
-                .disabled(!hasUnsavedChanges)
-                .confirmationDialog("", isPresented: $showDidNotCompleteDialogNavigationBar) {
+                .disabled(!examViewModel.hasUnsavedChanges)
+                .confirmationDialog("", isPresented: $viewModel.showDidNotCompleteDialogNavigationBar) {
                     Button("Yes, I want to continue.", role: .destructive) {
-                        saveStudent(force: true)
+                        viewModel.saveStudent(force: true, canvas: canvasView)
                     }
                 } message: {
-                    Text("You did not fill out all requiered fields. Do you still want to proceed?")
+                    Text("You did not fill out all required fields. Do you still want to proceed?")
                 }
             }
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Close") {
+                    examViewModel.selectedStudent = nil
+                }
+                .disabled(examViewModel.hasUnsavedChanges)
+            }
+        }
+        .sheet(isPresented: $examViewModel.showSignatureField) {
+            NavigationStack {
+                signingImageOrCanvas
+                    .padding()
+                    .navigationTitle("Signature: \(student.displayName)")
+                    .toolbarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Save") {
+                                viewModel.saveStudent(force: true, canvas: canvasView)
+                                examViewModel.showSignatureField = false
+                            }
+                            .loadingIndicator(isLoading: $viewModel.isSaving)
+                        }
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Cancel") {
+                                examViewModel.showSignatureField = false
+                            }
+                        }
+                    }
+            }
+            .frame(minWidth: 650, minHeight: 350)
+            .presentationBackgroundInteraction(.disabled)
+            .presentationSizing(.fitted)
+            .interactiveDismissDisabled()
+        }
+        .sheet(isPresented: $viewModel.showSeatingEdit) {
+            EditSeatView(viewModel: viewModel, examViewModel: examViewModel)
+        }
+        .alert("You have not saved your changes.", isPresented: $examViewModel.showUnsavedChangesAlert) {
+            Button("Save") {
+                viewModel.saveStudent(force: true, canvas: canvasView)
+            }
+            Button("Discard") {
+                examViewModel.selectedStudent = nil
+                examViewModel.hasUnsavedChanges = false
+            }
+            Button("Cancel") {}
         }
     }
 
+    @ViewBuilder private var studentImage: some View {
+        ArtemisAsyncImage(imageURL: student.imageURL) {
+            VStack {
+                Image(systemName: "person.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(16)
+                    .frame(width: 100, height: 100)
+                Text("The image could not be loaded :(")
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
+            .frame(width: 200, height: 200)
+        }
+        .aspectRatio(contentMode: .fit)
+        .frame(width: 200, height: 200)
+        .cornerRadius(16)
+    }
+
     @ViewBuilder private var signingImageOrCanvas: some View {
-        if showSigningImage {
+        if viewModel.showSigningImage {
             HStack(alignment: .bottom) {
                 ArtemisAsyncImage(
                     imageURL: student.signingImageURL,
-                    onFailure: { signingImageLoadingStatus = .failure(error: $0) },
-                    onProgress: { _, _ in signingImageLoadingStatus = .loading },
-                    onSuccess: { _ in signingImageLoadingStatus = .success }
+                    onFailure: { viewModel.signingImageLoadingStatus = .failure(error: $0) },
+                    onProgress: { _, _ in viewModel.signingImageLoadingStatus = .loading },
+                    onSuccess: { _ in viewModel.signingImageLoadingStatus = .success }
                 ) {
                     HStack {
                         Spacer()
@@ -231,14 +251,13 @@ struct StudentDetailView: View {
                 }
                 .scaledToFit()
                 .frame(height: 200)
-                switch signingImageLoadingStatus {
+                switch viewModel.signingImageLoadingStatus {
                 case .notStarted, .loading:
                     EmptyView()
                 case .success, .failure:
                     PencilSideButtons(
-                        isScrollingEnabled: $isScrollingEnabled,
-                        student: $student,
-                        showSigningImage: $showSigningImage,
+                        student: student,
+                        showSigningImage: $viewModel.showSigningImage,
                         canvasView: $canvasView)
                 }
             }
@@ -248,13 +267,6 @@ struct StudentDetailView: View {
                     .frame(minHeight: 200)
                     .border(Color(UIColor.label))
                 VStack(spacing: 32) {
-                    Button {
-                        isScrollingEnabled.toggle()
-                    } label: {
-                        Image(systemName: "hand.draw.fill")
-                            .imageScale(.large)
-                            .foregroundColor(isScrollingEnabled ? Color.gray : Color.blue)
-                    }
                     Button {
                         canvasView.drawing = PKDrawing()
                     } label: {
@@ -272,20 +284,12 @@ struct StudentDetailView: View {
 
 private struct PencilSideButtons: View {
 
-    @Binding var isScrollingEnabled: Bool
-    @Binding var student: ExamUser
+    var student: ExamUser
     @Binding var showSigningImage: Bool
     @Binding var canvasView: PKCanvasView
 
     var body: some View {
         VStack(spacing: 32) {
-            Button {
-                isScrollingEnabled.toggle()
-            } label: {
-                Image(systemName: "hand.draw.fill")
-                    .imageScale(.large)
-                    .foregroundColor(isScrollingEnabled ? Color.gray : Color.blue)
-            }
             Button {
                 if student.signingImageURL != nil {
                     student.signingImagePath = nil
@@ -301,17 +305,30 @@ private struct PencilSideButtons: View {
     }
 }
 
-private struct StudentDetailCell: View {
-
-    var description: String
-    var value: String
-
-    var body: some View {
-        HStack {
-            Text("\(description): ")
-                .bold()
-            Spacer()
-            Text(value)
+private struct ButtonDisclosureGroupStyle: DisclosureGroupStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+        if configuration.isExpanded {
+            VStack {
+                configuration.content
+            }
+            .padding()
         }
+    }
+}
+
+private struct RectButtonStyle: ButtonStyle {
+    let color: Color
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .multilineTextAlignment(.leading)
+            .font(.title2)
+            .padding(.vertical, .m)
+            .padding(.horizontal, .l)
+            .frame(minHeight: 35)
+            .frame(maxWidth: .infinity)
+            .background(color, in: .rect(cornerRadius: 20, style: .continuous))
+            .foregroundStyle(.white)
     }
 }

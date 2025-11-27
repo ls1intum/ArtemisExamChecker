@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "ArtemisExamCheckKit",
     platforms: [
-        .iOS(.v17)
+        .iOS(.v18)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -15,7 +15,6 @@ let package = Package(
             targets: ["ArtemisExamCheckKit"])
     ],
     dependencies: [
-        .package(url: "https://github.com/daltoniam/Starscream", exact: "4.0.4"),
         .package(url: "https://github.com/ls1intum/artemis-ios-core-modules", from: "16.1.0")
     ],
     targets: [
@@ -34,5 +33,7 @@ let package = Package(
         .testTarget(
             name: "ArtemisExamCheckKitTests",
             dependencies: ["ArtemisExamCheckKit"])
-    ]
+    ],
+    // TODO: Eventually upgrade
+    swiftLanguageModes: [.v5]
 )
