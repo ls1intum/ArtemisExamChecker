@@ -142,6 +142,14 @@ class ExamViewModel {
         exam = await ExamServiceFactory.shared.getFullExam(for: courseId, and: examId)
     }
 
+    func getRoomDisplayName(for roomName: String) -> String {
+        guard let rooms = exam.value?.examRoomsUsedInExam else {
+            return roomName
+        }
+        let room = rooms.first { $0.roomNumber == roomName }
+        return room?.name ?? roomName
+    }
+
     /// Call this after a student was saved to move to the next one
     func onStudentSave(student: ExamUser) {
         selectedStudent = nil

@@ -23,7 +23,7 @@ struct SearchStudentView: View {
                             viewModel.selectedStudent = student
                         }
                     } label: {
-                        StudentListRow(student: student, showMatriculationNumber: true, showDoneStatus: false)
+                        StudentListRow(viewModel: viewModel, student: student, showMatriculationNumber: true, showDoneStatus: false)
                     }
                     .disabled(student.isStudentDone)
                 }

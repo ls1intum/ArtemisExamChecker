@@ -47,7 +47,7 @@ struct StudentDetailView: View {
             Section {
                 Text("Matriculation No.").badge(student.registrationNumber ?? "-")
                 Text("Artemis username").badge(student.login ?? "-")
-                Text("Room").badge(student.location.roomNumber)
+                Text("Room").badge(examViewModel.getRoomDisplayName(for: student.location.roomNumber))
                 Text("Seat").badge(student.location.seatName)
                 if examViewModel.useListStyle {
                     Button("Edit Room/Seat", systemImage: "pencil") {
