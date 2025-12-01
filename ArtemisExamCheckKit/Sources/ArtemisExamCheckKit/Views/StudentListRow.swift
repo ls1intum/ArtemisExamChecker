@@ -9,6 +9,7 @@ import DesignLibrary
 import SwiftUI
 
 struct StudentListRow: View {
+    let viewModel: ExamViewModel
     let student: ExamUser
     let showMatriculationNumber: Bool
     let showDoneStatus: Bool
@@ -34,7 +35,7 @@ struct StudentListRow: View {
                         Text("Already checked in")
                     }
                 }
-                Text("Room: \(student.location.roomNumber) – Seat: \(student.location.seatName)")
+                Text("Room: \(viewModel.getRoomDisplayName(for: student.location.roomNumber)) – Seat: \(student.location.seatName)")
             }
             Spacer()
             if showDoneStatus && student.isStudentTouched {

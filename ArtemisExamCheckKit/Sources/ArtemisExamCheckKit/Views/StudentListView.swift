@@ -31,8 +31,8 @@ extension ExamView {
                 } else {
                     // ID allows users to select a single row.
                     // List renders every row content on selection, if we do not pass it an ID.
-                    List(viewModel.selectedStudents, id: \.self, selection: $viewModel.selectedStudent) { student in
-                        StudentListRow(student: student, showMatriculationNumber: false, showDoneStatus: true)
+                    List(viewModel.selectedStudents.sorted(using: KeyPathComparator(\.location)), id: \.self, selection: $viewModel.selectedStudent) { student in
+                        StudentListRow(viewModel: viewModel, student: student, showMatriculationNumber: false, showDoneStatus: true)
                         // TODO: Button interferes with selection.
                         // Button {
                         //     if viewModel.hasUnsavedChanges {
