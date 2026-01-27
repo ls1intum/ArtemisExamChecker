@@ -211,7 +211,7 @@ private struct RoomLayout: View {
     var body: some View {
         ForEach(seats, id: \.self) { seat in
             Button {
-                if !useMinimalUI {
+                if !useMinimalUI || studentAssignments[seat] != nil {
                     viewModel.selectStudent(at: seat)
                 }
             } label: {
