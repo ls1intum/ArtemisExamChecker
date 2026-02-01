@@ -188,9 +188,9 @@ class ExamViewModel {
         return selectedStudents.sorted {
             switch sortingDirection {
             case .bottomToTop:
-                return $0.location.seatName < $1.location.seatName
+                return $0.location < $1.location
             case .topToBottom:
-                return $0.location.seatName > $1.location.seatName
+                return $0.location > $1.location
             }
         }
     }

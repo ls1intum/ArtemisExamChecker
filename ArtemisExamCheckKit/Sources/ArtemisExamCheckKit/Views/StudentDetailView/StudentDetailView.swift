@@ -180,9 +180,15 @@ struct StudentDetailView: View {
                             }
                             .loadingIndicator(isLoading: $viewModel.isSaving)
                         }
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") {
-                                examViewModel.showSignatureField = false
+                        ToolbarItem(placement: .topBarLeading) {
+                            Menu("Cancel") {
+                                Text("Are you sure?")
+                                Button(role: .destructive) {
+                                    examViewModel.showSignatureField = false
+                                } label: {
+                                    Text("Yes, cancel")
+                                    Text("This will not save a signature!")
+                                }
                             }
                         }
                     }

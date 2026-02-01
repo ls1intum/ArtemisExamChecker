@@ -15,7 +15,7 @@ let package = Package(
             targets: ["ArtemisExamCheckKit"])
     ],
     dependencies: [
-        .package(url: "https://github.com/ls1intum/artemis-ios-core-modules", from: "16.1.0")
+        .package(url: "https://github.com/ls1intum/artemis-ios-core-modules", from: "19.1.1")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
