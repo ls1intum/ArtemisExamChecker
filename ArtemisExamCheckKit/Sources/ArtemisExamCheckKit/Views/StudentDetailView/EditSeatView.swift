@@ -32,6 +32,11 @@ struct EditSeatView: View {
 
                     if hasSelectedCustomRoom {
                         TextField("Room", text: $viewModel.actualRoom)
+                            .onChange(of: viewModel.actualRoom) { oldValue, newValue in
+                                if oldValue != newValue && newValue.count > 100 {
+                                    viewModel.actualRoom = String(newValue.prefix(100))
+                                }
+                            }
                     }
                 }
 
@@ -45,6 +50,11 @@ struct EditSeatView: View {
                         }
                         if hasSelectedCustomSeat {
                             TextField("Seat", text: $viewModel.actualSeat)
+                                .onChange(of: viewModel.actualSeat) { oldValue, newValue in
+                                    if oldValue != newValue && newValue.count > 100 {
+                                        viewModel.actualSeat = String(newValue.prefix(100))
+                                    }
+                                }
                         }
                     } else {
                         HStack {
