@@ -8,16 +8,23 @@
 import SwiftUI
 
 struct EditSeatView: View {
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss)
+    private var dismiss
     @Bindable var viewModel: StudentDetailViewModel
     let examViewModel: ExamViewModel
+
+    var allRoomNumbers: [String] {
+        let allUsed = viewModel.allRooms
+        let allPossible = examViewModel.exam.value?.examRoomsUsedInExam?.map(\.roomNumber) ?? []
+        return Array(Set(allPossible + allUsed))
+    }
 
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     Picker("Room", selection: $viewModel.actualRoom) {
-                        ForEach(viewModel.allRooms, id: \.self) { room in
+                        ForEach(allRoomNumbers, id: \.self) { room in
                             Button {} label: {
                                 let displayName = examViewModel.getRoomDisplayName(for: room)
                                 Text(displayName)
@@ -32,6 +39,11 @@ struct EditSeatView: View {
 
                     if hasSelectedCustomRoom {
                         TextField("Room", text: $viewModel.actualRoom)
+                            .onChange(of: viewModel.actualRoom) { oldValue, newValue in
+                                if oldValue != newValue && newValue.count > 100 {
+                                    viewModel.actualRoom = String(newValue.prefix(100))
+                                }
+                            }
                     }
                 }
 
@@ -45,6 +57,11 @@ struct EditSeatView: View {
                         }
                         if hasSelectedCustomSeat {
                             TextField("Seat", text: $viewModel.actualSeat)
+                                .onChange(of: viewModel.actualSeat) { oldValue, newValue in
+                                    if oldValue != newValue && newValue.count > 100 {
+                                        viewModel.actualSeat = String(newValue.prefix(100))
+                                    }
+                                }
                         }
                     } else {
                         HStack {

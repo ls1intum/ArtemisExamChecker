@@ -18,6 +18,7 @@ struct SearchStudentView: View {
                     Button {
                         viewModel.moveStudent(student, to: ExamUserLocationDTO(room: search.room, seat: search.seat))
                         viewModel.selectedSearch = nil
+                        viewModel.searchText = ""
                         viewModel.hasUnsavedChanges = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                             viewModel.selectedStudent = student
@@ -34,6 +35,7 @@ struct SearchStudentView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
                         viewModel.selectedSearch = nil
+                        viewModel.searchText = ""
                     }
                 }
             }
