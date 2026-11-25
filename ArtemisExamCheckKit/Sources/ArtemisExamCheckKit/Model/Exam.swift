@@ -27,7 +27,7 @@ struct AttendanceCheckerAppExamInformationDTO: Codable {
     var examTitle: String
     var startDate: Date
     var endDate: Date
-    var isTestExam: Bool
+    var examMode: ExamMode?
     var courseId: Int
     var courseTitle: String
     var examRoomsUsedInExam: [ExamRoomForAttendanceCheckerDTO]?
