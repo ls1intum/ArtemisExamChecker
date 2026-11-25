@@ -69,10 +69,10 @@ private extension ExamListView {
                             .bold()
                     }
                     HStack(spacing: 16) {
-                        Text(exam.testExam ? "Test Exam" : "Exam")
+                        Text(exam.examMode == .real ? "Exam" : "Test Exam")
                             .padding(.vertical, 2)
                             .padding(.horizontal, 4)
-                            .background(exam.testExam ? Color.blue : Color.green)
+                            .background(exam.examMode == .real ? Color.green : Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(4)
                         HStack(spacing: 0) {
