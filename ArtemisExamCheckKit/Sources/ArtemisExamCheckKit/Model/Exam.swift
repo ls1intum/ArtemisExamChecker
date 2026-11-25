@@ -13,7 +13,13 @@ struct Exam: Identifiable, Codable {
     var startDate: Date
     var endDate: Date
     var course: Course
-    var testExam: Bool
+    var examMode: ExamMode?
+}
+
+enum ExamMode: String, Codable {
+    case real = "REAL"
+    case test = "TEST"
+    case testSupervisedSession = "TEST_WITH_SUPERVISED_SESSION"
 }
 
 struct AttendanceCheckerAppExamInformationDTO: Codable {
@@ -21,7 +27,7 @@ struct AttendanceCheckerAppExamInformationDTO: Codable {
     var examTitle: String
     var startDate: Date
     var endDate: Date
-    var isTestExam: Bool
+    var examMode: ExamMode?
     var courseId: Int
     var courseTitle: String
     var examRoomsUsedInExam: [ExamRoomForAttendanceCheckerDTO]?

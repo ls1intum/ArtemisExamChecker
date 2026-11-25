@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.4
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -15,7 +15,7 @@ let package = Package(
             targets: ["ArtemisExamCheckKit"])
     ],
     dependencies: [
-        .package(url: "https://github.com/ls1intum/artemis-ios-core-modules", from: "21.0.0")
+        .package(url: "https://github.com/ls1intum/artemis-ios-core-modules", from: "21.2.1")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
